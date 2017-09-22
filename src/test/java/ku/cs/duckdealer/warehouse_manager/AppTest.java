@@ -1,4 +1,4 @@
-package ku.cs.duckdealer.warehouse_manger;
+package ku.cs.duckdealer.warehouse_manager;
 
 
 /**

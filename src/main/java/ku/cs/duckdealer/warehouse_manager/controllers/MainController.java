@@ -1,4 +1,4 @@
-package ku.cs.duckdealer.warehouse_manger.controllers;
+package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,11 +30,10 @@ public class MainController {
 
     public void start() {
         Pane mainPane = this.mainPaneCtrl.getMainPane();
-        Parent root = mainPane;
         int w = (int) mainPane.getWidth();
         int h = (int) mainPane.getHeight();
         this.stage.setTitle(this.title);
-        this.stage.setScene(new Scene(root, w, h));
+        this.stage.setScene(new Scene(mainPane, w, h));
         this.stage.show();
     }
 
