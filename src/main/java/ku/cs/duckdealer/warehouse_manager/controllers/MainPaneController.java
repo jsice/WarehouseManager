@@ -9,12 +9,13 @@ public class MainPaneController {
     private GridPane mainPane;
 
     @FXML
-    private FlowPane leftPane,rightPane;
+    private FlowPane leftPane, rightPane;
 
     public GridPane getMainPane() {
         return mainPane;
     }
 
     public void setMainPane(GridPane mainPane) {
+        this.mainPane = mainPane;
     }
 }
