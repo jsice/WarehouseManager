@@ -14,7 +14,7 @@
     <RowConstraints minHeight="10.0" prefHeight="600.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <FlowPane fx:id="leftPane" prefHeight="200.0" prefWidth="200.0" />
-      <FlowPane fx:id="rightPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+      <FlowPane fx:id="leftPane" prefHeight="600.0" prefWidth="600.0" />
+      <FlowPane fx:id="rightPane" prefHeight="600.0" prefWidth="400.0" GridPane.columnIndex="1" />
    </children>
 </GridPane>

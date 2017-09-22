@@ -18,4 +18,12 @@ public class MainPaneController {
     public void setMainPane(GridPane mainPane) {
         this.mainPane = mainPane;
     }
+
+    public FlowPane getLeftPane() {
+        return leftPane;
+    }
+
+    public FlowPane getRightPane() {
+        return rightPane;
+    }
 }
