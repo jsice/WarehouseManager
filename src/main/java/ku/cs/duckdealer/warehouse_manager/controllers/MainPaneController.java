@@ -1,4 +1,4 @@
-package ku.cs.duckdealer.warehouse_manger.controllers;
+package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.FlowPane;
