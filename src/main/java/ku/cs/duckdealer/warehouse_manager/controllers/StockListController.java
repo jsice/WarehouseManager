@@ -1,6 +1,5 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,23 +27,29 @@ public class StockListController {
     public void createNewProduct(){
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/authorizationPopUp.fxml"));
+        stage.initModality(Modality.APPLICATION_MODAL);
 
         try {
-
-            System.out.println("WORKING");
             stage.setScene(new Scene((Parent) loader.load()));
 
             AuthorizationController authController = loader.getController();
 
-            stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            if (!authController.isLoggedIn()){
+            if (!authController.isLoggedIn() || authController.getLoginInformation().get(0).equals("Stock")){
                 return;
             }
 
+            loader = new FXMLLoader(getClass().getResource("/productDetail.fxml"));
+            stage.setScene(new Scene((Parent) loader.load()));
+
+            ProductDetailController prodController = loader.getController();
+            prodController.setUser(authController.getLoginInformation().get(0));
+            stage.showAndWait();
+
+
         } catch (IOException e) {
-            System.out.println("ERROR");
+            e.printStackTrace();
         }
     }
 
