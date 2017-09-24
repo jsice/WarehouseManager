@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.duckdealer.warehouse_manager.controllers.StockListController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.duckdealer.warehouse_manager.controllers.StockListController">
    <center>
       <FlowPane alignment="CENTER" prefHeight="500.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -94,6 +93,7 @@
             <FlowPane alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="btnGo" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Go" />
+                  <Button mnemonicParsing="false" onAction="#createNewProduct" text="+" />
                </children>
             </FlowPane>
          </right>
