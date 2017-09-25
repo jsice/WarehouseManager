@@ -4,9 +4,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ku.cs.duckdealer.warehouse_manager.models.Stock;
 
 import java.io.IOException;
 
@@ -18,7 +20,11 @@ public class MainController {
     private MainPaneController mainPaneCtrl;
     private StockListController stockListCtrl;
 
+    private Stock stock;
+
     public MainController(Stage stage) throws IOException {
+        this.stock = new Stock();
+
         this.stage = stage;
         this.loadPane();
     }
@@ -30,13 +36,13 @@ public class MainController {
         System.out.println(w);
         System.out.println(h);
         this.stage.setTitle(this.title);
-        this.stage.setScene(new Scene(mainPane, 1000, 600));
+        this.stage.setScene(new Scene(mainPane));
         this.stage.show();
     }
 
     private void loadPane() throws IOException {
         FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        GridPane mainPane = mainPaneLoader.load();
+        FlowPane mainPane = mainPaneLoader.load();
         this.mainPaneCtrl = mainPaneLoader.getController();
         this.mainPaneCtrl.setMainPane(mainPane);
 
@@ -50,5 +56,7 @@ public class MainController {
     }
 
 
-
+    public Stock getStock() {
+        return stock;
+    }
 }

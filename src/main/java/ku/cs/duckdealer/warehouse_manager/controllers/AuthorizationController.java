@@ -14,23 +14,10 @@ public class AuthorizationController {
     @FXML
     private PasswordField passwordField;
 
-    private boolean isLoggedIn;
-    private ArrayList<String> loginInformation;
-
-    public AuthorizationController() {
-        isLoggedIn = false;
-        loginInformation = new ArrayList<String>();
-    }
-
     public void login() {
-
-        if ("Owner".equals(usernameField.getText()) && "1234".equals(passwordField.getText())) {
-            isLoggedIn = true;
-            loginInformation.add("Owner");
-        } else if ("Stock".equals(usernameField.getText()) && "12345".equals(passwordField.getText())) {
-            isLoggedIn = true;
-            loginInformation.add("Stock");
-        } else {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        if (!AuthenticationService.login(username, password)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Login Error");
             alert.setContentText("Username or Password wrong");
@@ -46,13 +33,5 @@ public class AuthorizationController {
 
     public void back() {
         usernameField.getScene().getWindow().hide();
-    }
-
-    public boolean isLoggedIn() {
-        return isLoggedIn;
-    }
-
-    public ArrayList<String> getLoginInformation(){
-        return loginInformation;
     }
 }

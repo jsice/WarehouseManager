@@ -1,21 +1,33 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 public class MainPaneController {
 
-    private GridPane mainPane;
-
+    private FlowPane mainPane;
+    @FXML
+    private Menu loginStatus;
     @FXML
     private FlowPane leftPane, rightPane;
 
-    public GridPane getMainPane() {
+    @FXML
+    public void login() {
+
+    }
+
+    @FXML
+    public void logout() {
+
+    }
+
+    public FlowPane getMainPane() {
         return mainPane;
     }
 
-    public void setMainPane(GridPane mainPane) {
+    public void setMainPane(FlowPane mainPane) {
         this.mainPane = mainPane;
     }
 
@@ -26,4 +38,6 @@ public class MainPaneController {
     public FlowPane getRightPane() {
         return rightPane;
     }
+
+
 }

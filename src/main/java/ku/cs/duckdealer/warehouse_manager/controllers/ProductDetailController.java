@@ -1,56 +1,83 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import ku.cs.duckdealer.warehouse_manager.models.Product;
 
 public class ProductDetailController {
 
     @FXML
-    private TextField productNameField, productNumberField, productPriceField;
+    private TextField nameField, priceField;
     @FXML
-    private Label remainAmountLabel;
+    private Label remainAmountLabel, idLabel, incSpaceLabel, decSpaceLabel;
+    @FXML
+    private Button increase, decrease;
+    @FXML
+    private FlowPane amountArea;
 
     private Product product;
-    private String user;
+    private MainController mainCtrl;
+    private boolean isEditing = false;
+
+    public void setup(Product p) {
+        this.product = p;
+        this.idLabel.setText(this.product.getID());
+        this.nameField.setEditable(false);
+        this.nameField.setText(this.product.getName());
+        this.priceField.setEditable(false);
+        this.priceField.setText(this.product.getPrice()+"");
+        this.remainAmountLabel.setText(this.product.getQuantity()+"");
+
+        this.amountArea.getChildren().remove(this.decrease);
+        this.amountArea.getChildren().remove(this.decSpaceLabel);
+        this.amountArea.getChildren().remove(this.remainAmountLabel);
+        this.amountArea.getChildren().remove(this.incSpaceLabel);
+        this.amountArea.getChildren().remove(this.increase);
+
+        this.amountArea.getChildren().add(this.remainAmountLabel);
+
+    }
 
     public void updateAmount(){
 
     }
 
-    public void confirm(){
+    public void toggleEditMode() {
 
-        back();
-    }
+        if (!isEditing) {
+            if (AuthenticationService.NOT_LOGGED_IN) {
+                //call log in method
+                if (AuthenticationService.NOT_LOGGED_IN) {
+                    return;
+                }
+            }
+            this.amountArea.getChildren().remove(this.remainAmountLabel);
+            this.amountArea.getChildren().add(this.decrease);
+            this.amountArea.getChildren().add(this.decSpaceLabel);
+            this.amountArea.getChildren().add(this.remainAmountLabel);
+            this.amountArea.getChildren().add(this.incSpaceLabel);
+            this.amountArea.getChildren().add(this.increase);
+            if (AuthenticationService.LOGGED_IN_AS_OWNER) {
+                this.nameField.setEditable(true);
+                this.priceField.setEditable(true);
+            }
+        } else {
+            if (AuthenticationService.NOT_LOGGED_IN) {
+                //call log in method
+                if (AuthenticationService.NOT_LOGGED_IN) {
+                    return;
+                }
+            }
+            else if (AuthenticationService.LOGGED_IN_AS_OWNER) {
 
-    public void back(){
-        productNameField.getScene().getWindow().hide();
-    }
+            }
+            else if (AuthenticationService.LOGGED_IN_AS_STOCK) {
 
-    public void setEditable(){
-        if (user.equals("Stock")){
-            productNumberField.setDisable(true);
-            productNameField.setDisable(true);
-            productPriceField.setDisable(true);
+            }
         }
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-
-        productNumberField.setText(product.getNumber() + "");
-        productNameField.setText(product.getName());
-        productPriceField.setText(product.getPrice() + "");
-        remainAmountLabel.setText(product.getAmount() + "");
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-        setEditable();
-    }
 }

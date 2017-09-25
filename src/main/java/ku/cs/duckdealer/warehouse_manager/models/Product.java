@@ -1,20 +1,19 @@
 package ku.cs.duckdealer.warehouse_manager.models;
 
 public class Product {
-    private int number;
+    private String id;
     private String name;
     private double price;
-    private int amount;
+    private int quantity;
 
-    public Product(int number, String name, double price, int amount) {
-        this.number = number;
+    public Product(String id, String name, double price) {
+        this.id = id;
         this.name = name;
         this.price = price;
-        this.amount = amount;
     }
 
-    public int getNumber() {
-        return number;
+    public String getID() {
+        return id;
     }
 
     public String getName() {
@@ -25,7 +24,11 @@ public class Product {
         return price;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
