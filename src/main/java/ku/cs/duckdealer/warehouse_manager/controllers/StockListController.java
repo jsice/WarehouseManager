@@ -28,26 +28,10 @@ public class StockListController {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/authorizationPopUp.fxml"));
         stage.initModality(Modality.APPLICATION_MODAL);
-
         try {
             stage.setScene(new Scene((Parent) loader.load()));
-
             AuthorizationController authController = loader.getController();
-
             stage.showAndWait();
-
-            if (!authController.isLoggedIn() || authController.getLoginInformation().get(0).equals("Stock")){
-                return;
-            }
-
-            loader = new FXMLLoader(getClass().getResource("/productDetail.fxml"));
-            stage.setScene(new Scene((Parent) loader.load()));
-
-            ProductDetailController prodController = loader.getController();
-            prodController.setUser(authController.getLoginInformation().get(0));
-            stage.showAndWait();
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
