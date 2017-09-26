@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.warehouse_manager.models.Stock;
 
@@ -46,6 +47,7 @@ public class MainController {
         FlowPane mainPane = mainPaneLoader.load();
         this.mainPaneCtrl = mainPaneLoader.getController();
         this.mainPaneCtrl.setMainPane(mainPane);
+        this.mainPaneCtrl.setMainCtrl(this);
 
         FXMLLoader stockListPaneLoader = new FXMLLoader(getClass().getResource("/stockList.fxml"));
         BorderPane stockListPane = stockListPaneLoader.load();
@@ -60,6 +62,27 @@ public class MainController {
         this.mainPaneCtrl.getLeftPane().getChildren().add(this.stockListCtrl.getMainPane());
         this.mainPaneCtrl.getRightPane().getChildren().add(this.productDetailCtrl.getMainPane());
     }
+
+    public void login() {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/authorizationPopUp.fxml"));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        try {
+            stage.setScene(new Scene((Parent) loader.load()));
+            AuthorizationController authController = loader.getController();
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (AuthenticationService.LOGGED_IN_AS_STOCK) this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Warehouse");
+        if (AuthenticationService.LOGGED_IN_AS_OWNER) this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Owner");
+        System.out.println(AuthenticationService.LOGGED_IN_AS_OWNER);
+    }
+    public void logout(){
+        AuthenticationService.logout();
+        this.mainPaneCtrl.getLoginStatus().setText("You are not logged in...");
+    }
+
 
     public Stock getStock() {
         return stock;
