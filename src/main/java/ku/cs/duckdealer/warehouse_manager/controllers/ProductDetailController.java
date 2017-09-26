@@ -28,6 +28,12 @@ public class ProductDetailController {
 
     @FXML
     private void initialize() {
+        this.nameField.clear();
+        this.priceField.clear();
+
+        this.nameField.setDisable(true);
+        this.priceField.setDisable(true);
+
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
         this.amountArea.getChildren().remove(this.remainAmountLabel);
@@ -38,7 +44,7 @@ public class ProductDetailController {
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
-    
+
     public void setup(StockedProduct p) {
         this.stockedProduct = p;
         this.idLabel.setText(this.stockedProduct.getProduct().getID());
@@ -47,7 +53,7 @@ public class ProductDetailController {
         this.priceField.setEditable(false);
         this.priceField.setText(this.stockedProduct.getProduct().getPrice()+"");
         this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
-        
+
         initialize();
     }
 
@@ -56,9 +62,12 @@ public class ProductDetailController {
     }
 
     public void toggleCreateMode(){
+        this.nameField.setDisable(false);
+        this.priceField.setDisable(false);
+
         this.nameField.setEditable(true);
         this.priceField.setEditable(true);
-        this.amountArea.getChildren().remove(btnEdit);
+        this.btnEdit.setVisible(false);
         this.btnOk.setVisible(true);
         this.btnCancel.setVisible(true);
 
@@ -66,10 +75,10 @@ public class ProductDetailController {
     public void createProduct(){
         if (AuthenticationService.NOT_LOGGED_IN){
             mainCtrl.login();
-            if (!AuthenticationService.NOT_LOGGED_IN){
-                stockedProduct = new StockedProduct(nameField.getText(), Integer.parseInt(priceField.getText()));
-                initialize();
-            }
+        }
+        if (!AuthenticationService.NOT_LOGGED_IN){
+            stockedProduct = new StockedProduct(nameField.getText(), Integer.parseInt(priceField.getText()));
+            initialize();
         }
     }
 
