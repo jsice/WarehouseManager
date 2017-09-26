@@ -19,6 +19,7 @@ public class StockListController {
 
     private Pane mainPane;
     private ArrayList<Product> products;
+    private MainController mainCtrl;
 
     @FXML
     private GridPane innerTableGrid;
