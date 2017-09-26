@@ -1,12 +1,9 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
-import java.util.ArrayList;
 
 public class AuthorizationController {
     @FXML

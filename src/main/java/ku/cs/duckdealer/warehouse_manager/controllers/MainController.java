@@ -5,7 +5,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,8 +35,6 @@ public class MainController {
         Pane mainPane = this.mainPaneCtrl.getMainPane();
         int w = (int) mainPane.getWidth();
         int h = (int) mainPane.getHeight();
-        System.out.println(w);
-        System.out.println(h);
         this.stage.setTitle(this.title);
         this.stage.setScene(new Scene(mainPane));
         this.stage.show();
@@ -54,11 +51,13 @@ public class MainController {
         BorderPane stockListPane = stockListPaneLoader.load();
         this.stockListCtrl = stockListPaneLoader.getController();
         this.stockListCtrl.setMainPane(stockListPane);
+        this.stockListCtrl.setMainCtrl(this);
 
         FXMLLoader productDetailPaneLoader = new FXMLLoader(getClass().getResource("/productDetail.fxml"));
         BorderPane productDetailPane = productDetailPaneLoader.load();
         this.productDetailCtrl = productDetailPaneLoader.getController();
         this.productDetailCtrl.setMainPane(productDetailPane);
+        this.productDetailCtrl.setMainCtrl(this);
 
         this.mainPaneCtrl.getLeftPane().getChildren().add(this.stockListCtrl.getMainPane());
         this.mainPaneCtrl.getRightPane().getChildren().add(this.productDetailCtrl.getMainPane());
@@ -77,7 +76,7 @@ public class MainController {
         }
         if (AuthenticationService.LOGGED_IN_AS_STOCK) this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Warehouse");
         if (AuthenticationService.LOGGED_IN_AS_OWNER) this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Owner");
-        System.out.println(AuthenticationService.LOGGED_IN_AS_OWNER);
+
     }
     public void logout(){
         AuthenticationService.logout();

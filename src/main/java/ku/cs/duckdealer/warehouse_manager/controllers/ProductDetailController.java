@@ -1,19 +1,12 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import ku.cs.duckdealer.warehouse_manager.models.Product;
-
-import java.io.IOException;
 
 public class ProductDetailController {
 
@@ -102,5 +95,9 @@ public class ProductDetailController {
 
     public void setMainPane(BorderPane mainPane) {
         this.mainPane = mainPane;
+    }
+
+    public void setMainCtrl(MainController mainCtrl) {
+        this.mainCtrl = mainCtrl;
     }
 }
