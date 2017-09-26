@@ -46,7 +46,7 @@ public class ProductDetailController {
         this.priceField.setEditable(false);
         this.priceField.setText(this.product.getPrice()+"");
         this.remainAmountLabel.setText(this.product.getQuantity()+"");
-
+        
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
         this.amountArea.getChildren().remove(this.remainAmountLabel);

@@ -69,7 +69,6 @@ public class MainController {
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
             stage.setScene(new Scene((Parent) loader.load()));
-            AuthorizationController authController = loader.getController();
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,6 +86,9 @@ public class MainController {
         this.productDetailCtrl.setup(product);
     }
 
+    public void createProduct(){
+        productDetailCtrl.toggleCreateMode();
+    }
     public Stock getStock() {
         return stock;
     }

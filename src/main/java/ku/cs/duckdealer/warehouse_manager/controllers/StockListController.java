@@ -1,6 +1,7 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -22,7 +23,14 @@ public class StockListController {
     private TextField searchTextfield;
 
     public void createNewProduct(){
-        this.mainCtrl.login();
+        if (AuthenticationService.NOT_LOGGED_IN){
+            this.mainCtrl.login();
+            if (!AuthenticationService.NOT_LOGGED_IN){
+                mainCtrl.createProduct();
+
+            }
+        }
+
     }
 
     @FXML
