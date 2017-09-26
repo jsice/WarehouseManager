@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import ku.cs.duckdealer.warehouse_manager.models.Product;
+import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
 
 public class ProductDetailController {
 
@@ -19,7 +20,7 @@ public class ProductDetailController {
     @FXML
     private FlowPane amountArea;
 
-    private Product product;
+    private StockedProduct stockedProduct;
     private MainController mainCtrl;
     private boolean isEditing = false;
     private BorderPane mainPane;
@@ -38,22 +39,16 @@ public class ProductDetailController {
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
     
-    public void setup(Product p) {
-        this.product = p;
-        this.idLabel.setText(this.product.getID());
+    public void setup(StockedProduct p) {
+        this.stockedProduct = p;
+        this.idLabel.setText(this.stockedProduct.getProduct().getID());
         this.nameField.setEditable(false);
-        this.nameField.setText(this.product.getName());
+        this.nameField.setText(this.stockedProduct.getProduct().getName());
         this.priceField.setEditable(false);
-        this.priceField.setText(this.product.getPrice()+"");
-        this.remainAmountLabel.setText(this.product.getQuantity()+"");
+        this.priceField.setText(this.stockedProduct.getProduct().getPrice()+"");
+        this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
         
-        this.amountArea.getChildren().remove(this.btnDecrease);
-        this.amountArea.getChildren().remove(this.decSpaceLabel);
-        this.amountArea.getChildren().remove(this.remainAmountLabel);
-        this.amountArea.getChildren().remove(this.incSpaceLabel);
-        this.amountArea.getChildren().remove(this.btnIncrease);
-
-        this.amountArea.getChildren().add(this.remainAmountLabel);
+        initialize();
     }
 
     public void updateAmount(){
@@ -72,7 +67,7 @@ public class ProductDetailController {
         if (AuthenticationService.NOT_LOGGED_IN){
             mainCtrl.login();
             if (!AuthenticationService.NOT_LOGGED_IN){
-                product = new Product(nameField.getText(), Integer.parseInt(priceField.getText()));
+                stockedProduct = new StockedProduct(nameField.getText(), Integer.parseInt(priceField.getText()));
                 initialize();
             }
         }
