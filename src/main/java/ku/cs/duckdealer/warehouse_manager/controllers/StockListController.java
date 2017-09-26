@@ -69,13 +69,13 @@ public class StockListController {
             Label name = new Label(p.getProduct().getName());
             Label price = new Label(p.getProduct().getPrice()+"");
             Label amount = new Label(p.getQuantity()+"");
-            id.setPrefHeight(40);
+            id.setPrefHeight(38);
             id.setPrefWidth(99);
-            name.setPrefHeight(40);
+            name.setPrefHeight(38);
             name.setPrefWidth(100);
-            price.setPrefHeight(40);
+            price.setPrefHeight(38);
             price.setPrefWidth(100);
-            amount.setPrefHeight(40);
+            amount.setPrefHeight(38);
             amount.setPrefWidth(99);
             this.labels.add(id);
             this.labels.add(name);

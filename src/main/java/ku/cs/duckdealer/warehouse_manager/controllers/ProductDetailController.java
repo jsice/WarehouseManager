@@ -79,6 +79,7 @@ public class ProductDetailController {
         }
         if (!AuthenticationService.NOT_LOGGED_IN){
             stockedProduct = new StockedProduct(nameField.getText(), Integer.parseInt(priceField.getText()));
+            mainCtrl.getStock().newProduct(stockedProduct);
             initialize();
         }
     }
