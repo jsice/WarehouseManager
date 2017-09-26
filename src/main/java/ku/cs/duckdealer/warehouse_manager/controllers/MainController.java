@@ -61,7 +61,6 @@ public class MainController {
         this.mainPaneCtrl.getRightPane().getChildren().add(this.productDetailCtrl.getMainPane());
     }
 
-
     public Stock getStock() {
         return stock;
     }

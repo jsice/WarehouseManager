@@ -30,7 +30,6 @@ public class StockListController {
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
             stage.setScene(new Scene((Parent) loader.load()));
-            AuthorizationController authController = loader.getController();
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
