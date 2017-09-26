@@ -1,12 +1,19 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ku.cs.duckdealer.warehouse_manager.models.Product;
+
+import java.io.IOException;
 
 public class ProductDetailController {
 
@@ -15,7 +22,7 @@ public class ProductDetailController {
     @FXML
     private Label remainAmountLabel, idLabel, incSpaceLabel, decSpaceLabel;
     @FXML
-    private Button increase, decrease;
+    private Button btnIncrease, btnDecrease, btnEdit;
     @FXML
     private FlowPane amountArea;
 
@@ -23,6 +30,17 @@ public class ProductDetailController {
     private MainController mainCtrl;
     private boolean isEditing = false;
     private BorderPane mainPane;
+
+    @FXML
+    private void initialize() {
+        this.amountArea.getChildren().remove(this.btnDecrease);
+        this.amountArea.getChildren().remove(this.decSpaceLabel);
+        this.amountArea.getChildren().remove(this.remainAmountLabel);
+        this.amountArea.getChildren().remove(this.incSpaceLabel);
+        this.amountArea.getChildren().remove(this.btnIncrease);
+
+        this.amountArea.getChildren().add(this.remainAmountLabel);
+    }
 
     public void setup(Product p) {
         this.product = p;
@@ -33,11 +51,11 @@ public class ProductDetailController {
         this.priceField.setText(this.product.getPrice()+"");
         this.remainAmountLabel.setText(this.product.getQuantity()+"");
 
-        this.amountArea.getChildren().remove(this.decrease);
+        this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
         this.amountArea.getChildren().remove(this.remainAmountLabel);
         this.amountArea.getChildren().remove(this.incSpaceLabel);
-        this.amountArea.getChildren().remove(this.increase);
+        this.amountArea.getChildren().remove(this.btnIncrease);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
 
@@ -48,32 +66,28 @@ public class ProductDetailController {
     }
 
     public void toggleEditMode() {
+        if (AuthenticationService.NOT_LOGGED_IN) {
+            this.mainCtrl.login();
+            if (AuthenticationService.NOT_LOGGED_IN) {
+                return;
+            }
+        }
 
         if (!isEditing) {
-            if (AuthenticationService.NOT_LOGGED_IN) {
-                //call log in method
-                if (AuthenticationService.NOT_LOGGED_IN) {
-                    return;
-                }
-            }
+            this.btnEdit.setText("done");
             this.amountArea.getChildren().remove(this.remainAmountLabel);
-            this.amountArea.getChildren().add(this.decrease);
+            this.amountArea.getChildren().add(this.btnDecrease);
             this.amountArea.getChildren().add(this.decSpaceLabel);
             this.amountArea.getChildren().add(this.remainAmountLabel);
             this.amountArea.getChildren().add(this.incSpaceLabel);
-            this.amountArea.getChildren().add(this.increase);
+            this.amountArea.getChildren().add(this.btnIncrease);
             if (AuthenticationService.LOGGED_IN_AS_OWNER) {
                 this.nameField.setEditable(true);
                 this.priceField.setEditable(true);
             }
         } else {
-            if (AuthenticationService.NOT_LOGGED_IN) {
-                //call log in method
-                if (AuthenticationService.NOT_LOGGED_IN) {
-                    return;
-                }
-            }
-            else if (AuthenticationService.LOGGED_IN_AS_OWNER) {
+
+            if (AuthenticationService.LOGGED_IN_AS_OWNER) {
 
             }
             else if (AuthenticationService.LOGGED_IN_AS_STOCK) {

@@ -27,11 +27,11 @@
          <children>
             <FlowPane fx:id="amountArea" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Button fx:id="decrease" mnemonicParsing="false" onAction="#updateAmount" prefHeight="30.0" prefWidth="31.0" text="-" />
+                  <Button fx:id="btnDecrease" mnemonicParsing="false" onAction="#updateAmount" prefHeight="30.0" prefWidth="31.0" text="-" />
                   <Label fx:id="decSpaceLabel" text="     " />
                   <Label fx:id="remainAmountLabel" text="Label" />
                   <Label fx:id="incSpaceLabel" text="     " />
-                  <Button fx:id="increase" mnemonicParsing="false" onAction="#updateAmount" prefHeight="30.0" prefWidth="31.0" text="+" />
+                  <Button fx:id="btnIncrease" mnemonicParsing="false" onAction="#updateAmount" prefHeight="30.0" prefWidth="31.0" text="+" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -85,7 +85,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" onAction="#toggleEditMode" prefWidth="50.0" text="edit" />
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#toggleEditMode" prefWidth="50.0" text="edit" />
             <Label prefWidth="20.0" />
          </children>
       </FlowPane>

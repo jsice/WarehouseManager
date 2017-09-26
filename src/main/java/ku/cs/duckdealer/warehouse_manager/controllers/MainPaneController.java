@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class MainPaneController {
 
+    private MainController mainCtrl;
     private FlowPane mainPane;
     @FXML
     private Menu loginStatus;
@@ -21,25 +22,12 @@ public class MainPaneController {
 
     @FXML
     public void login() {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/authorizationPopUp.fxml"));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        try {
-            stage.setScene(new Scene((Parent) loader.load()));
-            AuthorizationController authController = loader.getController();
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (AuthenticationService.LOGGED_IN_AS_STOCK) this.loginStatus.setText("You are logged in as Warehouse");
-        if (AuthenticationService.LOGGED_IN_AS_OWNER) this.loginStatus.setText("You are logged in as Owner");
-        System.out.println(AuthenticationService.LOGGED_IN_AS_OWNER);
+        this.mainCtrl.login();
     }
 
     @FXML
     public void logout() {
-        AuthenticationService.logout();
-        this.loginStatus.setText("You are not logged in...");
+        this.mainCtrl.logout();
     }
 
     public FlowPane getMainPane() {
@@ -58,4 +46,11 @@ public class MainPaneController {
         return rightPane;
     }
 
+    public Menu getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setMainCtrl(MainController mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 }

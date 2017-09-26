@@ -16,6 +16,7 @@ import java.io.IOException;
 public class StockListController {
 
     private Pane mainPane;
+    private MainController mainCtrl;
 
     @FXML
     private GridPane innerTableGrid;
@@ -25,16 +26,7 @@ public class StockListController {
     private TextField searchTextfield;
 
     public void createNewProduct(){
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/authorizationPopUp.fxml"));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        try {
-            stage.setScene(new Scene((Parent) loader.load()));
-            AuthorizationController authController = loader.getController();
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.mainCtrl.login();
     }
 
 
