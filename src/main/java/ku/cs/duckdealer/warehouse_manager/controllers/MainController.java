@@ -19,9 +19,9 @@ public class MainController {
     private String title = "Warehouse Manger";
 
     private MainPaneController mainPaneCtrl;
+    private AmountController amountController;
     private StockListController stockListCtrl;
     private ProductDetailController productDetailCtrl;
-
     private Stock stock;
 
     public MainController(Stage stage) throws IOException {
@@ -90,4 +90,6 @@ public class MainController {
     public Stock getStock() {
         return stock;
     }
+
+    public AmountController getAmountController() { return amountController; }
 }

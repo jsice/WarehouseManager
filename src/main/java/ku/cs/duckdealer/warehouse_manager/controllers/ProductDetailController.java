@@ -1,12 +1,20 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ku.cs.duckdealer.warehouse_manager.models.Product;
+
+import java.io.IOException;
 
 public class ProductDetailController {
 
@@ -23,6 +31,7 @@ public class ProductDetailController {
     private MainController mainCtrl;
     private boolean isEditing = false;
     private BorderPane mainPane;
+    private Button source;
 
     @FXML
     private void initialize() {
@@ -54,8 +63,24 @@ public class ProductDetailController {
 
     }
 
-    public void updateAmount(){
+    public void updateAmount(ActionEvent event){
+        String text = ((Button)event.getSource()).getText();
+        if(text.equals("+")){
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/increaseProductPopUp.fxml"));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            try {
+                stage.setScene(new Scene((Parent) loader.load()));
+                AmountController amountController = loader.getController();
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            product.setQuantity(mainCtrl.getAmountController().getIncreaseAmount());
 
+        }else if (text.equals("-")){
+
+        }
     }
 
     public void toggleEditMode() {
@@ -78,6 +103,8 @@ public class ProductDetailController {
                 this.nameField.setEditable(true);
                 this.priceField.setEditable(true);
             }
+
+
         } else {
 
             if (AuthenticationService.LOGGED_IN_AS_OWNER) {
