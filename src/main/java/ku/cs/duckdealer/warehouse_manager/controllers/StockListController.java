@@ -60,11 +60,16 @@ public class StockListController {
         }
 
         innerTableGrid.getChildren().clear();
+        innerTableGrid.setPrefHeight(400);
         this.innerTableGrid.setGridLinesVisible(false);
         this.innerTableGrid.setGridLinesVisible(true);
 
         int row = 0;
         for (StockedProduct p: this.stockedProducts) {
+            if (row >= 10) {
+                this.innerTableGrid.setPrefHeight(this.innerTableGrid.getPrefHeight() + 40);
+                this.innerTableGrid.addRow(row);
+            }
             Label id = new Label(p.getProduct().getID()+"");
             Label name = new Label(p.getProduct().getName());
             Label price = new Label(p.getProduct().getPrice()+"");
@@ -86,10 +91,8 @@ public class StockListController {
             this.innerTableGrid.add(price, 2, row);
             this.innerTableGrid.add(amount, 3, row);
             row++;
-            if (row >= 10) {
-                this.innerTableGrid.setPrefHeight(this.innerTableGrid.getPrefHeight() + 40);
-                this.innerTableGrid.addRow(row);
-            }
+
+
         }
 
     }
