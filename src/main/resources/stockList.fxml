@@ -75,7 +75,7 @@
          <center>
             <FlowPane alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField prefHeight="30.0" prefWidth="280.0" />
+                  <TextField fx:id="searchTextfield" prefHeight="30.0" prefWidth="280.0" />
                </children>
             </FlowPane>
          </center>
