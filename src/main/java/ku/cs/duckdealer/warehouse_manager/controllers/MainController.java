@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ku.cs.duckdealer.warehouse_manager.models.Product;
 import ku.cs.duckdealer.warehouse_manager.models.Stock;
 
 import java.io.IOException;
@@ -83,6 +84,9 @@ public class MainController {
         this.mainPaneCtrl.getLoginStatus().setText("You are not logged in...");
     }
 
+    public void showProductDetail(Product product) {
+        this.productDetailCtrl.setup(product);
+    }
 
     public Stock getStock() {
         return stock;
