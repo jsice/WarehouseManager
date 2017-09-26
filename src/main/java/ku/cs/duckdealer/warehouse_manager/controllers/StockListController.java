@@ -5,8 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
+import ku.cs.duckdealer.warehouse_manager.models.Product;
 import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
 
 import java.util.ArrayList;
@@ -25,6 +28,12 @@ public class StockListController {
     @FXML
     private TextField searchTextfield;
 
+    @FXML
+    private void initialize() {
+        this.stockedProducts = new ArrayList<StockedProduct>();
+        labels = new ArrayList<Label>();
+    }
+
     public void createNewProduct(){
         if (AuthenticationService.NOT_LOGGED_IN){
             this.mainCtrl.login();
@@ -38,19 +47,36 @@ public class StockListController {
 
     @FXML
     private void showProducts() {
-        String text = searchTextfield.getText();
-        this.stockedProducts.removeAll(this.stockedProducts);
-        for (StockedProduct p: this.mainCtrl.getStock().getAllProducts()) {
-            if (p.getProduct().getID().contains(text)) {
-                stockedProducts.add(p);
+        if (searchTextfield.getText() == null) {
+            stockedProducts = this.mainCtrl.getStock().getAllProducts();
+        } else {
+            String text = searchTextfield.getText();
+            this.stockedProducts.removeAll(this.stockedProducts);
+            for (StockedProduct p: this.mainCtrl.getStock().getAllProducts()) {
+                if (p.getProduct().getID().contains(text)) {
+                    stockedProducts.add(p);
+                }
             }
         }
+
+        innerTableGrid.getChildren().clear();
+        this.innerTableGrid.setGridLinesVisible(false);
+        this.innerTableGrid.setGridLinesVisible(true);
+
         int row = 0;
         for (StockedProduct p: this.stockedProducts) {
             Label id = new Label(p.getProduct().getID()+"");
             Label name = new Label(p.getProduct().getName());
             Label price = new Label(p.getProduct().getPrice()+"");
             Label amount = new Label(p.getQuantity()+"");
+            id.setPrefHeight(40);
+            id.setPrefWidth(99);
+            name.setPrefHeight(40);
+            name.setPrefWidth(100);
+            price.setPrefHeight(40);
+            price.setPrefWidth(100);
+            amount.setPrefHeight(40);
+            amount.setPrefWidth(99);
             this.labels.add(id);
             this.labels.add(name);
             this.labels.add(price);
@@ -60,6 +86,10 @@ public class StockListController {
             this.innerTableGrid.add(price, 2, row);
             this.innerTableGrid.add(amount, 3, row);
             row++;
+            if (row >= 10) {
+                this.innerTableGrid.setPrefHeight(this.innerTableGrid.getPrefHeight() + 40);
+                this.innerTableGrid.addRow(row);
+            }
         }
 
     }
