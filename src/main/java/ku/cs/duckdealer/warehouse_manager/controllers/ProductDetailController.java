@@ -15,7 +15,7 @@ public class ProductDetailController {
     @FXML
     private Label remainAmountLabel, idLabel, incSpaceLabel, decSpaceLabel;
     @FXML
-    private Button btnIncrease, btnDecrease, btnEdit;
+    private Button btnIncrease, btnDecrease, btnEdit, btnOk, btnCancel;
     @FXML
     private FlowPane amountArea;
 
@@ -24,6 +24,7 @@ public class ProductDetailController {
     private boolean isEditing = false;
     private BorderPane mainPane;
 
+
     @FXML
     private void initialize() {
         this.amountArea.getChildren().remove(this.btnDecrease);
@@ -31,6 +32,8 @@ public class ProductDetailController {
         this.amountArea.getChildren().remove(this.remainAmountLabel);
         this.amountArea.getChildren().remove(this.incSpaceLabel);
         this.amountArea.getChildren().remove(this.btnIncrease);
+        this.btnOk.setVisible(false);
+        this.btnCancel.setVisible(false);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
@@ -51,11 +54,32 @@ public class ProductDetailController {
         this.amountArea.getChildren().remove(this.btnIncrease);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
-
     }
 
     public void updateAmount(){
 
+    }
+
+    public void toggleCreateMode(){
+        this.nameField.setEditable(true);
+        this.priceField.setEditable(true);
+        this.amountArea.getChildren().remove(btnEdit);
+        this.btnOk.setVisible(true);
+        this.btnCancel.setVisible(true);
+
+    }
+    public void createProduct(){
+        if (AuthenticationService.NOT_LOGGED_IN){
+            mainCtrl.login();
+            if (!AuthenticationService.NOT_LOGGED_IN){
+                product = new Product(nameField.getText(), Integer.parseInt(priceField.getText()));
+                initialize();
+            }
+        }
+
+    }
+
+    public void cancel(){
     }
 
     public void toggleEditMode() {
