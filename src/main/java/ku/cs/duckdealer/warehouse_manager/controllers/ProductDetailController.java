@@ -37,7 +37,7 @@ public class ProductDetailController {
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
-
+    
     public void setup(Product p) {
         this.product = p;
         this.idLabel.setText(this.product.getID());
