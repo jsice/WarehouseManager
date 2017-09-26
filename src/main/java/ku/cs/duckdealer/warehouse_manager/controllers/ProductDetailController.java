@@ -1,13 +1,20 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import ku.cs.duckdealer.warehouse_manager.models.Product;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
+
+import java.io.IOException;
 
 public class ProductDetailController {
 
@@ -24,23 +31,15 @@ public class ProductDetailController {
     private MainController mainCtrl;
     private boolean isEditing = false;
     private BorderPane mainPane;
-
+    private Button source;
 
     @FXML
     private void initialize() {
-        this.nameField.clear();
-        this.priceField.clear();
-
-        this.nameField.setDisable(true);
-        this.priceField.setDisable(true);
-
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
         this.amountArea.getChildren().remove(this.remainAmountLabel);
         this.amountArea.getChildren().remove(this.incSpaceLabel);
         this.amountArea.getChildren().remove(this.btnIncrease);
-        this.btnOk.setVisible(false);
-        this.btnCancel.setVisible(false);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
@@ -54,13 +53,15 @@ public class ProductDetailController {
         this.priceField.setText(this.stockedProduct.getProduct().getPrice()+"");
         this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
 
-        initialize();
+        this.amountArea.getChildren().remove(this.btnDecrease);
+        this.amountArea.getChildren().remove(this.decSpaceLabel);
+        this.amountArea.getChildren().remove(this.remainAmountLabel);
+        this.amountArea.getChildren().remove(this.incSpaceLabel);
+        this.amountArea.getChildren().remove(this.btnIncrease);
+
+        this.amountArea.getChildren().add(this.remainAmountLabel);
+
     }
-
-    public void updateAmount(){
-
-    }
-
     public void toggleCreateMode(){
         this.nameField.setDisable(false);
         this.priceField.setDisable(false);
@@ -81,8 +82,41 @@ public class ProductDetailController {
             initialize();
         }
     }
+    public void cancel(){}
 
-    public void cancel(){
+    public void updateAmount(ActionEvent event){
+        if(stockedProduct != null){
+            String text = ((Button)event.getSource()).getText();
+            if(text.equals("+")){
+                Stage stage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/increaseProductPopUp.fxml"));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                try {
+                    stage.setScene(new Scene((Parent) loader.load()));
+                    AmountController amountController = loader.getController();
+                    stage.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                stockedProduct.setQuantity(this.mainCtrl.getAmountController().getIncreaseAmount());
+
+            }else if (text.equals("-")){
+                Stage stage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/decreaseProductPopUp.fxml"));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                try {
+                    stage.setScene(new Scene((Parent) loader.load()));
+                    AmountController amountController = loader.getController();
+                    stage.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                stockedProduct.setQuantity(this.mainCtrl.getAmountController().getDecreaseAmount());
+            }
+        }
+
     }
 
     public void toggleEditMode() {
@@ -105,6 +139,8 @@ public class ProductDetailController {
                 this.nameField.setEditable(true);
                 this.priceField.setEditable(true);
             }
+
+
         } else {
 
             if (AuthenticationService.LOGGED_IN_AS_OWNER) {

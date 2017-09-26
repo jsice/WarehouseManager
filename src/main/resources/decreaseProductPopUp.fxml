@@ -51,10 +51,10 @@
                   <TextField fx:id="amountDecreaseField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" GridPane.columnIndex="1" />
                   <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <RadioButton mnemonicParsing="false" prefWidth="100.0" text="Sold" />
-                        <RadioButton mnemonicParsing="false" prefWidth="100.0" text="Damaged" />
-                        <RadioButton mnemonicParsing="false" prefWidth="100.0" text="Expired" />
-                        <RadioButton mnemonicParsing="false" prefWidth="100.0" text="Tester" />
+                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Sold" />
+                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Damaged" />
+                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Expired" />
+                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Tester" />
                      </children>
                   </FlowPane>
                </children>
@@ -68,7 +68,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnSubmitDecrease" text="OK" GridPane.halignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#btnOkDecrease" text="OK" GridPane.halignment="CENTER" />
                   <Button mnemonicParsing="false" onAction="#btnCancel" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
