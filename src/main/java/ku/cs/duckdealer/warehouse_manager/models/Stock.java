@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 public class Stock {
 
-    private ArrayList<Product> productList;
+    private ArrayList<StockedProduct> stockedProductList;
+    private int quantity;
 
     public Stock() {
-        this.productList = new ArrayList<Product>();
+        this.stockedProductList = new ArrayList<StockedProduct>();
     }
 
     public void addQuantity(String id, int qty) {
-        for (Product prd: this.productList) {
-            if (prd.getID().equals(id)) {
+        for (StockedProduct prd: this.stockedProductList) {
+            if (prd.getProduct().getID().equals(id)) {
                 if (prd.getQuantity() + qty >= 0) {
+                    this.quantity++;
                     prd.setQuantity(prd.getQuantity() + qty);
                 }
                 break;
@@ -21,15 +23,22 @@ public class Stock {
         }
     }
 
-    public Product getProduct(String id) {
-        Product Product = null;
-        for (Product prd: this.productList) {
-            if (prd.getID().equals(id)) {
-                Product = prd;
+    public StockedProduct getProduct(String id) {
+        StockedProduct StockedProduct = null;
+        for (StockedProduct prd: this.stockedProductList) {
+            if (prd.getProduct().getID().equals(id)) {
+                StockedProduct = prd;
                 break;
             }
         }
-        return Product;
+        return StockedProduct;
     }
 
+    public ArrayList<StockedProduct> getAllProducts() {
+        return stockedProductList;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }

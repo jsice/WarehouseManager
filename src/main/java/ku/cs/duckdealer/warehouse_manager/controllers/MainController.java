@@ -8,7 +8,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ku.cs.duckdealer.warehouse_manager.models.Product;
+import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
 import ku.cs.duckdealer.warehouse_manager.models.Stock;
 
 import java.io.IOException;
@@ -69,7 +69,6 @@ public class MainController {
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
             stage.setScene(new Scene((Parent) loader.load()));
-            AuthorizationController authController = loader.getController();
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,10 +82,13 @@ public class MainController {
         this.mainPaneCtrl.getLoginStatus().setText("You are not logged in...");
     }
 
-    public void showProductDetail(Product product) {
-        this.productDetailCtrl.setup(product);
+    public void showProductDetail(StockedProduct stockedProduct) {
+        this.productDetailCtrl.setup(stockedProduct);
     }
 
+    public void createProduct(){
+        productDetailCtrl.toggleCreateMode();
+    }
     public Stock getStock() {
         return stock;
     }

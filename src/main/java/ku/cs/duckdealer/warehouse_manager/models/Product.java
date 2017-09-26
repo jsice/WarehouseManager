@@ -6,8 +6,8 @@ public class Product {
     private double price;
     private int quantity;
 
-    public Product(String id, String name, double price) {
-        this.id = id;
+    public Product(String name, double price) {
+        this.id = String.valueOf((int) (Math.random()*10000000));
         this.name = name;
         this.price = price;
     }
