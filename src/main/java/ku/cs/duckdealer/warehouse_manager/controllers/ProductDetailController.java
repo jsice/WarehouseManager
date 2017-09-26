@@ -15,7 +15,7 @@ public class ProductDetailController {
     @FXML
     private Label remainAmountLabel, idLabel, incSpaceLabel, decSpaceLabel;
     @FXML
-    private Button btnIncrease, btnDecrease, btnEdit;
+    private Button btnIncrease, btnDecrease, btnEdit, btnOk, btnCancel;
     @FXML
     private FlowPane amountArea;
 
