@@ -19,6 +19,7 @@ public class MainController {
 
     private MainPaneController mainPaneCtrl;
     private StockListController stockListCtrl;
+    private ProductDetailController productDetailCtrl;
 
     private Stock stock;
 
@@ -51,8 +52,13 @@ public class MainController {
         this.stockListCtrl = stockListPaneLoader.getController();
         this.stockListCtrl.setMainPane(stockListPane);
 
-        this.mainPaneCtrl.getLeftPane().getChildren().add(this.stockListCtrl.getMainPane());
+        FXMLLoader productDetailPaneLoader = new FXMLLoader(getClass().getResource("/productDetail.fxml"));
+        BorderPane productDetailPane = productDetailPaneLoader.load();
+        this.productDetailCtrl = productDetailPaneLoader.getController();
+        this.productDetailCtrl.setMainPane(productDetailPane);
 
+        this.mainPaneCtrl.getLeftPane().getChildren().add(this.stockListCtrl.getMainPane());
+        this.mainPaneCtrl.getRightPane().getChildren().add(this.productDetailCtrl.getMainPane());
     }
 
 

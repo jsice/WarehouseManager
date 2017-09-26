@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import ku.cs.duckdealer.warehouse_manager.models.Product;
 
@@ -21,6 +22,7 @@ public class ProductDetailController {
     private Product product;
     private MainController mainCtrl;
     private boolean isEditing = false;
+    private BorderPane mainPane;
 
     public void setup(Product p) {
         this.product = p;
@@ -80,4 +82,11 @@ public class ProductDetailController {
         }
     }
 
+    public BorderPane getMainPane() {
+        return mainPane;
+    }
+
+    public void setMainPane(BorderPane mainPane) {
+        this.mainPane = mainPane;
+    }
 }
