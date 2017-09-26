@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
+import ku.cs.duckdealer.warehouse_manager.models.Product;
 
 public class ProductDetailController {
 
@@ -19,10 +19,11 @@ public class ProductDetailController {
     @FXML
     private FlowPane amountArea;
 
-    private StockedProduct stockedProduct;
+    private Product product;
     private MainController mainCtrl;
     private boolean isEditing = false;
     private BorderPane mainPane;
+
 
     @FXML
     private void initialize() {
@@ -31,19 +32,21 @@ public class ProductDetailController {
         this.amountArea.getChildren().remove(this.remainAmountLabel);
         this.amountArea.getChildren().remove(this.incSpaceLabel);
         this.amountArea.getChildren().remove(this.btnIncrease);
+        this.btnOk.setVisible(false);
+        this.btnCancel.setVisible(false);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
 
-    public void setup(StockedProduct p) {
-        this.stockedProduct = p;
-        this.idLabel.setText(this.stockedProduct.getProduct().getID());
+    public void setup(Product p) {
+        this.product = p;
+        this.idLabel.setText(this.product.getID());
         this.nameField.setEditable(false);
-        this.nameField.setText(this.stockedProduct.getProduct().getName());
+        this.nameField.setText(this.product.getName());
         this.priceField.setEditable(false);
-        this.priceField.setText(this.stockedProduct.getProduct().getPrice()+"");
-        this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
-
+        this.priceField.setText(this.product.getPrice()+"");
+        this.remainAmountLabel.setText(this.product.getQuantity()+"");
+        
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
         this.amountArea.getChildren().remove(this.remainAmountLabel);
@@ -51,11 +54,31 @@ public class ProductDetailController {
         this.amountArea.getChildren().remove(this.btnIncrease);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
-
     }
 
     public void updateAmount(){
 
+    }
+
+    public void toggleCreateMode(){
+        this.nameField.setEditable(true);
+        this.priceField.setEditable(true);
+        this.amountArea.getChildren().remove(btnEdit);
+        this.btnOk.setVisible(true);
+        this.btnCancel.setVisible(true);
+
+    }
+    public void createProduct(){
+        if (AuthenticationService.NOT_LOGGED_IN){
+            mainCtrl.login();
+            if (!AuthenticationService.NOT_LOGGED_IN){
+                product = new Product(nameField.getText(), Integer.parseInt(priceField.getText()));
+                initialize();
+            }
+        }
+    }
+
+    public void cancel(){
     }
 
     public void toggleEditMode() {
