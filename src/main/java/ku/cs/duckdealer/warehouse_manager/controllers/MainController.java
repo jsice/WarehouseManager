@@ -8,6 +8,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ku.cs.duckdealer.warehouse_manager.models.Product;
 import ku.cs.duckdealer.warehouse_manager.models.Stock;
 
 import java.io.IOException;
@@ -61,6 +62,9 @@ public class MainController {
         this.mainPaneCtrl.getRightPane().getChildren().add(this.productDetailCtrl.getMainPane());
     }
 
+    public void showProductDetail(Product product) {
+        this.productDetailCtrl.setup(product);
+    }
 
     public Stock getStock() {
         return stock;

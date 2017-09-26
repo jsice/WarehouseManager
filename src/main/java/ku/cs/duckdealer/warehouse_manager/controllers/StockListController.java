@@ -10,12 +10,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ku.cs.duckdealer.warehouse_manager.models.Product;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class StockListController {
 
     private Pane mainPane;
+    private ArrayList<Product> products;
 
     @FXML
     private GridPane innerTableGrid;
@@ -37,6 +40,9 @@ public class StockListController {
         }
     }
 
+    private void showProducts() {
+
+    }
 
     public Pane getMainPane() {
         return mainPane;
