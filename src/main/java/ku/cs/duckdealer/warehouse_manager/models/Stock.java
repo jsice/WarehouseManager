@@ -34,6 +34,10 @@ public class Stock {
         return StockedProduct;
     }
 
+    public void newProduct(StockedProduct stockedProduct) {
+        this.stockedProductList.add(stockedProduct);
+    }
+
     public ArrayList<StockedProduct> getAllProducts() {
         return stockedProductList;
     }
