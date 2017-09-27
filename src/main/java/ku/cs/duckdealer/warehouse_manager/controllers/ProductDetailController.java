@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -118,7 +119,17 @@ public class ProductDetailController {
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
                     if (stockedProduct.getQuantity()-amountController.getAmount() < 0) {
-                        //alert
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Decrease error");
+                        alert.setContentText("quantity is below 0");
+                        alert.showAndWait();
+                        return;
+                    }
+                    if(amountController.getBy()==null){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Decrease error");
+                        alert.setContentText("Please choose 'Sold', 'Damaged', 'Expired' or 'Tester'");
+                        alert.showAndWait();
                         return;
                     }
                     stockedProduct.setQuantity(stockedProduct.getQuantity()-amountController.getAmount());
@@ -154,6 +165,7 @@ public class ProductDetailController {
                 this.nameField.setEditable(true);
                 this.priceField.setEditable(true);
             }
+
         } else {
             isEditing = !isEditing;
             this.btnEdit.setText("edit");
