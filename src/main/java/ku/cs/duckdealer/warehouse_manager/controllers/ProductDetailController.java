@@ -123,7 +123,7 @@ public class ProductDetailController {
                     if (stockedProduct.getQuantity()-amountController.getAmount() < 0) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Decrease error");
-                        alert.setContentText("quantity is below 0");
+                        alert.setContentText("quantity of product is below 0");
                         alert.showAndWait();
                         return;
                     }
@@ -168,6 +168,7 @@ public class ProductDetailController {
                 this.priceField.setEditable(true);
             }
 
+
         } else {
             isEditing = !isEditing;
             this.btnEdit.setText("edit");
@@ -181,6 +182,9 @@ public class ProductDetailController {
                 this.nameField.setEditable(false);
                 this.priceField.setEditable(false);
             }
+            stockedProduct.getProduct().setName(nameField.getText());
+            stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
+            mainCtrl.showFilteredProducts();
         }
     }
 

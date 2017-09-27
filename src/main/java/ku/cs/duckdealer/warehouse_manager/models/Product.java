@@ -26,11 +26,7 @@ public class Product {
         return price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    public void setPrice(double price) { this.price = price; }
 }
