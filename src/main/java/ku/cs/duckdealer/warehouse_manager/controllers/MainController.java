@@ -29,6 +29,7 @@ public class MainController {
 
         this.stage = stage;
         this.loadPane();
+        this.stockListCtrl.showAllProducts();
     }
 
     public void start() {
@@ -84,6 +85,10 @@ public class MainController {
 
     public void showProductDetail(StockedProduct stockedProduct) {
         this.productDetailCtrl.setup(stockedProduct);
+    }
+
+    public void showAllProducts() {
+        this.stockListCtrl.showAllProducts();
     }
 
     public void createProduct(){

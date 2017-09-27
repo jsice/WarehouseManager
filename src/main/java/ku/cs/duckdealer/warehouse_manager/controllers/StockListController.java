@@ -108,10 +108,6 @@ public class StockListController {
                         selectedName.setBackground(null);
                         selectedPrice.setBackground(null);
                         selectedAmount.setBackground(null);
-//                        selectedID.getBackground().getFills().remove(selectedBackgroundFill);
-//                        selectedName.getBackground().getFills().remove(selectedBackgroundFill);
-//                        selectedPrice.getBackground().getFills().remove(selectedBackgroundFill);
-//                        selectedAmount.getBackground().getFills().remove(selectedBackgroundFill);
                     }
                     selectedID = id;
                     selectedName = name;
@@ -146,7 +142,24 @@ public class StockListController {
         searchText = searchTextfield.getText();
         this.filterStockedProducts();
         this.displayFilteredProducts();
+    }
 
+    public void showAllProducts() {
+        searchText = null;
+        this.searchTextfield.setText("");
+        this.filterStockedProducts();
+        this.displayFilteredProducts();
+
+        if (stockedProducts.size() > 0) {
+            selectedID = labels.get(0);
+            selectedName = labels.get(1);
+            selectedPrice = labels.get(2);
+            selectedAmount = labels.get(3);
+            selectedID.setBackground(new Background(selectedBackgroundFill));
+            selectedName.setBackground(new Background(selectedBackgroundFill));
+            selectedPrice.setBackground(new Background(selectedBackgroundFill));
+            selectedAmount.setBackground(new Background(selectedBackgroundFill));
+        }
     }
 
     public Pane getMainPane() {

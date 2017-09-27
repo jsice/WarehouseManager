@@ -35,11 +35,9 @@ public class ProductDetailController {
 
     @FXML
     private void initialize() {
-        this.nameField.clear();
-        this.priceField.clear();
 
-        this.nameField.setDisable(true);
-        this.priceField.setDisable(true);
+        this.nameField.setVisible(true);
+        this.priceField.setVisible(true);
 
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
@@ -63,6 +61,7 @@ public class ProductDetailController {
         this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
 
         initialize();
+        this.btnEdit.setVisible(true);
     }
 
 
@@ -85,6 +84,7 @@ public class ProductDetailController {
             stockedProduct = new StockedProduct(nameField.getText(), Integer.parseInt(priceField.getText()));
             mainCtrl.getStock().newProduct(stockedProduct);
             initialize();
+            mainCtrl.showAllProducts();
         }
     }
     public void cancel(){}
