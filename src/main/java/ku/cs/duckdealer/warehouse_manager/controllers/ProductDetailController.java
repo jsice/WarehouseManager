@@ -41,6 +41,7 @@ public class ProductDetailController {
         this.amountArea.getChildren().remove(this.btnIncrease);
         this.btnOk.setVisible(false);
         this.btnCancel.setVisible(false);
+        this.btnEdit.setVisible(false);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
