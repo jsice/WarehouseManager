@@ -63,6 +63,8 @@ public class ProductDetailController {
 
         initialize();
         this.btnEdit.setVisible(true);
+        this.nameField.setDisable(false);
+        this.priceField.setDisable(false);
     }
 
 
