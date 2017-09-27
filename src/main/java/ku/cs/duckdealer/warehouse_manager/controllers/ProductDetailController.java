@@ -36,8 +36,8 @@ public class ProductDetailController {
     @FXML
     private void initialize() {
 
-        this.nameField.setVisible(true);
-        this.priceField.setVisible(true);
+        this.nameField.setDisable(true);
+        this.priceField.setDisable(true);
 
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
@@ -81,13 +81,13 @@ public class ProductDetailController {
             mainCtrl.login();
         }
         if (!AuthenticationService.NOT_LOGGED_IN){
-            stockedProduct = new StockedProduct(nameField.getText(), Integer.parseInt(priceField.getText()));
+            stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
             mainCtrl.getStock().newProduct(stockedProduct);
             initialize();
             mainCtrl.showAllProducts();
         }
     }
-    public void cancel(){}
+    public void cancel(){initialize();}
 
     public void updateAmount(ActionEvent event){
         if(stockedProduct != null){

@@ -46,10 +46,9 @@ public class StockListController {
     public void createNewProduct(){
         if (AuthenticationService.NOT_LOGGED_IN){
             this.mainCtrl.login();
-            if (!AuthenticationService.NOT_LOGGED_IN){
-                mainCtrl.createProduct();
-
-            }
+        }
+        if (!AuthenticationService.NOT_LOGGED_IN){
+            mainCtrl.createProduct();
         }
 
     }
