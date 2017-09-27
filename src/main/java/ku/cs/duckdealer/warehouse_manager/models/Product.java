@@ -1,5 +1,7 @@
 package ku.cs.duckdealer.warehouse_manager.models;
 
+import com.sun.javafx.binding.StringFormatter;
+
 public class Product {
     private String id;
     private String name;
@@ -7,7 +9,7 @@ public class Product {
     private int quantity;
 
     public Product(String name, double price) {
-        this.id = String.valueOf((int) (Math.random()*10000000));
+        this.id = String.format("%08d", (int) (Math.random()*100000000));
         this.name = name;
         this.price = price;
     }

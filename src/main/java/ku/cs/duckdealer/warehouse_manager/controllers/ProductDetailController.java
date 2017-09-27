@@ -35,11 +35,20 @@ public class ProductDetailController {
 
     @FXML
     private void initialize() {
+        this.nameField.clear();
+        this.priceField.clear();
+
+        this.nameField.setDisable(true);
+        this.priceField.setDisable(true);
+
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
         this.amountArea.getChildren().remove(this.remainAmountLabel);
         this.amountArea.getChildren().remove(this.incSpaceLabel);
         this.amountArea.getChildren().remove(this.btnIncrease);
+        this.btnOk.setVisible(false);
+        this.btnCancel.setVisible(false);
+        this.btnEdit.setVisible(false);
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
@@ -53,15 +62,10 @@ public class ProductDetailController {
         this.priceField.setText(this.stockedProduct.getProduct().getPrice()+"");
         this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
 
-        this.amountArea.getChildren().remove(this.btnDecrease);
-        this.amountArea.getChildren().remove(this.decSpaceLabel);
-        this.amountArea.getChildren().remove(this.remainAmountLabel);
-        this.amountArea.getChildren().remove(this.incSpaceLabel);
-        this.amountArea.getChildren().remove(this.btnIncrease);
-
-        this.amountArea.getChildren().add(this.remainAmountLabel);
-
+        initialize();
     }
+
+
     public void toggleCreateMode(){
         this.nameField.setDisable(false);
         this.priceField.setDisable(false);
@@ -140,8 +144,6 @@ public class ProductDetailController {
                 this.nameField.setEditable(true);
                 this.priceField.setEditable(true);
             }
-
-
         } else {
 
             if (AuthenticationService.LOGGED_IN_AS_OWNER) {
