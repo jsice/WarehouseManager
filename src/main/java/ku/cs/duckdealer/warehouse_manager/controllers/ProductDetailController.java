@@ -36,8 +36,8 @@ public class ProductDetailController {
     @FXML
     private void initialize() {
 
-        this.nameField.setVisible(true);
-        this.priceField.setVisible(true);
+        this.nameField.setDisable(true);
+        this.priceField.setDisable(true);
 
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
