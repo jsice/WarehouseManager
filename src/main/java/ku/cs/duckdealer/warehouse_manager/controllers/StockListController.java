@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -42,6 +43,8 @@ public class StockListController {
         labels = new ArrayList<Label>();
         searchText = "";
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
+        filterComboBox.getItems().addAll("ID", "Name");
+        filterComboBox.getSelectionModel().select(0);
     }
 
     public void createNewProduct(){
@@ -72,7 +75,9 @@ public class StockListController {
             stockedProducts.addAll(this.mainCtrl.getStock().getAllProducts());
         } else {
             for (StockedProduct p: this.mainCtrl.getStock().getAllProducts()) {
-                if (p.getProduct().getID().contains(searchText)) {
+                String productInfo = p.getProduct().getID();
+                if (this.filterComboBox.getSelectionModel().getSelectedIndex() == 1) productInfo = p.getProduct().getName();
+                if (productInfo.contains(searchText)) {
                     stockedProducts.add(p);
                 }
             }
@@ -110,12 +115,16 @@ public class StockListController {
             final Label amount = new Label(p.getQuantity()+"");
             id.setPrefHeight(38);
             id.setPrefWidth(122);
+            id.setAlignment(Pos.CENTER);
             name.setPrefHeight(38);
             name.setPrefWidth(123);
+            name.setAlignment(Pos.CENTER);
             price.setPrefHeight(38);
             price.setPrefWidth(123);
+            price.setAlignment(Pos.CENTER);
             amount.setPrefHeight(38);
             amount.setPrefWidth(122);
+            amount.setAlignment(Pos.CENTER);
 
             if (p == selectedProduct) setSelectedLabel(id, name, price, amount);
 
