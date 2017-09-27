@@ -8,44 +8,25 @@ import javafx.event.ActionEvent;
 
 
 public class AmountController {
-    private int increaseAmount, decreaseAmount;
+    private int amount;
     private String by;
     @FXML
-    private TextField amountIncreaseField, amountDecreaseField;
+    private TextField amountField;
     @FXML
     private void initialize() {
-      this.amountIncreaseField.setText("1");
-      this.amountDecreaseField.setText("1");
+      this.amountField.setText("1");
     }
 
-    public void btnOkIncrease() {
-        String amount = amountIncreaseField.getText();
-        increaseAmount = Integer.parseInt(amount);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Increase Successful");
-        alert.showAndWait();
+    public void btnOk() {
+        String amount = amountField.getText();
+        this.amount = Integer.parseInt(amount);
         btnCancel();
     }
 
     public void btnCancel() {
-        amountIncreaseField.getScene().getWindow().hide();
+        amountField.getScene().getWindow().hide();
     }
 
-    public int getIncreaseAmount() {
-        return increaseAmount;
-    }
-
-    public void btnOkDecrease(){
-        String amount = amountIncreaseField.getText();
-        decreaseAmount = Integer.parseInt(amount);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Decrease Successful");
-        alert.showAndWait();
-        btnCancel();
-
-    }
     public void btnBy(ActionEvent event){
         String text = ((RadioButton)event.getSource()).getText();
         if(text.equals("Sold")){
@@ -60,5 +41,11 @@ public class AmountController {
 
     }
 
-    public int getDecreaseAmount() { return decreaseAmount; }
+    public int getAmount() {
+        return amount;
+    }
+
+    public String getBy() {
+        return by;
+    }
 }

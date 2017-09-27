@@ -84,6 +84,7 @@ public class ProductDetailController {
             stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
             mainCtrl.getStock().newProduct(stockedProduct);
             initialize();
+            mainCtrl.showProductDetail(stockedProduct);
             mainCtrl.showAllProducts();
         }
     }
@@ -100,11 +101,13 @@ public class ProductDetailController {
                     stage.setScene(new Scene((Parent) loader.load()));
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
+                    stockedProduct.setQuantity(stockedProduct.getQuantity()+amountController.getAmount());
+                    remainAmountLabel.setText(stockedProduct.getQuantity()+"");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                stockedProduct.setQuantity(this.mainCtrl.getAmountController().getIncreaseAmount());
+
 
             }else if (text.equals("-")){
                 Stage stage = new Stage();
@@ -114,11 +117,17 @@ public class ProductDetailController {
                     stage.setScene(new Scene((Parent) loader.load()));
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
+                    if (stockedProduct.getQuantity()-amountController.getAmount() < 0) {
+                        //alert
+                        return;
+                    }
+                    stockedProduct.setQuantity(stockedProduct.getQuantity()-amountController.getAmount());
+                    remainAmountLabel.setText(stockedProduct.getQuantity()+"");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                stockedProduct.setQuantity(this.mainCtrl.getAmountController().getDecreaseAmount());
+
             }
         }
 
@@ -133,6 +142,7 @@ public class ProductDetailController {
         }
 
         if (!isEditing) {
+            isEditing = !isEditing;
             this.btnEdit.setText("done");
             this.amountArea.getChildren().remove(this.remainAmountLabel);
             this.amountArea.getChildren().add(this.btnDecrease);
@@ -145,12 +155,17 @@ public class ProductDetailController {
                 this.priceField.setEditable(true);
             }
         } else {
-
+            isEditing = !isEditing;
+            this.btnEdit.setText("edit");
+            this.amountArea.getChildren().remove(this.btnDecrease);
+            this.amountArea.getChildren().remove(this.decSpaceLabel);
+            this.amountArea.getChildren().remove(this.remainAmountLabel);
+            this.amountArea.getChildren().remove(this.incSpaceLabel);
+            this.amountArea.getChildren().remove(this.btnIncrease);
+            this.amountArea.getChildren().add(this.remainAmountLabel);
             if (AuthenticationService.LOGGED_IN_AS_OWNER) {
-
-            }
-            else if (AuthenticationService.LOGGED_IN_AS_STOCK) {
-
+                this.nameField.setEditable(false);
+                this.priceField.setEditable(false);
             }
         }
     }

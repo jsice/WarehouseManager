@@ -25,6 +25,7 @@ public class StockListController {
     private String searchText;
 
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
+    private StockedProduct selectedProduct;
 
     private BackgroundFill selectedBackgroundFill;
 
@@ -78,6 +79,23 @@ public class StockListController {
         }
     }
 
+    private void setSelectedLabel(Label id, Label name, Label price, Label amount) {
+        if (selectedID != null) {
+            selectedID.setBackground(null);
+            selectedName.setBackground(null);
+            selectedPrice.setBackground(null);
+            selectedAmount.setBackground(null);
+        }
+        selectedID = id;
+        selectedName = name;
+        selectedPrice = price;
+        selectedAmount = amount;
+        selectedID.setBackground(new Background(selectedBackgroundFill));
+        selectedName.setBackground(new Background(selectedBackgroundFill));
+        selectedPrice.setBackground(new Background(selectedBackgroundFill));
+        selectedAmount.setBackground(new Background(selectedBackgroundFill));
+    }
+
     private void displayFilteredProducts() {
         clearGrid();
         int row = 0;
@@ -99,23 +117,13 @@ public class StockListController {
             amount.setPrefHeight(38);
             amount.setPrefWidth(122);
 
+            if (p == selectedProduct) setSelectedLabel(id, name, price, amount);
+
             EventHandler<MouseEvent> productLabelEventHandler = new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent event) {
                     mainCtrl.showProductDetail(p);
-                    if (selectedID != null) {
-                        selectedID.setBackground(null);
-                        selectedName.setBackground(null);
-                        selectedPrice.setBackground(null);
-                        selectedAmount.setBackground(null);
-                    }
-                    selectedID = id;
-                    selectedName = name;
-                    selectedPrice = price;
-                    selectedAmount = amount;
-                    selectedID.setBackground(new Background(selectedBackgroundFill));
-                    selectedName.setBackground(new Background(selectedBackgroundFill));
-                    selectedPrice.setBackground(new Background(selectedBackgroundFill));
-                    selectedAmount.setBackground(new Background(selectedBackgroundFill));
+                    setSelectedLabel(id, name, price, amount);
+                    selectedProduct = p;
                 }
             };
 
@@ -148,17 +156,6 @@ public class StockListController {
         this.searchTextfield.setText("");
         this.filterStockedProducts();
         this.displayFilteredProducts();
-
-        if (stockedProducts.size() > 0) {
-            selectedID = labels.get(0);
-            selectedName = labels.get(1);
-            selectedPrice = labels.get(2);
-            selectedAmount = labels.get(3);
-            selectedID.setBackground(new Background(selectedBackgroundFill));
-            selectedName.setBackground(new Background(selectedBackgroundFill));
-            selectedPrice.setBackground(new Background(selectedBackgroundFill));
-            selectedAmount.setBackground(new Background(selectedBackgroundFill));
-        }
     }
 
     public Pane getMainPane() {
@@ -171,5 +168,9 @@ public class StockListController {
 
     public void setMainCtrl(MainController mainCtrl) {
         this.mainCtrl = mainCtrl;
+    }
+
+    public void setSelectedProduct(StockedProduct selectedProduct) {
+        this.selectedProduct = selectedProduct;
     }
 }
