@@ -92,7 +92,7 @@ public class MainController {
         this.stockListCtrl.showAllProducts();
     }
 
-
+    public void showFilteredProducts() { this.stockListCtrl.showFilteredProducts(); }
 
     public void createProduct(){
         productDetailCtrl.toggleCreateMode();

@@ -147,6 +147,10 @@ public class StockListController {
     @FXML
     private void showProducts() {
         searchText = searchTextfield.getText();
+        showFilteredProducts();
+    }
+
+    public void showFilteredProducts() {
         this.filterStockedProducts();
         this.displayFilteredProducts();
     }
@@ -154,8 +158,7 @@ public class StockListController {
     public void showAllProducts() {
         searchText = null;
         this.searchTextfield.setText("");
-        this.filterStockedProducts();
-        this.displayFilteredProducts();
+        showFilteredProducts();
     }
 
     public Pane getMainPane() {
