@@ -1,6 +1,10 @@
 package ku.cs.duckdealer.cashier.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
@@ -11,6 +15,8 @@ public class MainPaneController {
 
     @FXML
     private GridPane leftPane, rightPane;
+
+
 
 
     public FlowPane getMainPane() {
@@ -33,4 +39,6 @@ public class MainPaneController {
     public void setMainCtrl(MainController mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
+
+
 }
