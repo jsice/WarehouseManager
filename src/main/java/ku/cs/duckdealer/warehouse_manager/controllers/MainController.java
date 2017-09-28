@@ -49,7 +49,6 @@ public class MainController {
 
     private void loadPane() throws IOException {
         FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        mainPaneLoader.setController(new MainPaneController());
         FlowPane mainPane = mainPaneLoader.load();
         this.mainPaneCtrl = mainPaneLoader.getController();
         this.mainPaneCtrl.setMainPane(mainPane);
