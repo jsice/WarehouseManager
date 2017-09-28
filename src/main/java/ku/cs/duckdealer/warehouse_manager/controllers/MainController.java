@@ -10,13 +10,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.models.Stock;
+import ku.cs.duckdealer.services.ProductSevice;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainController {
 
     private Stage stage;
-    private String title = "Warehouse Manger";
+    private String title = "Warehouse Manager";
 
     private MainPaneController mainPaneCtrl;
     private AmountController amountController;
@@ -24,7 +26,9 @@ public class MainController {
     private ProductDetailController productDetailCtrl;
     private Stock stock;
 
-    public MainController(Stage stage) throws IOException {
+    public MainController(Stage stage) throws IOException, SQLException {
+        ProductSevice p = new ProductSevice();
+        p.getStock();
         this.stock = new Stock();
 
         this.stage = stage;
@@ -43,7 +47,6 @@ public class MainController {
 
     private void loadPane() throws IOException {
         FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        mainPaneLoader.setController(new MainPaneController());
         FlowPane mainPane = mainPaneLoader.load();
         this.mainPaneCtrl = mainPaneLoader.getController();
         this.mainPaneCtrl.setMainPane(mainPane);

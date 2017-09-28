@@ -22,9 +22,7 @@ public class StockListController {
     private ArrayList<StockedProduct> stockedProducts;
     private ArrayList<Label> labels;
     private MainController mainCtrl;
-
     private String searchText;
-
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
 
     private StockedProduct selectedProduct;
