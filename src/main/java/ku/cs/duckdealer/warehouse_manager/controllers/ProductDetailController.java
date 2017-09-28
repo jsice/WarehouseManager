@@ -78,6 +78,9 @@ public class ProductDetailController {
         this.btnOk.setVisible(true);
         this.btnCancel.setVisible(true);
 
+        this.nameField.clear();
+        this.priceField.clear();
+
     }
     public void createProduct(){
         if (AuthenticationService.NOT_LOGGED_IN){
@@ -86,9 +89,11 @@ public class ProductDetailController {
         if (!AuthenticationService.NOT_LOGGED_IN){
             stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
             mainCtrl.getStock().newProduct(stockedProduct);
+            mainCtrl.getProductService().addProduct(stockedProduct);
             initialize();
             mainCtrl.showProductDetail(stockedProduct);
             mainCtrl.showAllProducts();
+
         }
     }
     public void cancel(){initialize();}

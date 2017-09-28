@@ -30,7 +30,7 @@ public class MainController {
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.productService = new ProductSevice();
-        
+
         this.stock = new Stock();
 
         this.stage = stage;
