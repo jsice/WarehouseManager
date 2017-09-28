@@ -1,30 +1,43 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import javafx.scene.control.ToggleGroup;
 
 
 public class AmountController {
-    private int amount;
+    private int amount = 1;
+    public boolean cancel = true;
     private String by;
     @FXML
     private TextField amountField;
     @FXML
+    private RadioButton sold, userError, damaged, expired;
+    @FXML
     private void initialize() {
-      this.amountField.setText("1");
+        this.amountField.setText("1");
+        if (sold!=null ){
+            ToggleGroup group=new ToggleGroup();
+            sold.setToggleGroup(group);
+            userError.setToggleGroup(group);
+            damaged.setToggleGroup(group);
+            expired.setToggleGroup(group);
+        }
     }
 
     public void btnOk() {
         String amount = amountField.getText();
         this.amount = Integer.parseInt(amount);
         btnCancel();
+        cancel = false;
     }
 
     public void btnCancel() {
+        cancel = true;
         amountField.getScene().getWindow().hide();
+
     }
 
     public void btnBy(ActionEvent event){
@@ -35,8 +48,8 @@ public class AmountController {
             by = "Damaged";
         }else if (text.equals("Expired")){
             by = "Expired";
-        }else if (text.equals("Tester")){
-            by = "Tester";
+        }else if (text.equals("User error")){
+            by = "User error";
         }
 
     }
@@ -45,7 +58,6 @@ public class AmountController {
         return amount;
     }
 
-    public String getBy() {
-        return by;
-    }
+    public String getBy() { return by; }
+
 }

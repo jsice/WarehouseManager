@@ -104,8 +104,20 @@ public class ProductDetailController {
                     stage.setScene(new Scene((Parent) loader.load()));
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
-                    stockedProduct.setQuantity(stockedProduct.getQuantity()+amountController.getAmount());
-                    remainAmountLabel.setText(stockedProduct.getQuantity()+"");
+                    if(!amountController.cancel){
+                        if (amountController.getAmount() <= 0) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Increase error");
+                            alert.setContentText("quantity of product is below 0");
+                            alert.showAndWait();
+                            return;
+                        }
+                        stockedProduct.setQuantity(stockedProduct.getQuantity()+amountController.getAmount());
+                        remainAmountLabel.setText(stockedProduct.getQuantity()+"");
+
+                    }
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -120,26 +132,35 @@ public class ProductDetailController {
                     stage.setScene(new Scene((Parent) loader.load()));
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
-                    if (stockedProduct.getQuantity()-amountController.getAmount() < 0) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setHeaderText("Decrease error");
-                        alert.setContentText("quantity of product is below 0");
-                        alert.showAndWait();
-                        return;
+                    if(!amountController.cancel) {
+                        if (amountController.getAmount() <= 0) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Decrease error");
+                            alert.setContentText("quantity of product is below 0");
+                            alert.showAndWait();
+                            return;
+                        }
+                        if (stockedProduct.getQuantity() - amountController.getAmount() < 0) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Decrease error");
+                            alert.setContentText("quantity of product is below 0");
+                            alert.showAndWait();
+                            return;
+                        }
+                        if (amountController.getBy() == null) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Decrease error");
+                            alert.setContentText("Please choose 'Sold', 'Damaged', 'Expired' or 'User error'");
+                            alert.showAndWait();
+                            return;
+                        }
+                        stockedProduct.setQuantity(stockedProduct.getQuantity() - amountController.getAmount());
+                        remainAmountLabel.setText(stockedProduct.getQuantity() + "");
                     }
-                    if(amountController.getBy()==null){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setHeaderText("Decrease error");
-                        alert.setContentText("Please choose 'Sold', 'Damaged', 'Expired' or 'Tester'");
-                        alert.showAndWait();
-                        return;
-                    }
-                    stockedProduct.setQuantity(stockedProduct.getQuantity()-amountController.getAmount());
-                    remainAmountLabel.setText(stockedProduct.getQuantity()+"");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
             }
         }
