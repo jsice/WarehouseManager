@@ -214,6 +214,7 @@ public class ProductDetailController {
             this.priceField.setEditable(false);
             mainCtrl.showFilteredProducts();
             mainCtrl.showProductDetail(stockedProduct);
+            mainCtrl.getProductService().updateProduct(stockedProduct);
         }
     }
 

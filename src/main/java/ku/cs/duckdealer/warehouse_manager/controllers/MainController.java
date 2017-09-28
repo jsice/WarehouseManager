@@ -10,7 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.models.Stock;
-import ku.cs.duckdealer.services.ProductSevice;
+import ku.cs.duckdealer.services.ProductService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,7 +21,7 @@ public class MainController {
     private String title = "Warehouse Manager";
 
     private MainPaneController mainPaneCtrl;
-    private AmountController amountController;
+    private AuthenticationService authenticationService;
     private StockListController stockListCtrl;
     private ProductDetailController productDetailCtrl;
     private Stock stock;
@@ -32,10 +32,18 @@ public class MainController {
         this.productService = new ProductService();
 
         this.stock = new Stock();
-
+        this.loadStock();
         this.stage = stage;
         this.loadPane();
         this.stockListCtrl.showAllProducts();
+
+        this.authenticationService = new AuthenticationService();
+    }
+
+    private void loadStock() {
+        for (StockedProduct sp: productService.getProducts()) {
+            this.stock.newProduct(sp);
+        }
     }
 
     public void start() {
@@ -76,6 +84,8 @@ public class MainController {
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
             stage.setScene(new Scene((Parent) loader.load()));
+            AuthorizationController authCtrl = loader.getController();
+            authCtrl.setAuthenticationService(this.authenticationService);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,7 +95,7 @@ public class MainController {
 
     }
     public void logout(){
-        AuthenticationService.logout();
+        authenticationService.logout();
         this.mainPaneCtrl.getLoginStatus().setText("You are not logged in...");
     }
 
@@ -106,8 +116,6 @@ public class MainController {
     public Stock getStock() {
         return stock;
     }
-
-    public AmountController getAmountController() { return amountController; }
 
     public ProductService getProductService() {
         return productService;
