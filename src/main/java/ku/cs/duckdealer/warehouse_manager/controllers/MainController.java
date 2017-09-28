@@ -10,7 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.models.Stock;
-import ku.cs.duckdealer.services.ProductSevice;
+import ku.cs.duckdealer.services.ProductService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,10 +26,10 @@ public class MainController {
     private ProductDetailController productDetailCtrl;
     private Stock stock;
 
-    private ProductSevice productService;
+    private ProductService productService;
 
     public MainController(Stage stage) throws IOException, SQLException {
-        this.productService = new ProductSevice();
+        this.productService = new ProductService();
 
         this.stock = new Stock();
 
@@ -109,7 +109,7 @@ public class MainController {
 
     public AmountController getAmountController() { return amountController; }
 
-    public ProductSevice getProductService() {
+    public ProductService getProductService() {
         return productService;
     }
 }

@@ -5,7 +5,7 @@ import ku.cs.duckdealer.models.StockedProduct;
 
 import java.sql.*;
 
-public class ProductSevice {
+public class ProductService {
     private String dbUrl;
     private Connection conn;
     private String host = "10.2.21.181";
@@ -13,7 +13,7 @@ public class ProductSevice {
     private String dbName = "WarehouseDB";
     private String url = "//" + host + ":" + port + "/" + dbName;
 
-    public ProductSevice() {
+    public ProductService() {
         dbUrl = "com.mysql.";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
