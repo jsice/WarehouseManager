@@ -8,8 +8,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
-import ku.cs.duckdealer.warehouse_manager.models.Stock;
+import ku.cs.duckdealer.models.StockedProduct;
+import ku.cs.duckdealer.models.Stock;
 
 import java.io.IOException;
 

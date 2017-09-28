@@ -2,7 +2,6 @@ package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -11,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
+import ku.cs.duckdealer.models.StockedProduct;
 
 import java.util.ArrayList;
 import java.util.Collections;
