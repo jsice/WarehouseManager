@@ -51,10 +51,10 @@
                   <TextField fx:id="amountField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" GridPane.columnIndex="1" />
                   <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Sold" />
-                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Damaged" />
-                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Expired" />
-                        <RadioButton mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Tester" />
+                        <RadioButton fx:id="sold" mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Sold" />
+                        <RadioButton fx:id="userError" mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="User error" />
+                        <RadioButton fx:id="expired" mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Expired" />
+                        <RadioButton fx:id="damaged" mnemonicParsing="false" onAction="#btnBy" prefWidth="100.0" text="Damaged" />
                      </children>
                   </FlowPane>
                </children>
