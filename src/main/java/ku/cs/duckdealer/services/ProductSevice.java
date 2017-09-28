@@ -1,6 +1,7 @@
 package ku.cs.duckdealer.services;
 
 import ku.cs.duckdealer.models.Stock;
+import ku.cs.duckdealer.models.StockedProduct;
 
 import java.sql.*;
 
@@ -9,7 +10,7 @@ public class ProductSevice {
     private Connection conn;
     private String host = "10.2.21.181";
     private String port = "3306";
-    private String dbName = "testsql";
+    private String dbName = "WarehouseDB";
     private String url = "//" + host + ":" + port + "/" + dbName;
 
     public ProductSevice() {
@@ -24,15 +25,30 @@ public class ProductSevice {
         }
     }
 
-    public void getStock() throws SQLException {
+    public Stock getStock() throws SQLException {
         Stock stock = new Stock();
-        String sql = "select * from temptable";
+        String sql = "select * from Stocks";
         Statement statement = conn.createStatement();
         ResultSet result = statement.executeQuery(sql);
-        while (result.next()) {
-            System.out.println(result.getInt(1));
-            System.out.println(result.getString(2));
+        return stock;
+
+    }
+
+    public void addProduct(StockedProduct p){
+        String sql = "insert into stocks(id, name, price, quantity) values (*,*,*,*)";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, p.getProduct().getID());
+            statement.setString(2, p.getProduct().getName());
+            statement.setDouble(3, p.getProduct().getPrice());
+            statement.setInt(4, p.getQuantity());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-//        return stock;
+
+
     }
 }

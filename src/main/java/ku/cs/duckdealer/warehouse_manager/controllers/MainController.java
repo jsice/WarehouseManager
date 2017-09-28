@@ -20,9 +20,8 @@ public class MainController {
     private Stage stage;
     private String title = "Warehouse Manager";
 
-    private AuthenticationService authenticationService;
-
     private MainPaneController mainPaneCtrl;
+    private AmountController amountController;
     private StockListController stockListCtrl;
     private ProductDetailController productDetailCtrl;
     private Stock stock;
@@ -35,8 +34,6 @@ public class MainController {
         this.stage = stage;
         this.loadPane();
         this.stockListCtrl.showAllProducts();
-
-        this.authenticationService = new AuthenticationService();
     }
 
     public void start() {
@@ -77,8 +74,6 @@ public class MainController {
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
             stage.setScene(new Scene((Parent) loader.load()));
-            AuthorizationController auth = loader.getController();
-            auth.setAuthenticationService(authenticationService);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,7 +83,7 @@ public class MainController {
 
     }
     public void logout(){
-        authenticationService.logout();
+        AuthenticationService.logout();
         this.mainPaneCtrl.getLoginStatus().setText("You are not logged in...");
     }
 
@@ -109,4 +104,6 @@ public class MainController {
     public Stock getStock() {
         return stock;
     }
+
+    public AmountController getAmountController() { return amountController; }
 }
