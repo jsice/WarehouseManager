@@ -13,7 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
+import ku.cs.duckdealer.models.StockedProduct;
 
 import java.io.IOException;
 

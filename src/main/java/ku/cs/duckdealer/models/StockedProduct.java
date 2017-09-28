@@ -1,4 +1,4 @@
-package ku.cs.duckdealer.warehouse_manager.models;
+package ku.cs.duckdealer.models;
 
 public class StockedProduct {
     private Product product;
