@@ -179,12 +179,13 @@ public class ProductDetailController {
             this.amountArea.getChildren().remove(this.btnIncrease);
             this.amountArea.getChildren().add(this.remainAmountLabel);
             if (AuthenticationService.LOGGED_IN_AS_OWNER) {
-                this.nameField.setEditable(false);
-                this.priceField.setEditable(false);
+                stockedProduct.getProduct().setName(nameField.getText());
+                stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
             }
-            stockedProduct.getProduct().setName(nameField.getText());
-            stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
+            this.nameField.setEditable(false);
+            this.priceField.setEditable(false);
             mainCtrl.showFilteredProducts();
+            mainCtrl.showProductDetail(stockedProduct);
         }
     }
 

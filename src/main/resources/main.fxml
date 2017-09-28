@@ -20,8 +20,8 @@
           </Menu>
             <Menu mnemonicParsing="false" text="User">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#login" text="Login" />
-                  <MenuItem mnemonicParsing="false" onAction="#logout" text="Logout" />
+                <MenuItem mnemonicParsing="false" onAction="#login" text="Sign in" />
+                  <MenuItem mnemonicParsing="false" onAction="#logout" text="Sign out" />
               </items>
             </Menu>
             <Menu fx:id="loginStatus" mnemonicParsing="false" text="You are not logged in..." />
