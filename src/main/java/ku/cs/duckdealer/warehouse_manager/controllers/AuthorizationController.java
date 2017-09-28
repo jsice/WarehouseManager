@@ -11,10 +11,12 @@ public class AuthorizationController {
     @FXML
     private PasswordField passwordField;
 
+    private AuthenticationService authenticationService;
+
     public void login() {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        if (!AuthenticationService.login(username, password)) {
+        if (!authenticationService.login(username, password)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Login Error");
             alert.setContentText("Username or Password wrong");
@@ -30,5 +32,9 @@ public class AuthorizationController {
 
     public void back() {
         usernameField.getScene().getWindow().hide();
+    }
+
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 }

@@ -6,7 +6,6 @@ public class Product {
     private String id;
     private String name;
     private double price;
-    private int quantity;
 
     public Product(String name, double price) {
         this.id = String.format("%08d", (int) (Math.random()*100000000));
