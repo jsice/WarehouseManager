@@ -133,6 +133,13 @@ public class ProductDetailController {
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
                     if(!amountController.cancel) {
+                        if (amountController.getAmount() <= 0) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Decrease error");
+                            alert.setContentText("quantity of product is below 0");
+                            alert.showAndWait();
+                            return;
+                        }
                         if (stockedProduct.getQuantity() - amountController.getAmount() < 0) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Decrease error");
