@@ -35,7 +35,7 @@ public class ProductSevice {
     }
 
     public void addProduct(StockedProduct p){
-        String sql = "insert into stocks(id, name, price, quantity) values (*,*,*,*)";
+        String sql = "insert into Stocks(id, name, price, quantity) values (?, ?, ?, ?)";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
 

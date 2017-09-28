@@ -80,6 +80,8 @@ public class ProductDetailController {
 
         this.nameField.clear();
         this.priceField.clear();
+        this.idLabel.setText("undefined");
+        this.remainAmountLabel.setText("0");
 
     }
     public void createProduct(){
