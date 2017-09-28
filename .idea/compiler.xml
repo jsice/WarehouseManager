@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="WarehouseManager" target="1.5" />
+      <module name="WarehouseManager" target="1.8" />
       <module name="WarehouseManger" target="1.5" />
     </bytecodeTargetLevel>
   </component>

@@ -11,10 +11,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import ku.cs.duckdealer.warehouse_manager.models.Product;
 import ku.cs.duckdealer.warehouse_manager.models.StockedProduct;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class StockListController {
 
@@ -26,10 +27,16 @@ public class StockListController {
     private String searchText;
 
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
+
     private StockedProduct selectedProduct;
-
+    private Comparator<StockedProduct> selectedComparator,
+            idIncComparator, idDecComparator,
+            nameIncComparator, nameDecComparator,
+            priceIncComparator, priceDecComparator,
+            qtyIncComparator, qtyDecComparator;
     private BackgroundFill selectedBackgroundFill;
-
+    @FXML
+    private Label idLabel, nameLabel, priceLabel, qtyLabel;
     @FXML
     private GridPane innerTableGrid;
     @FXML
@@ -45,6 +52,117 @@ public class StockListController {
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
         filterComboBox.getItems().addAll("ID", "Name");
         filterComboBox.getSelectionModel().select(0);
+
+        idIncComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                return o1.getProduct().getID().compareToIgnoreCase(o2.getProduct().getID());
+            }
+        };
+
+        idDecComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                return -o1.getProduct().getID().compareToIgnoreCase(o2.getProduct().getID());
+            }
+        };
+
+        nameIncComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                return o1.getProduct().getName().compareToIgnoreCase(o2.getProduct().getName());
+            }
+        };
+
+        nameDecComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                return -o1.getProduct().getName().compareToIgnoreCase(o2.getProduct().getName());
+            }
+        };
+
+        priceIncComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                if (o1.getProduct().getPrice() > o2.getProduct().getPrice()) return 1;
+                else if (o1.getProduct().getPrice() < o2.getProduct().getPrice()) return -1;
+                return 0;
+            }
+        };
+
+        priceDecComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                if (o1.getProduct().getPrice() > o2.getProduct().getPrice()) return -1;
+                else if (o1.getProduct().getPrice() < o2.getProduct().getPrice()) return 1;
+                return 0;
+            }
+        };
+
+        qtyIncComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                if (o1.getQuantity() > o2.getQuantity()) return 1;
+                else if (o1.getQuantity() < o2.getQuantity()) return -1;
+                return 0;
+            }
+        };
+
+        qtyDecComparator = new Comparator<StockedProduct>() {
+            @Override
+            public int compare(StockedProduct o1, StockedProduct o2) {
+                if (o1.getQuantity() > o2.getQuantity()) return -1;
+                else if (o1.getQuantity() < o2.getQuantity()) return 1;
+                return 0;
+            }
+        };
+
+    }
+    @FXML
+    private void selectComparatorForSorting(MouseEvent e) {
+        Label l = (Label) e.getSource();
+        idLabel.setText("ID");
+        nameLabel.setText("Name");
+        priceLabel.setText("Price");
+        qtyLabel.setText("Quantity");
+        if (l == idLabel) {
+            if (selectedComparator == idIncComparator) {
+                selectedComparator = idDecComparator;
+                l.setText("ID ^");
+            }
+            else {
+                selectedComparator = idIncComparator;
+                l.setText("ID v");
+            }
+        } else if (l == nameLabel) {
+            if (selectedComparator == nameIncComparator) {
+                selectedComparator = nameDecComparator;
+                l.setText("Name ^");
+            }
+            else {
+                selectedComparator = nameIncComparator;
+                l.setText("Name v");
+            }
+        } else if (l == priceLabel) {
+            if (selectedComparator == priceIncComparator) {
+                selectedComparator = priceDecComparator;
+                l.setText("Price ^");
+            }
+            else {
+                selectedComparator = priceIncComparator;
+                l.setText("Price v");
+            }
+        } else if (l == qtyLabel) {
+            if (selectedComparator == qtyIncComparator) {
+                selectedComparator = qtyDecComparator;
+                l.setText("Quantity ^");
+            }
+            else {
+                selectedComparator = qtyIncComparator;
+                l.setText("Quantity v");
+            }
+        }
+        showFilteredProducts();
     }
 
     public void createNewProduct(){
@@ -54,7 +172,11 @@ public class StockListController {
         if (!AuthenticationService.NOT_LOGGED_IN && AuthenticationService.LOGGED_IN_AS_OWNER){
             mainCtrl.createProduct();
         }
+    }
 
+    private void sortProducts() {
+        if (this.selectedComparator != null)
+            Collections.sort(this.stockedProducts, this.selectedComparator);
     }
 
     private void clearGrid() {
@@ -161,6 +283,7 @@ public class StockListController {
 
     public void showFilteredProducts() {
         this.filterStockedProducts();
+        this.sortProducts();
         this.displayFilteredProducts();
     }
 
