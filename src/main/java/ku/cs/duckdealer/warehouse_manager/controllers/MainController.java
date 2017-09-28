@@ -26,9 +26,11 @@ public class MainController {
     private ProductDetailController productDetailCtrl;
     private Stock stock;
 
+    private ProductService productService;
+
     public MainController(Stage stage) throws IOException, SQLException {
-        ProductSevice p = new ProductSevice();
-        p.getStock();
+        this.productService = new ProductService();
+
         this.stock = new Stock();
 
         this.stage = stage;
@@ -106,4 +108,8 @@ public class MainController {
     }
 
     public AmountController getAmountController() { return amountController; }
+
+    public ProductService getProductService() {
+        return productService;
+    }
 }

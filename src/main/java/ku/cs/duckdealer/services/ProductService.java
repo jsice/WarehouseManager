@@ -5,7 +5,7 @@ import ku.cs.duckdealer.models.StockedProduct;
 
 import java.sql.*;
 
-public class ProductSevice {
+public class ProductService {
     private String dbUrl;
     private Connection conn;
     private String host = "10.2.21.181";
@@ -13,7 +13,7 @@ public class ProductSevice {
     private String dbName = "WarehouseDB";
     private String url = "//" + host + ":" + port + "/" + dbName;
 
-    public ProductSevice() {
+    public ProductService() {
         dbUrl = "com.mysql.";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -35,7 +35,7 @@ public class ProductSevice {
     }
 
     public void addProduct(StockedProduct p){
-        String sql = "insert into stocks(id, name, price, quantity) values (*,*,*,*)";
+        String sql = "insert into Stocks(id, name, price, quantity) values (?, ?, ?, ?)";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
 
