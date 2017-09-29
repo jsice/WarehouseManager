@@ -41,6 +41,7 @@ public class MainController {
         this.stage = stage;
         this.loadPane();
         this.cashierListCtrl.showAllProducts();
+        selectedItemPopUpCtrl.setMainCtrl(this);
     }
 
     public void start() {

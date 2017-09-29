@@ -28,6 +28,7 @@ public class CashierItemListController {
     private BackgroundFill selectedBackgroundFill;
     private String searchText;
     private Register register;
+    private boolean cancelStatus ;
 
     @FXML
     private TextField searchTextfield;
@@ -60,6 +61,7 @@ public class CashierItemListController {
 
     @FXML
     private void initialize() {
+        cancelStatus = true ;
         this.stockedProducts = new ArrayList<StockedProduct>();
         labels = new ArrayList<Label>();
         searchText = "";
@@ -302,8 +304,12 @@ public class CashierItemListController {
     @FXML
     public void addItemToBill(){
         mainCtrl.enterItemAmount(selectedProduct);
-        mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct.getProduct(),mainCtrl.getSelectedItemPopUpCtrl().getAmount());
-
+        if (cancelStatus) { //if true will do
+            mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct.getProduct(), mainCtrl.getSelectedItemPopUpCtrl().getAmount());
+        }
     }
 
+    public void setCancelStatus(boolean cancelStatus) {
+        this.cancelStatus = cancelStatus;
+    }
 }

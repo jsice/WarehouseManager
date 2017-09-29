@@ -10,8 +10,8 @@ public class SelectItemPopUpController {
 
 
     private int amount ;
-
     private GridPane mainPane;
+    private MainController mainCtrl ;
 
     @FXML
     private Label prodIdLabel, prodNameLabel , maxAmountLabel ;
@@ -20,15 +20,28 @@ public class SelectItemPopUpController {
 
     @FXML
     private void handleBtnOk() {
-        amount = Integer.parseInt(amountField.getText()) ;
-        if (amount > Integer.parseInt(maxAmountLabel.getText())){
-            amount = Integer.parseInt(maxAmountLabel.getText()) ;
+        mainCtrl.getCashierListCtrl().setCancelStatus(true);
+        int maxAmount = Integer.parseInt(maxAmountLabel.getText());
+
+
+        if (maxAmount != 0 ) {
+            if ("".equals(amountField.getText())) { amount = Integer.parseInt(amountField.getPromptText()); }
+            else {
+                int enteredAmount = Integer.parseInt(amountField.getText());
+                if (enteredAmount > maxAmount) { amount = maxAmount; }
+                else if (enteredAmount < 0){}//alert amount less than 0
+                else { amount = enteredAmount ; }
+            }
+        }
+        else {
+            //alert show cannot add this item -> amount = 0
         }
         amountField.getScene().getWindow().hide();
     }
 
     @FXML
     private void handleBtnCancel(){
+        mainCtrl.getCashierListCtrl().setCancelStatus(false);
         amountField.getScene().getWindow().hide();
     }
 
@@ -51,4 +64,9 @@ public class SelectItemPopUpController {
     public void setMainPane(GridPane mainPane) {
         this.mainPane = mainPane;
     }
+
+    public void setMainCtrl(MainController mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
+
 }
