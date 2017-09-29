@@ -1,6 +1,5 @@
 package ku.cs.duckdealer.cashier.controllers;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -8,6 +7,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ku.cs.duckdealer.models.Stock;
+import ku.cs.duckdealer.models.StockedProduct;
+import ku.cs.duckdealer.services.ProductService;
 
 import java.io.IOException;
 
@@ -16,25 +18,36 @@ public class MainController {
     private Stage stage;
     private String title = "Cashier Manager";
 
+    private Stock stock;
+    private ProductService productService;
+
     private MainPaneController mainPaneCtrl;
     private cashierItemListController cashierListCtrl;
     private selectedItemsController selectedItemsCtrl;
 
 
     public MainController(Stage stage) throws IOException {
+        this.stock = new Stock();
+        this.productService = new ProductService();
+        this.loadStock();
+
         this.stage = stage;
         this.loadPane();
+        this.cashierListCtrl.showAllProducts();
     }
 
     public void start() {
         Pane mainPane = this.mainPaneCtrl.getMainPane();
-        int w = (int) mainPane.getWidth();
-        int h = (int) mainPane.getHeight();
         this.stage.setTitle(this.title);
         this.stage.setScene(new Scene(mainPane));
         this.stage.show();
     }
 
+    private void loadStock() {
+        for (StockedProduct sp: productService.getProducts()) {
+            this.stock.newProduct(sp);
+        }
+    }
 
     private void loadPane() throws IOException {
         FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/main2.fxml"));
@@ -60,4 +73,7 @@ public class MainController {
         this.mainPaneCtrl.getRightPane().getChildren().add(this.selectedItemsCtrl.getMainPane());
     }
 
+    public Stock getStock() {
+        return stock;
+    }
 }

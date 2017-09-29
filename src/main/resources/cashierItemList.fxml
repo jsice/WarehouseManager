@@ -39,8 +39,9 @@
       </BorderPane>
    </top>
    <right>
-      <FlowPane alignment="CENTER" prefHeight="500.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <FlowPane alignment="CENTER_LEFT" prefHeight="500.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
+            <Label prefWidth="50.0" />
             <GridPane gridLinesVisible="true" prefHeight="452.0" prefWidth="500.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,10 +62,10 @@
                       <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="ID" />
-                        <Label alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="Name" GridPane.columnIndex="1" />
-                        <Label alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="Price" GridPane.columnIndex="2" />
-                        <Label alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="Quantity" GridPane.columnIndex="3" />
+                        <Label fx:id="idLabel" alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="ID" />
+                        <Label fx:id="nameLabel" alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="Name" GridPane.columnIndex="1" />
+                        <Label fx:id="priceLabel" alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="Price" GridPane.columnIndex="2" />
+                        <Label fx:id="qtyLabel" alignment="CENTER" prefHeight="50.0" prefWidth="125.0" text="Quantity" GridPane.columnIndex="3" />
                      </children>
                   </GridPane>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="402.0" prefWidth="500.0" GridPane.rowIndex="1">
@@ -93,7 +94,7 @@
                   </ScrollPane>
                </children>
             </GridPane>
-            <Label text="      " />
+            <Label prefWidth="15.0" />
             <Button fx:id="btnAddToSelect" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="36.0" prefWidth="32.0" text="&gt;">
                <font>
                   <Font size="16.0" />
