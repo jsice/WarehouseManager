@@ -33,7 +33,6 @@
             <FlowPane alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="btnGo" mnemonicParsing="false" onAction="#showProducts" prefHeight="30.0" prefWidth="100.0" text="Go" />
-                  <Button mnemonicParsing="false" text="+" />
                </children>
             </FlowPane>
          </right>
