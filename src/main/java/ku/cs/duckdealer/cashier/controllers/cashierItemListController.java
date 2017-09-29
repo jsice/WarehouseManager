@@ -296,4 +296,8 @@ public class cashierItemListController {
         this.selectedProduct = selectedProduct;
     }
 
+    public void addItemToBill(){
+        mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct);
+    }
+
 }

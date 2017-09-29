@@ -76,4 +76,12 @@ public class MainController {
     public Stock getStock() {
         return stock;
     }
+
+    public cashierItemListController getCashierListCtrl(){
+        return cashierListCtrl;
+    }
+
+    public selectedItemsController getSelectedItemsCtrl(){
+        return selectedItemsCtrl;
+    }
 }
