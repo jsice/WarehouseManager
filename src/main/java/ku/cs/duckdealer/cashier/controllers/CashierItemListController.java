@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import ku.cs.duckdealer.models.Register;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.warehouse_manager.controllers.AuthenticationService;
@@ -17,7 +18,7 @@ import ku.cs.duckdealer.warehouse_manager.controllers.AuthenticationService;
 
 import java.util.*;
 
-public class cashierItemListController {
+public class CashierItemListController {
 
     private Pane mainPane;
     private ArrayList<Label> labels;
@@ -26,6 +27,7 @@ public class cashierItemListController {
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
     private BackgroundFill selectedBackgroundFill;
     private String searchText;
+    private Register register;
 
     @FXML
     private TextField searchTextfield;
@@ -40,6 +42,7 @@ public class cashierItemListController {
             nameIncComparator, nameDecComparator,
             priceIncComparator, priceDecComparator,
             qtyIncComparator, qtyDecComparator;
+
 
 
     public Pane getMainPane() {
@@ -296,8 +299,11 @@ public class cashierItemListController {
         this.selectedProduct = selectedProduct;
     }
 
+    @FXML
     public void addItemToBill(){
-        mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct);
+        mainCtrl.enterItemAmount(selectedProduct);
+        mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct.getProduct(),mainCtrl.getSelectedItemPopUpCtrl().getAmount());
+
     }
 
 }

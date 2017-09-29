@@ -1,12 +1,15 @@
 package ku.cs.duckdealer.cashier.controllers;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ku.cs.duckdealer.models.Register;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.services.ProductService;
@@ -18,16 +21,19 @@ public class MainController {
     private Stage stage;
     private String title = "Cashier Manager";
 
+    private Register register;
     private Stock stock;
     private ProductService productService;
 
     private MainPaneController mainPaneCtrl;
-    private cashierItemListController cashierListCtrl;
-    private selectedItemsController selectedItemsCtrl;
+    private CashierItemListController cashierListCtrl;
+    private SelectedItemsController selectedItemsCtrl;
+    private SelectItemPopUpController selectedItemPopUpCtrl;
 
 
     public MainController(Stage stage) throws IOException {
         this.stock = new Stock();
+        this.register = new Register(this.stock);
         this.productService = new ProductService();
         this.loadStock();
 
@@ -77,11 +83,35 @@ public class MainController {
         return stock;
     }
 
-    public cashierItemListController getCashierListCtrl(){
+    public CashierItemListController getCashierListCtrl(){
         return cashierListCtrl;
     }
 
-    public selectedItemsController getSelectedItemsCtrl(){
+    public SelectedItemsController getSelectedItemsCtrl(){
         return selectedItemsCtrl;
+    }
+
+    public void enterItemAmount(StockedProduct selectedProduct) {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/selectItemPopUp.fxml"));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        try {
+            stage.setScene(new Scene((Parent) loader.load()));
+            SelectItemPopUpController selectCtrl = loader.getController();
+            selectCtrl.setAllLabelText(selectedProduct);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public SelectItemPopUpController getSelectedItemPopUpCtrl() {
+        return selectedItemPopUpCtrl;
+    }
+
+    public Register getRegister() {
+        return register;
     }
 }

@@ -4,6 +4,7 @@ public class StockedProduct {
     private Product product;
     private int quantity;
 
+
     public StockedProduct(String name, double price) {
         this.product = new Product(name, price);
     }
