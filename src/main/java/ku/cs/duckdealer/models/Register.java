@@ -25,9 +25,7 @@ public class Register {
             }
         }
     }
-
     public void endSales() {
         this.allSales.add(currentSales);
     }
-
 }

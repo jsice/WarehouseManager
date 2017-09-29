@@ -59,7 +59,6 @@ public class ProductService {
             }
         }
         return products;
-
     }
 
     public void updateProduct(StockedProduct p) {
