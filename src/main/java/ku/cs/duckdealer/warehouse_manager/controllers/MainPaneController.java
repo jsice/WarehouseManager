@@ -23,6 +23,10 @@ public class MainPaneController {
         this.mainCtrl.logout();
     }
 
+    public void exitProgram(){
+        System.exit(0);
+    }
+
     public FlowPane getMainPane() {
         return mainPane;
     }

@@ -93,12 +93,19 @@ public class ProductDetailController {
             mainCtrl.login();
         }
         if (!AuthenticationService.NOT_LOGGED_IN){
-            stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
-            mainCtrl.getStock().newProduct(stockedProduct);
-            mainCtrl.getProductService().addProduct(stockedProduct);
-            initialize();
-            mainCtrl.showProductDetail(stockedProduct);
-            mainCtrl.showAllProducts();
+            if (!nameField.getText().equals("") && !priceField.getText().equals("")) {
+                stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
+                mainCtrl.getStock().newProduct(stockedProduct);
+                mainCtrl.getProductService().addProduct(stockedProduct);
+                initialize();
+                mainCtrl.showProductDetail(stockedProduct);
+                mainCtrl.showAllProducts();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Failed to create product");
+                alert.setContentText("Please fill all product's detail");
+                alert.show();
+            }
 
         }
     }

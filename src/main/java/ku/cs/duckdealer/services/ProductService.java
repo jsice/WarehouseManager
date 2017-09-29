@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ProductService {
     private Connection conn;
-    private String host = "10.2.21.181";
+    private String host = "10.2.21.32";
     private String port = "3306";
     private String dbName = "WarehouseDB";
     private String url = "//" + host + ":" + port + "/" + dbName;
