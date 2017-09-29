@@ -30,6 +30,7 @@ public class MainController {
     private SelectedItemsController selectedItemsCtrl;
     private SelectItemPopUpController selectedItemPopUpCtrl;
 
+    private Stage selectedItemPopUpStage;
 
     public MainController(Stage stage) throws IOException {
         this.stock = new Stock();
@@ -77,6 +78,16 @@ public class MainController {
 
         this.mainPaneCtrl.getLeftPane().getChildren().add(this.cashierListCtrl.getMainPane());
         this.mainPaneCtrl.getRightPane().getChildren().add(this.selectedItemsCtrl.getMainPane());
+
+        FXMLLoader selectItemPopUpLoader = new FXMLLoader(getClass().getResource("/selectItemPopUp.fxml"));
+        GridPane selectItemPopUpPane = selectItemPopUpLoader.load();
+        this.selectedItemPopUpCtrl = selectItemPopUpLoader.getController();
+        this.selectedItemPopUpCtrl.setMainPane(selectItemPopUpPane);
+
+        selectedItemPopUpStage = new Stage();
+        selectedItemPopUpStage.initModality(Modality.APPLICATION_MODAL);
+        selectedItemPopUpStage.setScene(new Scene(this.selectedItemPopUpCtrl.getMainPane()));
+
     }
 
     public Stock getStock() {
@@ -92,19 +103,8 @@ public class MainController {
     }
 
     public void enterItemAmount(StockedProduct selectedProduct) {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/selectItemPopUp.fxml"));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        try {
-            stage.setScene(new Scene((Parent) loader.load()));
-            SelectItemPopUpController selectCtrl = loader.getController();
-            selectCtrl.setAllLabelText(selectedProduct);
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        this.selectedItemPopUpCtrl.setAllLabelText(selectedProduct);
+        this.selectedItemPopUpStage.showAndWait();
     }
 
     public SelectItemPopUpController getSelectedItemPopUpCtrl() {

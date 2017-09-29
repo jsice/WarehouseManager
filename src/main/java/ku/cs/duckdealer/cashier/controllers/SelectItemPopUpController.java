@@ -3,12 +3,15 @@ package ku.cs.duckdealer.cashier.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import ku.cs.duckdealer.models.StockedProduct;
 
 public class SelectItemPopUpController {
 
 
     private int amount ;
+
+    private GridPane mainPane;
 
     @FXML
     private Label prodIdLabel, prodNameLabel , maxAmountLabel ;
@@ -41,7 +44,11 @@ public class SelectItemPopUpController {
     }
 
 
+    public GridPane getMainPane() {
+        return mainPane;
+    }
 
-
-
+    public void setMainPane(GridPane mainPane) {
+        this.mainPane = mainPane;
+    }
 }
