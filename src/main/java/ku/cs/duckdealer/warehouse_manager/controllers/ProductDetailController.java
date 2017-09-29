@@ -49,6 +49,9 @@ public class ProductDetailController {
         this.btnCancel.setVisible(false);
         this.btnEdit.setVisible(false);
 
+        this.btnEdit.setText("edit");
+        this.isEditing = false;
+
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
 
@@ -65,6 +68,7 @@ public class ProductDetailController {
         this.btnEdit.setVisible(true);
         this.nameField.setDisable(false);
         this.priceField.setDisable(false);
+
     }
 
 
@@ -119,8 +123,7 @@ public class ProductDetailController {
                             alert.showAndWait();
                             return;
                         }
-                        stockedProduct.setQuantity(stockedProduct.getQuantity()+amountController.getAmount());
-                        remainAmountLabel.setText(stockedProduct.getQuantity()+"");
+                        remainAmountLabel.setText((stockedProduct.getQuantity()+amountController.getAmount())+"");
 
                     }
 
@@ -161,8 +164,7 @@ public class ProductDetailController {
                             alert.showAndWait();
                             return;
                         }
-                        stockedProduct.setQuantity(stockedProduct.getQuantity() - amountController.getAmount());
-                        remainAmountLabel.setText(stockedProduct.getQuantity() + "");
+                        remainAmountLabel.setText((stockedProduct.getQuantity() - amountController.getAmount())+"");
                     }
 
                 } catch (IOException e) {
@@ -210,6 +212,7 @@ public class ProductDetailController {
                 stockedProduct.getProduct().setName(nameField.getText());
                 stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
             }
+            this.stockedProduct.setQuantity(Integer.parseInt(this.remainAmountLabel.getText()));
             this.nameField.setEditable(false);
             this.priceField.setEditable(false);
             mainCtrl.showFilteredProducts();
