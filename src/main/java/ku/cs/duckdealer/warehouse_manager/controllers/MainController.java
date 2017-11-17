@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.models.Stock;
+import ku.cs.duckdealer.services.IProductService;
 import ku.cs.duckdealer.services.ProductService;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class MainController {
     private ProductDetailController productDetailCtrl;
     private Stock stock;
 
-    private ProductService productService;
+    private IProductService productService;
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.productService = new ProductService();
@@ -56,19 +57,19 @@ public class MainController {
     }
 
     private void loadPane() throws IOException {
-        FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
+        FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/fxml/warehouse/main.fxml"));
         FlowPane mainPane = mainPaneLoader.load();
         this.mainPaneCtrl = mainPaneLoader.getController();
         this.mainPaneCtrl.setMainPane(mainPane);
         this.mainPaneCtrl.setMainCtrl(this);
 
-        FXMLLoader stockListPaneLoader = new FXMLLoader(getClass().getResource("/stockList.fxml"));
+        FXMLLoader stockListPaneLoader = new FXMLLoader(getClass().getResource("/fxml/warehouse/stockList.fxml"));
         BorderPane stockListPane = stockListPaneLoader.load();
         this.stockListCtrl = stockListPaneLoader.getController();
         this.stockListCtrl.setMainPane(stockListPane);
         this.stockListCtrl.setMainCtrl(this);
 
-        FXMLLoader productDetailPaneLoader = new FXMLLoader(getClass().getResource("/productDetail.fxml"));
+        FXMLLoader productDetailPaneLoader = new FXMLLoader(getClass().getResource("/fxml/warehouse/productDetail.fxml"));
         BorderPane productDetailPane = productDetailPaneLoader.load();
         this.productDetailCtrl = productDetailPaneLoader.getController();
         this.productDetailCtrl.setMainPane(productDetailPane);
@@ -80,7 +81,7 @@ public class MainController {
 
     public void login() {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/authorizationPopUp.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/warehouse/authorizationPopUp.fxml"));
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
             stage.setScene(new Scene((Parent) loader.load()));
@@ -117,7 +118,7 @@ public class MainController {
         return stock;
     }
 
-    public ProductService getProductService() {
+    public IProductService getProductService() {
         return productService;
     }
 }

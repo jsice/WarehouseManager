@@ -1,7 +1,6 @@
 package ku.cs.duckdealer.cashier.controllers;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -12,6 +11,7 @@ import javafx.stage.Stage;
 import ku.cs.duckdealer.models.Register;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
+import ku.cs.duckdealer.services.IProductService;
 import ku.cs.duckdealer.services.ProductService;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class MainController {
 
     private Register register;
     private Stock stock;
-    private ProductService productService;
+    private IProductService productService;
 
     private MainPaneController mainPaneCtrl;
     private CashierItemListController cashierListCtrl;
@@ -58,20 +58,20 @@ public class MainController {
     }
 
     private void loadPane() throws IOException {
-        FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/main2.fxml"));
+        FXMLLoader mainPaneLoader = new FXMLLoader(getClass().getResource("/fxml/cashier/main.fxml"));
 
         FlowPane mainPane = mainPaneLoader.load();
         this.mainPaneCtrl = mainPaneLoader.getController();
         this.mainPaneCtrl.setMainPane(mainPane);
         this.mainPaneCtrl.setMainCtrl(this);
 
-        FXMLLoader cashierListPaneLoader = new FXMLLoader(getClass().getResource("/cashierItemList.fxml"));
+        FXMLLoader cashierListPaneLoader = new FXMLLoader(getClass().getResource("/fxml/cashier/cashierItemList.fxml"));
         BorderPane cashierListPane = cashierListPaneLoader.load();
         this.cashierListCtrl = cashierListPaneLoader.getController();
         this.cashierListCtrl.setMainPane(cashierListPane);
         this.cashierListCtrl.setMainCtrl(this);
 
-        FXMLLoader selectedItemsLoader = new FXMLLoader(getClass().getResource("/selectedItems.fxml"));
+        FXMLLoader selectedItemsLoader = new FXMLLoader(getClass().getResource("/fxml/cashier/selectedItems.fxml"));
         GridPane selectedItemsPane = selectedItemsLoader.load();
         this.selectedItemsCtrl = selectedItemsLoader.getController();
         this.selectedItemsCtrl.setMainPane(selectedItemsPane);
@@ -80,7 +80,7 @@ public class MainController {
         this.mainPaneCtrl.getLeftPane().getChildren().add(this.cashierListCtrl.getMainPane());
         this.mainPaneCtrl.getRightPane().getChildren().add(this.selectedItemsCtrl.getMainPane());
 
-        FXMLLoader selectItemPopUpLoader = new FXMLLoader(getClass().getResource("/selectItemPopUp.fxml"));
+        FXMLLoader selectItemPopUpLoader = new FXMLLoader(getClass().getResource("/fxml/cashier/selectItemPopUp.fxml"));
         GridPane selectItemPopUpPane = selectItemPopUpLoader.load();
         this.selectedItemPopUpCtrl = selectItemPopUpLoader.getController();
         this.selectedItemPopUpCtrl.setMainPane(selectItemPopUpPane);

@@ -1,11 +1,10 @@
-package ku.cs.duckdealer.cashier;
+package ku.cs.duckdealer.warehouse_manager;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import ku.cs.duckdealer.cashier.controllers.MainController;
+import ku.cs.duckdealer.warehouse_manager.controllers.MainController;
 
-public class App  extends  Application
-{
+public class WarehouseMain extends Application {
     public static void main( String[] args ) {
         launch();
     }

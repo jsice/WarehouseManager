@@ -116,7 +116,7 @@ public class ProductDetailController {
             String text = ((Button)event.getSource()).getText();
             if(text.equals("+")){
                 Stage stage = new Stage();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/increaseProductPopUp.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/warehouse/increaseProductPopUp.fxml"));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 try {
                     stage.setScene(new Scene((Parent) loader.load()));
@@ -143,7 +143,7 @@ public class ProductDetailController {
 
             }else if (text.equals("-")){
                 Stage stage = new Stage();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/decreaseProductPopUp.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/warehouse/decreaseProductPopUp.fxml"));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 try {
                     stage.setScene(new Scene((Parent) loader.load()));

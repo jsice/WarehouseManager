@@ -7,7 +7,7 @@ import ku.cs.duckdealer.models.StockedProduct;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ProductService {
+public class ProductService implements IProductService{
     private Connection conn;
     private String host = "10.2.21.32";
     private String port = "3306";
