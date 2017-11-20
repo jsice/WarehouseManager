@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -66,6 +67,8 @@ public class MainController {
         this.stage.setY(bounds.getMinY());
         this.stage.setWidth(bounds.getWidth());
         this.stage.setHeight(bounds.getHeight());
+        this.stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        this.stage.setFullScreenExitHint("");
         this.stage.setFullScreen(true);
     }
 
