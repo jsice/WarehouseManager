@@ -59,7 +59,6 @@ public class MainController {
         this.stage.setOnCloseRequest(e -> System.exit(0));
         this.stage.setScene(new Scene(mainPane));
         this.stage.show();
-//        this.stage.setResizable(false);
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         mainPane.getTransforms().add(new Scale(bounds.getWidth()/mainPane.getWidth(), bounds.getHeight()/mainPane.getHeight()));
@@ -67,9 +66,7 @@ public class MainController {
         this.stage.setY(bounds.getMinY());
         this.stage.setWidth(bounds.getWidth());
         this.stage.setHeight(bounds.getHeight());
-//        System.out.println(bounds.getWidth() + " " + bounds.getHeight());
-//        System.out.println(bounds.getWidth()/mainPane.getWidth() *mainPane.getWidth()  + " " + bounds.getHeight()/mainPane.getHeight()*mainPane.getHeight());
-//        System.out.println(mainPane.getWidth()+" "+mainPane.getHeight());
+        this.stage.setFullScreen(true);
     }
 
     private void loadPane() throws IOException {
