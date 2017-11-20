@@ -1,12 +1,15 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.models.Stock;
@@ -31,15 +34,15 @@ public class MainController {
     private IProductService productService;
 
     public MainController(Stage stage) throws IOException, SQLException {
-        this.productService = new SqliteProductService("test_db.db");
-
-        this.stock = new Stock();
-        this.loadStock();
         this.stage = stage;
+        this.productService = new SqliteProductService("test_db.db");
+        this.stock = new Stock();
+        this.authenticationService = new AuthenticationService();
+
+        this.loadStock();
         this.loadPane();
         this.stockListCtrl.showAllProducts();
 
-        this.authenticationService = new AuthenticationService();
     }
 
     private void loadStock() {
@@ -53,8 +56,20 @@ public class MainController {
         int w = (int) mainPane.getWidth();
         int h = (int) mainPane.getHeight();
         this.stage.setTitle(this.title);
+        this.stage.setOnCloseRequest(e -> System.exit(0));
         this.stage.setScene(new Scene(mainPane));
         this.stage.show();
+//        this.stage.setResizable(false);
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        mainPane.getTransforms().add(new Scale(bounds.getWidth()/mainPane.getWidth(), bounds.getHeight()/mainPane.getHeight()));
+        this.stage.setX(bounds.getMinX());
+        this.stage.setY(bounds.getMinY());
+        this.stage.setWidth(bounds.getWidth());
+        this.stage.setHeight(bounds.getHeight());
+//        System.out.println(bounds.getWidth() + " " + bounds.getHeight());
+//        System.out.println(bounds.getWidth()/mainPane.getWidth() *mainPane.getWidth()  + " " + bounds.getHeight()/mainPane.getHeight()*mainPane.getHeight());
+//        System.out.println(mainPane.getWidth()+" "+mainPane.getHeight());
     }
 
     private void loadPane() throws IOException {
