@@ -33,7 +33,7 @@ public abstract class DatabaseProductService implements IProductService {
         try {
             connect();
             DatabaseMetaData md = conn.getMetaData();
-            ResultSet rs = md.getTables(null, null, null, null);
+            ResultSet rs = md.getTables(null, null, "", null);
             boolean stocksTableExist = false;
             boolean salesTableExist = false;
             while (rs.next()) {
