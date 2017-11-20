@@ -1,5 +1,6 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -12,16 +13,17 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.models.Stock;
+import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.services.IProductService;
-import ku.cs.duckdealer.services.MySQLProductService;
 import ku.cs.duckdealer.services.SqliteProductService;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class MainController {
+
+    private int mainPanelStatus;
 
     private Stage stage;
     private String title = "Warehouse Manager";
@@ -30,6 +32,7 @@ public class MainController {
     private AuthenticationService authenticationService;
     private StockListController stockListCtrl;
     private ProductDetailController productDetailCtrl;
+    private ReportController reportCtrl;
     private Stock stock;
 
     private IProductService productService;
@@ -44,10 +47,12 @@ public class MainController {
         this.loadPane();
         this.stockListCtrl.showAllProducts();
 
+        this.mainPanelStatus = 1;
+
     }
 
     private void loadStock() {
-        for (StockedProduct sp: productService.getProducts()) {
+        for (StockedProduct sp : productService.getProducts()) {
             this.stock.newProduct(sp);
         }
     }
@@ -62,7 +67,7 @@ public class MainController {
         this.stage.show();
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
-        mainPane.getTransforms().add(new Scale(bounds.getWidth()/mainPane.getWidth(), bounds.getHeight()/mainPane.getHeight()));
+        mainPane.getTransforms().add(new Scale(bounds.getWidth() / mainPane.getWidth(), bounds.getHeight() / mainPane.getHeight()));
         this.stage.setX(bounds.getMinX());
         this.stage.setY(bounds.getMinY());
         this.stage.setWidth(bounds.getWidth());
@@ -107,13 +112,21 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (AuthenticationService.LOGGED_IN_AS_STOCK) this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Warehouse");
-        if (AuthenticationService.LOGGED_IN_AS_OWNER) this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Owner");
+        if (AuthenticationService.LOGGED_IN_AS_STOCK)
+            this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Warehouse");
+        if (AuthenticationService.LOGGED_IN_AS_OWNER)
+            this.mainPaneCtrl.getLoginStatus().setText("You are logged in as Owner");
 
     }
-    public void logout(){
+
+    public void logout() {
         authenticationService.logout();
         this.mainPaneCtrl.getLoginStatus().setText("You are not logged in...");
+    }
+
+    public void switchPanel(int panelNumber){
+        this.mainPanelStatus = panelNumber;
+
     }
 
     public void showProductDetail(StockedProduct stockedProduct) {
@@ -125,16 +138,27 @@ public class MainController {
         this.stockListCtrl.showAllProducts();
     }
 
-    public void showFilteredProducts() { this.stockListCtrl.showFilteredProducts(); }
+    public void showFilteredProducts() {
+        this.stockListCtrl.showFilteredProducts();
+    }
 
-    public void createProduct(){
+    public void createProduct() {
         productDetailCtrl.toggleCreateMode();
     }
+
     public Stock getStock() {
         return stock;
     }
 
     public IProductService getProductService() {
         return productService;
+    }
+
+    public int getMainPanelStatus() {
+        return mainPanelStatus;
+    }
+
+    public void setMainPanelStatus(int mainPanelStatus) {
+        this.mainPanelStatus = mainPanelStatus;
     }
 }

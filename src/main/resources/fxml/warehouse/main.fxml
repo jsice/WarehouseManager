@@ -17,6 +17,12 @@
               <MenuItem mnemonicParsing="false" onAction="#exitProgram" text="Close" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Switch panel">
+              <items>
+                <MenuItem fx:id="toMain" mnemonicParsing="false" onAction="#switchPanel" text="to main program" />
+                  <MenuItem fx:id="toReport" mnemonicParsing="false" onAction="#switchPanel" text="to report program" />
+              </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="User">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#login" text="Sign in" />
@@ -26,7 +32,7 @@
             <Menu fx:id="loginStatus" mnemonicParsing="false" text="You are not logged in..." />
         </menus>
       </MenuBar>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
+      <GridPane fx:id="mainPaneInner" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="684.0" minWidth="10.0" prefWidth="600.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="392.0" minWidth="10.0" prefWidth="400.0" />
