@@ -1,25 +1,64 @@
 package ku.cs.duckdealer.services;
 
 import ku.cs.duckdealer.models.Product;
-import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ProductService implements IProductService{
-    private Connection conn;
-    private String host = "10.2.21.32";
-    private String port = "3306";
-    private String dbName = "WarehouseDB";
-    private String url = "//" + host + ":" + port + "/" + dbName;
+public abstract class DatabaseProductService implements IProductService {
+    Connection conn;
+    String url;
 
-    private void connect() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql:" + url, "root", "");
+    public DatabaseProductService(String url) {
+        this.url = url;
+        try {
+            connect();
+            createDatabase();
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void close() throws SQLException {
+    abstract void connect() throws ClassNotFoundException, SQLException;
+
+    abstract String getCreateStocksTableQuery();
+
+    abstract String getCreateSalesTableQuery();
+
+    void createDatabase() {
+        try {
+            connect();
+            DatabaseMetaData md = conn.getMetaData();
+            ResultSet rs = md.getTables(null, null, null, null);
+            boolean stocksTableExist = false;
+            boolean salesTableExist = false;
+            while (rs.next()) {
+                if ("stocks".equals(rs.getString(3).toLowerCase())) stocksTableExist = true;
+                if ("sales".equals(rs.getString(3).toLowerCase())) salesTableExist = true;
+            }
+            if (!stocksTableExist) {
+                String query = getCreateStocksTableQuery();
+                Statement statement = conn.createStatement();
+                statement.execute(query);
+            }
+            if (!salesTableExist) {
+                String query = getCreateSalesTableQuery();
+                Statement statement = conn.createStatement();
+                statement.execute(query);
+            }
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void close() throws SQLException {
         if (conn != null)
             conn.close();
     }

@@ -1,7 +1,5 @@
 package ku.cs.duckdealer.models;
 
-import com.sun.javafx.binding.StringFormatter;
-
 public class Product {
     private String id;
     private String name;

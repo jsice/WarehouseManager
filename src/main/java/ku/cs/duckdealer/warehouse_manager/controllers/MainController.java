@@ -11,7 +11,8 @@ import javafx.stage.Stage;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.services.IProductService;
-import ku.cs.duckdealer.services.ProductService;
+import ku.cs.duckdealer.services.MySQLProductService;
+import ku.cs.duckdealer.services.SqliteProductService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -30,7 +31,7 @@ public class MainController {
     private IProductService productService;
 
     public MainController(Stage stage) throws IOException, SQLException {
-        this.productService = new ProductService();
+        this.productService = new SqliteProductService("test_db.db");
 
         this.stock = new Stock();
         this.loadStock();

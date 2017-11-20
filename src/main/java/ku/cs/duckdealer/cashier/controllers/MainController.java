@@ -12,7 +12,8 @@ import ku.cs.duckdealer.models.Register;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.services.IProductService;
-import ku.cs.duckdealer.services.ProductService;
+import ku.cs.duckdealer.services.MySQLProductService;
+import ku.cs.duckdealer.services.SqliteProductService;
 
 import java.io.IOException;
 
@@ -35,7 +36,7 @@ public class MainController {
     public MainController(Stage stage) throws IOException {
         this.stock = new Stock();
         this.register = new Register(this.stock);
-        this.productService = new ProductService();
+        this.productService = new SqliteProductService("test_db.db");
         this.loadStock();
 
         this.stage = stage;
