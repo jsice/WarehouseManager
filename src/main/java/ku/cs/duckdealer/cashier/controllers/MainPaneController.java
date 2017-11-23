@@ -12,8 +12,10 @@ public class MainPaneController {
     @FXML
     private GridPane leftPane, rightPane;
 
-
-
+    @FXML
+    private void exitProgram() {
+        System.exit(0);
+    }
 
     public FlowPane getMainPane() {
         return mainPane;

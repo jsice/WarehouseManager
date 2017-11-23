@@ -1,12 +1,16 @@
 package ku.cs.duckdealer.cashier.controllers;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.Register;
 import ku.cs.duckdealer.models.Stock;
@@ -23,6 +27,7 @@ public class MainController {
     private Register register;
     private Stock stock;
     private DatabaseProductService productService;
+    private DatabaseSalesService salesService;
 
     private MainPaneController mainPaneCtrl;
     private CashierItemListController cashierListCtrl;
@@ -32,9 +37,11 @@ public class MainController {
     private Stage selectedItemPopUpStage;
 
     public MainController(Stage stage) throws IOException {
+        String dbURL = "test_db.db";//"//10.2.21.181:3306/WarehouseDB"
         this.stock = new Stock();
         this.register = new Register(this.stock);
-        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
+        this.productService = new DatabaseProductService(dbURL, new SQLiteConnector());
+        this.salesService = new DatabaseSalesService(dbURL, new SQLiteConnector());
         this.loadStock();
 
         this.stage = stage;
@@ -46,8 +53,19 @@ public class MainController {
     public void start() {
         Pane mainPane = this.mainPaneCtrl.getMainPane();
         this.stage.setTitle(this.title);
+        this.stage.setOnCloseRequest(e -> System.exit(0));
         this.stage.setScene(new Scene(mainPane));
         this.stage.show();
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        mainPane.getTransforms().add(new Scale(bounds.getWidth() / mainPane.getWidth(), bounds.getHeight() / mainPane.getHeight()));
+        this.stage.setX(bounds.getMinX());
+        this.stage.setY(bounds.getMinY());
+        this.stage.setWidth(bounds.getWidth());
+        this.stage.setHeight(bounds.getHeight());
+        this.stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        this.stage.setFullScreenExitHint("");
+        this.stage.setFullScreen(true);
     }
 
     private void loadStock() {

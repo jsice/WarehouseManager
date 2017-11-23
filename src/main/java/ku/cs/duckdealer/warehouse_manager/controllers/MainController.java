@@ -64,16 +64,6 @@ public class MainController {
         this.stage.setOnCloseRequest(e -> System.exit(0));
         this.stage.setScene(new Scene(mainPane));
         this.stage.show();
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        mainPane.getTransforms().add(new Scale(bounds.getWidth() / mainPane.getWidth(), bounds.getHeight() / mainPane.getHeight()));
-        this.stage.setX(bounds.getMinX());
-        this.stage.setY(bounds.getMinY());
-        this.stage.setWidth(bounds.getWidth());
-        this.stage.setHeight(bounds.getHeight());
-        this.stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        this.stage.setFullScreenExitHint("");
-        this.stage.setFullScreen(true);
     }
 
     private void loadPane() throws IOException {

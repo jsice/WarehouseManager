@@ -12,9 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import ku.cs.duckdealer.models.StockedProduct;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 public class StockListController {
 
@@ -26,11 +24,8 @@ public class StockListController {
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
 
     private StockedProduct selectedProduct;
-    private Comparator<StockedProduct> selectedComparator,
-            idIncComparator, idDecComparator,
-            nameIncComparator, nameDecComparator,
-            priceIncComparator, priceDecComparator,
-            qtyIncComparator, qtyDecComparator;
+    private Comparator<StockedProduct> selectedComparator;
+    private Map<Label, Comparator<StockedProduct>[]> comparatorMap;
     private BackgroundFill selectedBackgroundFill;
     @FXML
     private Label idLabel, nameLabel, priceLabel, qtyLabel;
@@ -41,6 +36,7 @@ public class StockListController {
     @FXML
     private TextField searchTextfield;
 
+
     @FXML
     private void initialize() {
         this.stockedProducts = new ArrayList<StockedProduct>();
@@ -50,115 +46,64 @@ public class StockListController {
         filterComboBox.getItems().addAll("ID", "Name");
         filterComboBox.getSelectionModel().select(0);
 
-        idIncComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                return o1.getProduct().getID().compareToIgnoreCase(o2.getProduct().getID());
-            }
+        comparatorMap = new HashMap<Label, Comparator<StockedProduct>[]>();
+
+        Comparator<StockedProduct> idIncComparator = (o1, o2) -> o1.getProduct().getID().compareToIgnoreCase(o2.getProduct().getID());
+
+        Comparator<StockedProduct> idDecComparator = (o1, o2) -> -o1.getProduct().getID().compareToIgnoreCase(o2.getProduct().getID());
+
+        Comparator<StockedProduct> nameIncComparator = (o1, o2) -> o1.getProduct().getName().compareToIgnoreCase(o2.getProduct().getName());
+
+        Comparator<StockedProduct> nameDecComparator = (o1, o2) -> -o1.getProduct().getName().compareToIgnoreCase(o2.getProduct().getName());
+
+        Comparator<StockedProduct> priceIncComparator = (o1, o2) -> {
+            if (o1.getProduct().getPrice() > o2.getProduct().getPrice()) return 1;
+            else if (o1.getProduct().getPrice() < o2.getProduct().getPrice()) return -1;
+            return 0;
         };
 
-        idDecComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                return -o1.getProduct().getID().compareToIgnoreCase(o2.getProduct().getID());
-            }
+        Comparator<StockedProduct> priceDecComparator = (o1, o2) -> {
+            if (o1.getProduct().getPrice() > o2.getProduct().getPrice()) return -1;
+            else if (o1.getProduct().getPrice() < o2.getProduct().getPrice()) return 1;
+            return 0;
         };
 
-        nameIncComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                return o1.getProduct().getName().compareToIgnoreCase(o2.getProduct().getName());
-            }
+        Comparator<StockedProduct> qtyIncComparator = (o1, o2) -> {
+            if (o1.getQuantity() > o2.getQuantity()) return 1;
+            else if (o1.getQuantity() < o2.getQuantity()) return -1;
+            return 0;
         };
 
-        nameDecComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                return -o1.getProduct().getName().compareToIgnoreCase(o2.getProduct().getName());
-            }
+        Comparator<StockedProduct> qtyDecComparator = (o1, o2) -> {
+            if (o1.getQuantity() > o2.getQuantity()) return -1;
+            else if (o1.getQuantity() < o2.getQuantity()) return 1;
+            return 0;
         };
 
-        priceIncComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                if (o1.getProduct().getPrice() > o2.getProduct().getPrice()) return 1;
-                else if (o1.getProduct().getPrice() < o2.getProduct().getPrice()) return -1;
-                return 0;
-            }
-        };
-
-        priceDecComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                if (o1.getProduct().getPrice() > o2.getProduct().getPrice()) return -1;
-                else if (o1.getProduct().getPrice() < o2.getProduct().getPrice()) return 1;
-                return 0;
-            }
-        };
-
-        qtyIncComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                if (o1.getQuantity() > o2.getQuantity()) return 1;
-                else if (o1.getQuantity() < o2.getQuantity()) return -1;
-                return 0;
-            }
-        };
-
-        qtyDecComparator = new Comparator<StockedProduct>() {
-            @Override
-            public int compare(StockedProduct o1, StockedProduct o2) {
-                if (o1.getQuantity() > o2.getQuantity()) return -1;
-                else if (o1.getQuantity() < o2.getQuantity()) return 1;
-                return 0;
-            }
-        };
+        comparatorMap.put(nameLabel,new Comparator[] {nameIncComparator, nameDecComparator});
+        comparatorMap.put(idLabel,new Comparator[] {idIncComparator, idDecComparator});
+        comparatorMap.put(priceLabel,new Comparator[] {priceIncComparator, priceDecComparator});
+        comparatorMap.put(qtyLabel,new Comparator[] {qtyIncComparator, qtyDecComparator});
 
     }
     @FXML
     private void selectComparatorForSorting(MouseEvent e) {
         Label l = (Label) e.getSource();
+        String oldText = l.getText();
+        char lastchar = oldText.charAt(oldText.length()-1);
         idLabel.setText("ID");
         nameLabel.setText("Name");
         priceLabel.setText("Price");
         qtyLabel.setText("Quantity");
-        if (l == idLabel) {
-            if (selectedComparator == idIncComparator) {
-                selectedComparator = idDecComparator;
-                l.setText("ID ^");
-            }
-            else {
-                selectedComparator = idIncComparator;
-                l.setText("ID v");
-            }
-        } else if (l == nameLabel) {
-            if (selectedComparator == nameIncComparator) {
-                selectedComparator = nameDecComparator;
-                l.setText("Name ^");
-            }
-            else {
-                selectedComparator = nameIncComparator;
-                l.setText("Name v");
-            }
-        } else if (l == priceLabel) {
-            if (selectedComparator == priceIncComparator) {
-                selectedComparator = priceDecComparator;
-                l.setText("Price ^");
-            }
-            else {
-                selectedComparator = priceIncComparator;
-                l.setText("Price v");
-            }
-        } else if (l == qtyLabel) {
-            if (selectedComparator == qtyIncComparator) {
-                selectedComparator = qtyDecComparator;
-                l.setText("Quantity ^");
-            }
-            else {
-                selectedComparator = qtyIncComparator;
-                l.setText("Quantity v");
-            }
+        if (lastchar == 'v') {
+            l.setText(l.getText() + " ^");
+        } else {
+            l.setText(l.getText() + " v");
         }
+        Comparator[] comp_arr = comparatorMap.get(l);
+        selectedComparator = comp_arr[0];
+        comp_arr[0] = comp_arr[1];
+        comp_arr[1] = selectedComparator;
         showFilteredProducts();
     }
 

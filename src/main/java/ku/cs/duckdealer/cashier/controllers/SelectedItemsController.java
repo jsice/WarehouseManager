@@ -15,12 +15,8 @@ public class SelectedItemsController {
     private GridPane itemsList;
 
     private Pane mainPane;
-    private ArrayList<Label> labels;
+    private ArrayList<Label> labels = new ArrayList<>();
     private MainController mainCtrl;
-
-    public void initialize(){
-        labels = new ArrayList<Label>();
-    }
 
     public void addItem(Product p, int selectedAmount){
         mainCtrl.getRegister().enterItem(p.getID(), selectedAmount);
@@ -34,8 +30,6 @@ public class SelectedItemsController {
         itemsList.add(productName, 0, row);
         itemsList.add(productPrice, 2, row);
         itemsList.add(productQuantity, 1, row);
-
-//        showItems();
     }
 
     public void showItems(){
