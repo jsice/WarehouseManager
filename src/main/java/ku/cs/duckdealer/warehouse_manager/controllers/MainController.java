@@ -1,6 +1,5 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -15,11 +14,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
-import ku.cs.duckdealer.services.IProductService;
-import ku.cs.duckdealer.services.SqliteProductService;
+import ku.cs.duckdealer.services.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MainController {
 
@@ -35,11 +34,11 @@ public class MainController {
     private ReportController reportCtrl;
     private Stock stock;
 
-    private IProductService productService;
+    private DatabaseProductService productService;
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.stage = stage;
-        this.productService = new SqliteProductService("test_db.db");
+        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
         this.stock = new Stock();
         this.authenticationService = new AuthenticationService();
 
@@ -52,7 +51,7 @@ public class MainController {
     }
 
     private void loadStock() {
-        for (StockedProduct sp : productService.getProducts()) {
+        for (StockedProduct sp : productService.getAll()) {
             this.stock.newProduct(sp);
         }
     }
@@ -150,7 +149,7 @@ public class MainController {
         return stock;
     }
 
-    public IProductService getProductService() {
+    public DatabaseProductService getProductService() {
         return productService;
     }
 

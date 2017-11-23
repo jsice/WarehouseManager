@@ -96,7 +96,7 @@ public class ProductDetailController {
             if (!nameField.getText().equals("") && !priceField.getText().equals("")) {
                 stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
                 mainCtrl.getStock().newProduct(stockedProduct);
-                mainCtrl.getProductService().addProduct(stockedProduct);
+                mainCtrl.getProductService().add(stockedProduct);
                 initialize();
                 mainCtrl.showProductDetail(stockedProduct);
                 mainCtrl.showAllProducts();
@@ -224,7 +224,7 @@ public class ProductDetailController {
             this.priceField.setEditable(false);
             mainCtrl.showFilteredProducts();
             mainCtrl.showProductDetail(stockedProduct);
-            mainCtrl.getProductService().updateProduct(stockedProduct);
+            mainCtrl.getProductService().update(stockedProduct);
         }
     }
 

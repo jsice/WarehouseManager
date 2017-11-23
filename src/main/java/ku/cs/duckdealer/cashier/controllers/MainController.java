@@ -11,9 +11,7 @@ import javafx.stage.Stage;
 import ku.cs.duckdealer.models.Register;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
-import ku.cs.duckdealer.services.IProductService;
-import ku.cs.duckdealer.services.MySQLProductService;
-import ku.cs.duckdealer.services.SqliteProductService;
+import ku.cs.duckdealer.services.*;
 
 import java.io.IOException;
 
@@ -24,7 +22,7 @@ public class MainController {
 
     private Register register;
     private Stock stock;
-    private IProductService productService;
+    private DatabaseProductService productService;
 
     private MainPaneController mainPaneCtrl;
     private CashierItemListController cashierListCtrl;
@@ -36,7 +34,7 @@ public class MainController {
     public MainController(Stage stage) throws IOException {
         this.stock = new Stock();
         this.register = new Register(this.stock);
-        this.productService = new SqliteProductService("test_db.db");
+        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
         this.loadStock();
 
         this.stage = stage;
@@ -53,7 +51,7 @@ public class MainController {
     }
 
     private void loadStock() {
-        for (StockedProduct sp: productService.getProducts()) {
+        for (StockedProduct sp: productService.getAll()) {
             this.stock.newProduct(sp);
         }
     }
