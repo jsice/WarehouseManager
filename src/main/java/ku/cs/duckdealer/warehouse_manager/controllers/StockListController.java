@@ -39,14 +39,14 @@ public class StockListController {
 
     @FXML
     private void initialize() {
-        this.stockedProducts = new ArrayList<StockedProduct>();
-        labels = new ArrayList<Label>();
+        this.stockedProducts = new ArrayList<>();
+        labels = new ArrayList<>();
         searchText = "";
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
         filterComboBox.getItems().addAll("ID", "Name");
         filterComboBox.getSelectionModel().select(0);
 
-        comparatorMap = new HashMap<Label, Comparator<StockedProduct>[]>();
+        comparatorMap = new HashMap<>();
 
         Comparator<StockedProduct> idIncComparator = (o1, o2) -> o1.getProduct().getID().compareToIgnoreCase(o2.getProduct().getID());
 
