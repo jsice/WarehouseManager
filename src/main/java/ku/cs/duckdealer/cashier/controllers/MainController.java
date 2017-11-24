@@ -39,7 +39,7 @@ public class MainController {
     public MainController(Stage stage) throws IOException {
         String dbURL = "test_db.db";//"//10.2.21.181:3306/WarehouseDB"
         this.stock = new Stock();
-        this.register = new Register(this.stock);
+        this.register = new Register(this.stock, 7);
         this.productService = new DatabaseProductService(dbURL, new SQLiteConnector());
         this.salesService = new DatabaseSalesService(dbURL, new SQLiteConnector());
         this.loadStock();
@@ -105,6 +105,8 @@ public class MainController {
         selectedItemPopUpStage = new Stage();
         selectedItemPopUpStage.initModality(Modality.APPLICATION_MODAL);
         selectedItemPopUpStage.setScene(new Scene(this.selectedItemPopUpCtrl.getMainPane()));
+        selectedItemPopUpStage.initOwner(this.stage);
+        selectedItemPopUpStage.setResizable(false);
 
     }
 
@@ -129,6 +131,8 @@ public class MainController {
     public void reloadSalesItems() {
         this.selectedItemsCtrl.showItems();
     }
+
+    public void showFilteredProducts() { this.cashierListCtrl.showFilteredProducts(); }
 
     public SelectItemPopUpController getSelectedItemPopUpCtrl() {
         return selectedItemPopUpCtrl;

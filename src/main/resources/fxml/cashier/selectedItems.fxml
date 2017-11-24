@@ -19,7 +19,7 @@
       <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button mnemonicParsing="false" text="Check out" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <Button fx:id="btnCheckOut" mnemonicParsing="false" onAction="#checkOut" text="Check out" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
@@ -35,30 +35,22 @@
           <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="101.0" text="Price" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="48.0" text="Vat." GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label contentDisplay="CENTER" prefHeight="40.0" prefWidth="140.0" text="   Before VAT" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="79.0" text="Net Price " GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Label contentDisplay="CENTER" prefHeight="40.0" prefWidth="140.0" text="   VAT" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="0.00" GridPane.columnIndex="1">
+            <Label contentDisplay="CENTER" prefHeight="40.0" prefWidth="140.0" text="   Net Total" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
             </Label>
-            <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefWidth="4.0" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="beforeVatLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="0.00" GridPane.columnIndex="1">
                <font>
                   <Font size="18.0" />
                </font>
@@ -66,7 +58,15 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Label>
-            <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label fx:id="vatLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefWidth="4.0" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="netTotalLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
@@ -95,7 +95,7 @@
                 <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="Clear All" GridPane.columnIndex="2">
+                  <Button fx:id="btnClearAll" mnemonicParsing="false" onAction="#clearAll" text="Clear All" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets left="5.0" right="5.0" />
                      </GridPane.margin>

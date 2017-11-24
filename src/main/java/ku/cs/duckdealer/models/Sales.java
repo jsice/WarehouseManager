@@ -50,6 +50,18 @@ public class Sales {
         return quantity;
     }
 
+    public void removeItem(Product prd, int qty) {
+        if (items.containsKey(prd.getID())) {
+            SalesItem item = items.get(prd.getID());
+            if (item.getQuantity() > qty) {
+                item.setQuantity(item.getQuantity() - qty);
+            } else if (item.getQuantity() == qty) {
+                items.remove(prd.getID());
+                itemList.remove(item);
+            }
+        }
+    }
+
     public void setID(int sales_id) {
         this.sales_id = sales_id;
     }
