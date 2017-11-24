@@ -186,7 +186,7 @@ public class CashierItemListController {
             }
             final Label id = new Label(p.getProduct().getID() + "");
             final Label name = new Label(p.getProduct().getName());
-            final Label price = new Label(p.getProduct().getPrice() + "");
+            final Label price = new Label(String.format("%.2f", p.getProduct().getPrice()));
             final Label amount = new Label(p.getQuantity() + "");
             id.setPrefHeight(38);
             id.setPrefWidth(122);
@@ -254,8 +254,7 @@ public class CashierItemListController {
     @FXML
     public void addItemToBill(){
         int amount = mainCtrl.enterItemAmount(selectedProduct);
-        if (amount > 0) { //if true will do
-//            mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct.getProduct(), mainCtrl.getSelectedItemPopUpCtrl().getAmount());
+        if (amount > 0) {
             mainCtrl.getRegister().enterItem(selectedID.getText(), amount);
             int newAmount = selectedProduct.getQuantity() - amount;
             selectedProduct.setQuantity(newAmount);
