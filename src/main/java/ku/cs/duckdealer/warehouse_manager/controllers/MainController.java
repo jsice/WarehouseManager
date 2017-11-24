@@ -1,24 +1,23 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
-import ku.cs.duckdealer.services.*;
+import ku.cs.duckdealer.services.DatabaseProductService;
+import ku.cs.duckdealer.services.SQLiteConnector;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class MainController {
 
@@ -33,6 +32,8 @@ public class MainController {
     private ProductDetailController productDetailCtrl;
     private ReportController reportCtrl;
     private Stock stock;
+
+    private AnchorPane reportPane;
 
     private DatabaseProductService productService;
 
@@ -85,6 +86,12 @@ public class MainController {
         this.productDetailCtrl.setMainPane(productDetailPane);
         this.productDetailCtrl.setMainCtrl(this);
 
+        FXMLLoader reportPaneLoader = new FXMLLoader(getClass().getResource("/fxml/warehouse/reportInWarehouse.fxml"));
+        reportPane = reportPaneLoader.load();
+        this.reportCtrl = reportPaneLoader.getController();
+        this.reportCtrl.setMainPane(reportPane);
+        this.reportCtrl.setMainCtrl(this);
+
         this.mainPaneCtrl.getLeftPane().getChildren().add(this.stockListCtrl.getMainPane());
         this.mainPaneCtrl.getRightPane().getChildren().add(this.productDetailCtrl.getMainPane());
     }
@@ -113,8 +120,15 @@ public class MainController {
         this.mainPaneCtrl.getLoginStatus().setText("You are not logged in...");
     }
 
-    public void switchPanel(int panelNumber){
-        this.mainPanelStatus = panelNumber;
+    public void switchPanel(ActionEvent event) {
+        if (this.mainPanelStatus == 1 && event.getSource().toString().contains("toReport")) {
+            mainPanelStatus = 2;
+            mainPaneCtrl.swapPane(reportPane);
+
+        } else if (this.mainPanelStatus == 2 && event.getSource().toString().contains("toMain")) {
+            mainPanelStatus = 1;
+            mainPaneCtrl.swapPane(mainPaneCtrl.getMainPaneInner());
+        }
 
     }
 

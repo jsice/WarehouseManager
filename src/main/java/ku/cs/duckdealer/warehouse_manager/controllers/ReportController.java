@@ -19,6 +19,7 @@ public class ReportController {
     @FXML
     private Tab displayChartTab;
 
+    private MainController mainCtrl;
     private Pane mainPane;
     private ObservableList<PieChart.Data> pieChartData;
     private Chart chart ;
@@ -64,4 +65,9 @@ public class ReportController {
     public void setMainPane(Pane mainPane) {
         this.mainPane = mainPane;
     }
+
+    public void setMainCtrl(MainController mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
+
 }
