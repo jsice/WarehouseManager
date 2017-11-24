@@ -7,16 +7,19 @@ public class Sales {
     private int sales_id;
     private Calendar date;
     private Map<String, SalesItem> items;
+    private ArrayList<SalesItem> itemList;
 
     public Sales() {
         this.date = new GregorianCalendar();
         this.items = new HashMap<>();
+        this.itemList = new ArrayList<>();
     }
 
     public Sales(int id, Calendar date) {
         this.sales_id = id;
         this.date = date;
         this.items = new HashMap<>();
+        this.itemList = new ArrayList<>();
     }
 
     public void addItem(Product prd, int qty) {
@@ -26,6 +29,7 @@ public class Sales {
         } else {
             SalesItem item = new SalesItem(prd, qty);
             items.put(prd.getID(), item);
+            itemList.add(item);
         }
 
     }
@@ -51,7 +55,7 @@ public class Sales {
     }
 
     public SalesItem[] getItems() {
-        return items.values().toArray(new SalesItem[items.size()]);
+        return itemList.toArray(new SalesItem[items.size()]);
     }
 
     public int getID() {

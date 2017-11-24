@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,8 +26,6 @@ public class CashierItemListController {
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
     private BackgroundFill selectedBackgroundFill;
     private String searchText;
-    private Register register;
-    private boolean cancelStatus ;
 
     @FXML
     private TextField searchTextfield;
@@ -36,6 +35,9 @@ public class CashierItemListController {
     private GridPane innerTableGrid;
     @FXML
     private Label idLabel, nameLabel, priceLabel, qtyLabel;
+    @FXML
+    private Button btnAddToSelect;
+
     private StockedProduct selectedProduct;
     private Comparator<StockedProduct> selectedComparator;
     private Map<Label, Comparator<StockedProduct>[]> comparatorMap;
@@ -55,10 +57,10 @@ public class CashierItemListController {
 
     @FXML
     private void initialize() {
-        cancelStatus = true ;
         this.stockedProducts = new ArrayList<>();
         labels = new ArrayList<>();
         searchText = "";
+        btnAddToSelect.setDisable(true);
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
         filterComboBox.getItems().addAll("ID", "Name");
         filterComboBox.getSelectionModel().select(0);
@@ -205,6 +207,8 @@ public class CashierItemListController {
                 public void handle(MouseEvent event) {
                     setSelectedLabel(id, name, price, amount);
                     selectedProduct = p;
+                    if (p.getQuantity() > 0) btnAddToSelect.setDisable(false);
+                    else btnAddToSelect.setDisable(true);
                 }
             };
 
@@ -249,13 +253,25 @@ public class CashierItemListController {
 
     @FXML
     public void addItemToBill(){
-        mainCtrl.enterItemAmount(selectedProduct);
-        if (cancelStatus) { //if true will do
-            mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct.getProduct(), mainCtrl.getSelectedItemPopUpCtrl().getAmount());
+        int amount = mainCtrl.enterItemAmount(selectedProduct);
+        if (amount > 0) { //if true will do
+//            mainCtrl.getSelectedItemsCtrl().addItem(selectedProduct.getProduct(), mainCtrl.getSelectedItemPopUpCtrl().getAmount());
+            mainCtrl.getRegister().enterItem(selectedID.getText(), amount);
+            int newAmount = selectedProduct.getQuantity() - amount;
+            selectedProduct.setQuantity(newAmount);
+            selectedAmount.setText(newAmount +"");
+            mainCtrl.reloadSalesItems();
+
+            selectedID.setBackground(null);
+            selectedID = null;
+            selectedName.setBackground(null);
+            selectedName = null;
+            selectedPrice.setBackground(null);
+            selectedPrice = null;
+            selectedAmount.setBackground(null);
+            selectedAmount = null;
+            btnAddToSelect.setDisable(true);
         }
     }
 
-    public void setCancelStatus(boolean cancelStatus) {
-        this.cancelStatus = cancelStatus;
-    }
 }

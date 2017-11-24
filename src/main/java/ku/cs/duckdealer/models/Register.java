@@ -11,6 +11,7 @@ public class Register {
     public Register(Stock stock) {
         this.allSales = new ArrayList<>();
         this.stock = stock;
+        this.currentSales = new Sales();
     }
 
     public void makeNewSales() {
@@ -27,5 +28,10 @@ public class Register {
     }
     public void endSales() {
         this.allSales.add(currentSales);
+        this.currentSales = new Sales();
+    }
+
+    public Sales getCurrentSales() {
+        return currentSales;
     }
 }

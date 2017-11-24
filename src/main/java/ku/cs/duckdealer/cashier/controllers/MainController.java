@@ -47,7 +47,6 @@ public class MainController {
         this.stage = stage;
         this.loadPane();
         this.cashierListCtrl.showAllProducts();
-        selectedItemPopUpCtrl.setMainCtrl(this);
     }
 
     public void start() {
@@ -93,6 +92,7 @@ public class MainController {
         this.selectedItemsCtrl = selectedItemsLoader.getController();
         this.selectedItemsCtrl.setMainPane(selectedItemsPane);
         this.selectedItemsCtrl.setMainCtrl(this);
+        this.selectedItemsCtrl.setRegister(this.register);
 
         this.mainPaneCtrl.getLeftPane().getChildren().add(this.cashierListCtrl.getMainPane());
         this.mainPaneCtrl.getRightPane().getChildren().add(this.selectedItemsCtrl.getMainPane());
@@ -120,9 +120,14 @@ public class MainController {
         return selectedItemsCtrl;
     }
 
-    public void enterItemAmount(StockedProduct selectedProduct) {
+    public int enterItemAmount(StockedProduct selectedProduct) {
         this.selectedItemPopUpCtrl.setAllLabelText(selectedProduct);
         this.selectedItemPopUpStage.showAndWait();
+        return this.selectedItemPopUpCtrl.getAmount();
+    }
+
+    public void reloadSalesItems() {
+        this.selectedItemsCtrl.showItems();
     }
 
     public SelectItemPopUpController getSelectedItemPopUpCtrl() {
