@@ -40,10 +40,10 @@
                                  <children>
                                     <TableView fx:id="reportTable" layoutX="47.0" layoutY="47.0" prefHeight="277.0" prefWidth="665.0">
                                       <columns>
-                                        <TableColumn prefWidth="128.33331298828125" text="Product's ID" />
-                                        <TableColumn prefWidth="276.66668701171875" text="Product's name" />
-                                          <TableColumn prefWidth="108.00006103515625" text="Total sale" />
-                                          <TableColumn prefWidth="151.0" text="Worth" />
+                                        <TableColumn fx:id="idColumn" prefWidth="128.33331298828125" text="Product's ID" />
+                                        <TableColumn fx:id="nameColumn" prefWidth="276.66668701171875" text="Product's name" />
+                                          <TableColumn fx:id="quantityColumn" prefWidth="108.00006103515625" text="Quantity" />
+                                          <TableColumn fx:id="worthColumn" prefWidth="151.0" text="Worth" />
                                       </columns>
                                     </TableView>
                                  </children>
