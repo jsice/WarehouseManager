@@ -108,16 +108,16 @@ public class SelectedItemsController {
         Optional<String> result = dialog.showAndWait();
         double netTotal = Double.parseDouble(this.netTotalLabel.getText());
         double money = Double.parseDouble(result.get());
-        if (money > netTotal) {
+        if (money == netTotal) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Payment");
             alert.setContentText("No change, thanks.");
             alert.initOwner(this.beforeVatLabel.getScene().getWindow());
             alert.showAndWait();
-        } else if (money == netTotal) {
+        } else if (money > netTotal) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Payment");
-            alert.setContentText("Here your change: $" + (netTotal-money) +", thanks.");
+            alert.setContentText("Here your change: $" + (money-netTotal) +", thanks.");
             alert.initOwner(this.beforeVatLabel.getScene().getWindow());
             alert.showAndWait();
         } else {

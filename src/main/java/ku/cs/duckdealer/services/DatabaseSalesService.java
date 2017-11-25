@@ -16,8 +16,8 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
     @Override
     List<String> getCreateTableQueries() {
         List<String> queries = new ArrayList<>();
-        queries.add("CREATE TABLE sales (sales_id integer primary key /*!40101 AUTO_INCREMENT */, date date NOT NULL);");
-        queries.add("CREATE TABLE sales_detail ( sales_id int not null, item text NOT NULL, quantity int(11) NOT NULL, price double NOT NULL);");
+        queries.add("CREATE TABLE sales (sales_id integer primary key /*!40101 AUTO_INCREMENT */, date date not null )");
+        queries.add("CREATE TABLE sales_detail ( `sales_id` int NOT NULL, `item` text NOT NULL, `quantity` int ( 11 ) NOT NULL, `price` double NOT NULL )");
         return queries;
     }
 
