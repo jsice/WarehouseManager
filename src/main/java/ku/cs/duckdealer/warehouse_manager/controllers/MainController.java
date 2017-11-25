@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.services.DatabaseProductService;
+import ku.cs.duckdealer.services.DatabaseSalesService;
+import ku.cs.duckdealer.services.MySQLConnector;
 import ku.cs.duckdealer.services.SQLiteConnector;
 
 
@@ -36,10 +38,12 @@ public class MainController {
     private AnchorPane reportPane;
 
     private DatabaseProductService productService;
+    private DatabaseSalesService salesService;
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.stage = stage;
-        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
+        this.productService = new DatabaseProductService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+        this.salesService = new DatabaseSalesService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
         this.stock = new Stock();
         this.authenticationService = new AuthenticationService();
 
@@ -87,7 +91,7 @@ public class MainController {
         this.productDetailCtrl.setMainCtrl(this);
 
         FXMLLoader reportPaneLoader = new FXMLLoader(getClass().getResource("/fxml/warehouse/reportInWarehouse.fxml"));
-        reportPane = reportPaneLoader.load();
+        this.reportPane = reportPaneLoader.load();
         this.reportCtrl = reportPaneLoader.getController();
         this.reportCtrl.setMainPane(reportPane);
         this.reportCtrl.setMainCtrl(this);
@@ -163,5 +167,9 @@ public class MainController {
 
     public void setMainPanelStatus(int mainPanelStatus) {
         this.mainPanelStatus = mainPanelStatus;
+    }
+
+    public DatabaseSalesService getSalesService() {
+        return salesService;
     }
 }

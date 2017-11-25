@@ -27,7 +27,7 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
         HashMap<Integer, Sales> salesMap = new HashMap<>();
         try {
             connect();
-            String sql = "select * from sales natural join sales_detail natural natural join (select product_id, name from product)";
+            String sql = "select * from sales natural join sales_detail natural join (select product_id, name from product as alias2) as alias1";
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(sql);
             while (result.next()) {
