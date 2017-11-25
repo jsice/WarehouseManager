@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseProductService extends DatabaseDataService<StockedProduct> {
 
@@ -15,13 +16,10 @@ public class DatabaseProductService extends DatabaseDataService<StockedProduct> 
     }
 
     @Override
-    String getTableName() {
-        return "product";
-    }
-
-    @Override
-    String getCreateTableQuery() {
-        return "CREATE TABLE product (product_id varchar(8) NOT NULL, name text NOT NULL, price double NOT NULL, quantity int(11) NOT NULL, PRIMARY KEY (product_id))";
+    List<String> getCreateTableQueries() {
+        List<String> queries = new ArrayList<>();
+        queries.add("CREATE TABLE product (product_id varchar(8) NOT NULL, name text NOT NULL, price double NOT NULL, quantity int(11) NOT NULL, PRIMARY KEY (product_id))");
+        return queries;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package ku.cs.duckdealer.services;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class DatabaseDataService<T> implements IDataService<T> {
     Connection conn;
@@ -25,23 +27,30 @@ public abstract class DatabaseDataService<T> implements IDataService<T> {
         conn = this.connector.connectTo(this.url);
     }
 
-    abstract String getTableName();
-
-    abstract String getCreateTableQuery();
+    abstract List<String> getCreateTableQueries();
 
     void createDatabase() {
         try {
             connect();
             DatabaseMetaData md = conn.getMetaData();
-            ResultSet rs = md.getTables(null, null, getTableName(), null);
-            boolean tableExist = false;
+            ResultSet rs = md.getTables(null, null, "", null);
+            List<String> createTableQueries = getCreateTableQueries();
+            boolean[] tableExist = new boolean[createTableQueries.size()];
             while (rs.next()) {
-                if (getTableName().equals(rs.getString(3).toLowerCase())) tableExist = true;
+                int i = 0;
+                for (String query: createTableQueries) {
+                    String tableName = query.split(" ")[2];
+                    if (tableName.equals(rs.getString(3).toLowerCase())) tableExist[i] = true;
+                    i++;
+                }
+
             }
-            if (!tableExist) {
-                String query = getCreateTableQuery();
-                Statement statement = conn.createStatement();
-                statement.execute(query);
+            for (int i = 0; i < tableExist.length; i++) {
+                if (!tableExist[i]) {
+                    String query = createTableQueries.get(i);
+                    Statement statement = conn.createStatement();
+                    statement.execute(query);
+                }
             }
             close();
         } catch (SQLException e) {

@@ -33,7 +33,7 @@ public class MainController {
     private CashierItemListController cashierListCtrl;
     private SelectedItemsController selectedItemsCtrl;
     private SelectItemPopUpController selectedItemPopUpCtrl;
-
+    private PrintService printService;
     private Stage selectedItemPopUpStage;
 
     public MainController(Stage stage) throws IOException {
@@ -42,6 +42,7 @@ public class MainController {
         this.register = new Register(this.stock, 7);
         this.productService = new DatabaseProductService(dbURL, new SQLiteConnector());
         this.salesService = new DatabaseSalesService(dbURL, new SQLiteConnector());
+        this.printService = new PrintService();
         this.loadStock();
 
         this.stage = stage;
@@ -140,5 +141,17 @@ public class MainController {
 
     public Register getRegister() {
         return register;
+    }
+
+    public PrintService getPrintService() {
+        return printService;
+    }
+
+    public DatabaseSalesService getSalesService() {
+        return salesService;
+    }
+
+    public DatabaseProductService getProductService() {
+        return productService;
     }
 }

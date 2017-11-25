@@ -1,5 +1,8 @@
 package ku.cs.duckdealer.models;
 
+import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
+
 import java.util.ArrayList;
 
 public class Register {
@@ -28,6 +31,7 @@ public class Register {
             }
         }
     }
+
     public void endSales() {
         this.allSales.add(currentSales);
         makeNewSales();
@@ -50,18 +54,33 @@ public class Register {
     }
 
     public double getTotalFromCurrentSales() {
+        if (currentSales == null) return 0;
         return currentSales.getTotal();
     }
 
     public double getBeforeVatFromCurrentSales() {
+        if (currentSales == null) return 0;
         return Math.round((currentSales.getTotal() * 100 / (100 + vat)) * 100.0) / 100.0;
     }
 
     public double getVatFromCurrentSales() {
+        if (currentSales == null) return 0;
         return Math.round((getTotalFromCurrentSales() - getBeforeVatFromCurrentSales()) * 100.0) / 100.0;
     }
 
     public Sales getCurrentSales() {
         return currentSales;
+    }
+
+    public Node getReceiptFromCurrentSales() {
+        if (currentSales == null) return null;
+
+        GridPane node = new GridPane();
+
+        return node;
+    }
+
+    public Stock getStock() {
+        return stock;
     }
 }

@@ -14,13 +14,11 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
     }
 
     @Override
-    String getTableName() {
-        return "sales";
-    }
-
-    @Override
-    String getCreateTableQuery() {
-        return "CREATE TABLE sales (sales_id int NOT NULL /*!40101 AUTO_INCREMENT */, date date NOT NULL, PRIMARY KEY (sales_id));CREATE TABLE sales_detail ( sales_id int not null, item text NOT NULL, quantity int(11) NOT NULL, price double NOT NULL);";
+    List<String> getCreateTableQueries() {
+        List<String> queries = new ArrayList<>();
+        queries.add("CREATE TABLE sales (sales_id integer primary key /*!40101 AUTO_INCREMENT */, date date NOT NULL);");
+        queries.add("CREATE TABLE sales_detail ( sales_id int not null, item text NOT NULL, quantity int(11) NOT NULL, price double NOT NULL);");
+        return queries;
     }
 
     @Override
@@ -71,10 +69,10 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
         try {
             connect();
             Calendar date = data.getDate();
-            String query = String.format("insert into sales values ('%s')", String.format("%d-%d-%d", date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH)));
+            String query = String.format("insert into sales (date) values ('%s')", String.format("%d-%d-%d", date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH)));
             Statement statement = conn.createStatement();
             statement.execute(query);
-            query = "SELECT max(ID) FROM sales";
+            query = "SELECT max(sales_id) FROM sales";
             ResultSet resultSet = statement.executeQuery(query);
             resultSet.next();
             int sales_id = resultSet.getInt(1);
