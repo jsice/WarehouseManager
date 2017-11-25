@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
@@ -17,7 +27,74 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <DatePicker />
+            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <TabPane fx:id="displayTab" prefHeight="629.0" prefWidth="744.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="table">
+                        <content>
+                          <AnchorPane fx:id="displayTableTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TableView fx:id="reportTable" layoutX="47.0" layoutY="47.0" prefHeight="277.0" prefWidth="665.0">
+                                      <columns>
+                                        <TableColumn prefWidth="128.33331298828125" text="Product's ID" />
+                                        <TableColumn prefWidth="276.66668701171875" text="Product's name" />
+                                          <TableColumn prefWidth="108.00006103515625" text="Total sale" />
+                                          <TableColumn prefWidth="151.0" text="Worth" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab fx:id="displayChartTab" text="chart">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children></FlowPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="431.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="308.3333435058594" minHeight="10.0" prefHeight="199.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Accordion>
+                    <panes>
+                      <TitledPane animated="false" text="Report's day range">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Group fx:id="groupOfReportRange" layoutX="68.0" layoutY="48.0" />
+                                    <RadioButton layoutX="21.0" layoutY="84.0" mnemonicParsing="false" text="Custom" />
+                                    <RadioButton layoutX="19.0" layoutY="19.0" mnemonicParsing="false" text="Current day" />
+                                    <RadioButton layoutX="20.0" layoutY="51.0" mnemonicParsing="false" text="Current month" />
+                                 </children></AnchorPane>
+                        </content>
+                      </TitledPane>
+                      <TitledPane animated="false" text="Date">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </TitledPane>
+                      <TitledPane animated="false" text="chart option">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Label layoutX="15.0" layoutY="10.0" text="Select chart type to display:" />
+                                    <ComboBox fx:id="reportPicker" layoutX="17.0" layoutY="29.0" prefHeight="25.0" prefWidth="137.0" />
+                                 </children></AnchorPane>
+                        </content>
+                      </TitledPane>
+                    </panes>
+                  </Accordion>
+               </children>
+            </GridPane>
          </children>
       </GridPane>
    </children>

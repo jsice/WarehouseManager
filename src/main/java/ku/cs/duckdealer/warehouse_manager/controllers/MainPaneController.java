@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 
 import java.io.IOException;
 
@@ -19,31 +16,20 @@ public class MainPaneController {
     @FXML
     private Menu loginStatus;
     @FXML
-    private FlowPane leftPane, rightPane;
+    private FlowPane leftPane, rightPane, rootPane;
     @FXML
     private AnchorPane reportPane;
     @FXML
     private GridPane mainPaneInner;
 
     public void switchPanel(ActionEvent event) {
-        int status = mainCtrl.getMainPanelStatus();
-        if (status == 1 && event.getSource().toString().contains("toReport")) {
-            mainCtrl.switchPanel(2);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/warehouse/reportInWarehouse.fxml"));
-            try {
-                reportPane = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            this.mainPane.getChildren().remove(1);
-            this.mainPane.getChildren().add(1, reportPane);
+        mainCtrl.switchPanel(event);
 
-        }else if (status == 2 && event.getSource().toString().contains("toMain")){
-            mainCtrl.switchPanel(1);
-            this.mainPane.getChildren().remove(1);
-            this.mainPane.getChildren().add(mainPaneInner);
-        }
+    }
 
+    public void swapPane(Pane pane){
+        rootPane.getChildren().remove(1);
+        rootPane.getChildren().add(pane);
     }
 
     @FXML
@@ -82,5 +68,9 @@ public class MainPaneController {
 
     public void setMainCtrl(MainController mainCtrl) {
         this.mainCtrl = mainCtrl;
+    }
+
+    public GridPane getMainPaneInner() {
+        return mainPaneInner;
     }
 }
