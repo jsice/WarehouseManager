@@ -11,8 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import ku.cs.duckdealer.models.Sales;
-import ku.cs.duckdealer.models.SalesItem;
+import ku.cs.duckdealer.models.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +45,8 @@ public class ReportController {
     private HashMap<String, String> idMapping;
     private ToggleGroup groupA;
     private ToggleGroup groupB;
+
+    private ArrayList<StockedProduct> allStockedProducts;
 
     @FXML
     public void initialize() {
@@ -208,21 +209,53 @@ public class ReportController {
         }
     }
 
+    private void loadStockData() {
+        for (StockedProduct prod : allStockedProducts
+                ) {
+                Product product = prod.getProduct();
+                if (idMapping.containsKey(product.getID())) {
+                    allItemPrice.put(product.getID(), allItemPrice.get(product.getID()) + product.getPrice());
+                    allItemQuantity.put(product.getID(), allItemQuantity.get(product.getID()) + prod.getQuantity());
+                    System.out.println(product.getName() + " --------- " + allItemPrice.get(product.getID()));
+
+                } else {
+                    idMapping.put(product.getID(), product.getName());
+                    allItemPrice.put(product.getID(), product.getPrice());
+                    allItemQuantity.put(product.getID(), prod.getQuantity());
+                }
+
+        }
+    }
+
+
     public void showData() {
         allItemPrice.clear();
         allItemQuantity.clear();
         idMapping.clear();
 
-        chart.setTitle("DUCK DEALER'S REPORT");
-        chart.setLegendSide(Side.RIGHT);
+        if (radioStock.isSelected()) {
+            chart.setTitle("DUCK DEALER'S STOCK REPORT");
+            chart.setLegendSide(Side.RIGHT);
+            allStockedProducts = mainCtrl.getProductService().getAll();
+            loadStockData();
+            loadDataToTable();
+            loadPieData();
+            displayChartTab.setContent(chart);
 
-        allSales = mainCtrl.getSalesService().getAll();
+        }
+        else {
+
+            chart.setTitle("DUCK DEALER'S SALE REPORT");
+            chart.setLegendSide(Side.RIGHT);
+
+            allSales = mainCtrl.getSalesService().getAll();
 //        System.out.println(groupA.getSelectedToggle().getClass());
-        loadData();
-        loadDataToTable();
-        loadPieData();
+            loadData();
+            loadDataToTable();
+            loadPieData();
 
-        displayChartTab.setContent(chart);
+            displayChartTab.setContent(chart);
+        }
     }
 
     public Pane getMainPane() {

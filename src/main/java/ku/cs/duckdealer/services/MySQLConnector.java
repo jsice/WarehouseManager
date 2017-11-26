@@ -11,3 +11,4 @@ public class MySQLConnector implements DatabaseConnector {
         return DriverManager.getConnection("jdbc:mysql:" + url, "root", "");
     }
 }
+

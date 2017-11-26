@@ -37,12 +37,15 @@ public class MainController {
     private Stage selectedItemPopUpStage;
 
     public MainController(Stage stage) throws IOException {
-        String dbURL = "//10.2.57.175:3306/WarehouseDB";//"test_db.db";
+//        String dbURL = "//10.2.57.175:3306/WarehouseDB";//"test_db.db";
+
         DatabaseConnector connector = new MySQLConnector();
         this.stock = new Stock();
         this.register = new Register(this.stock, 7, "Duck Dealer");
-        this.productService = new DatabaseProductService(dbURL, connector);
-        this.salesService = new DatabaseSalesService(dbURL, connector);
+//        this.productService = new DatabaseProductService(dbURL, connector);
+//        this.salesService = new DatabaseSalesService(dbURL, connector);
+        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
+        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
         this.printService = new PrintService();
         this.loadStock();
 
