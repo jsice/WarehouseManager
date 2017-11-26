@@ -93,6 +93,8 @@ public class ReportController {
                 pieChartData = FXCollections.observableArrayList();
                 chart = new PieChart(pieChartData);
                 ((PieChart) chart).setStartAngle(90);
+                chart.setScaleX(0.9);
+                chart.setScaleY(0.9);
                 break;
             case "Line chart":
                 break;
