@@ -11,7 +11,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import ku.cs.duckdealer.models.*;
+import ku.cs.duckdealer.models.Product;
+import ku.cs.duckdealer.models.Sales;
+import ku.cs.duckdealer.models.SalesItem;
+import ku.cs.duckdealer.models.StockedProduct;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,13 +43,12 @@ public class ReportController {
     private ObservableList<PieChart.Data> pieChartData;
     private Chart chart;
     private ArrayList<Sales> allSales;
+    private ArrayList<StockedProduct> allStockedProducts;
     private HashMap<String, Double> allItemPrice;
     private HashMap<String, Integer> allItemQuantity;
     private HashMap<String, String> idMapping;
     private ToggleGroup groupA;
     private ToggleGroup groupB;
-
-    private ArrayList<StockedProduct> allStockedProducts;
 
     @FXML
     public void initialize() {
@@ -107,7 +109,7 @@ public class ReportController {
         }
     }
 
-    private void loadData() {
+    private void loadSalesData() {
         for (Sales sale : allSales
                 ) {
             for (SalesItem item : sale.getItems()
@@ -116,7 +118,6 @@ public class ReportController {
                     allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
                     allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
                     System.out.println(item.getName() + " --------- " + allItemPrice.get(item.getID()));
-
 
                 } else {
                     idMapping.put(item.getID(), item.getName());
@@ -150,7 +151,7 @@ public class ReportController {
         }
     }
 
-    private void loadData(String dateFrom, String dateTo) {
+    private void loadSalesData(String dateFrom, String dateTo) {
         for (Sales sale : allSales
                 ) {
             for (SalesItem item : sale.getItems()
@@ -168,7 +169,7 @@ public class ReportController {
         }
     }
 
-    private void loadPieData() {
+    private void loadPieSalesData() {
         pieChartData.clear();
         for (String id : allItemPrice.keySet()
                 ) {
@@ -176,7 +177,7 @@ public class ReportController {
         }
     }
 
-    private void loadDataToTable() {
+    private void loadSalesDataToTable() {
         ObservableList<ReportData> temp = FXCollections.observableArrayList();
         ArrayList<ReportData> temp2 = new ArrayList<>();
         for (String id : idMapping.keySet()
@@ -214,21 +215,28 @@ public class ReportController {
     private void loadStockData() {
         for (StockedProduct prod : allStockedProducts
                 ) {
-                Product product = prod.getProduct();
-                if (idMapping.containsKey(product.getID())) {
-                    allItemPrice.put(product.getID(), allItemPrice.get(product.getID()) + product.getPrice());
-                    allItemQuantity.put(product.getID(), allItemQuantity.get(product.getID()) + prod.getQuantity());
-                    System.out.println(product.getName() + " --------- " + allItemPrice.get(product.getID()));
+            Product product = prod.getProduct();
+            if (idMapping.containsKey(product.getID())) {
+                allItemPrice.put(product.getID(), allItemPrice.get(product.getID()) + product.getPrice());
+                allItemQuantity.put(product.getID(), allItemQuantity.get(product.getID()) + prod.getQuantity());
+                System.out.println(product.getName() + " --------- " + allItemPrice.get(product.getID()));
 
-                } else {
-                    idMapping.put(product.getID(), product.getName());
-                    allItemPrice.put(product.getID(), product.getPrice());
-                    allItemQuantity.put(product.getID(), prod.getQuantity());
-                }
+            } else {
+                idMapping.put(product.getID(), product.getName());
+                allItemPrice.put(product.getID(), product.getPrice());
+                allItemQuantity.put(product.getID(), prod.getQuantity());
+            }
 
         }
     }
 
+    private void loadStockDataToTable() {
+
+    }
+
+    private void loadPieStockData() {
+
+    }
 
     public void showData() {
         allItemPrice.clear();
@@ -240,21 +248,18 @@ public class ReportController {
             chart.setLegendSide(Side.RIGHT);
             allStockedProducts = mainCtrl.getProductService().getAll();
             loadStockData();
-            loadDataToTable();
-            loadPieData();
+            loadStockDataToTable();
+            loadPieStockData();
             displayChartTab.setContent(chart);
 
-        }
-        else {
-
+        } else {
+            allSales = mainCtrl.getSalesService().getAll();
             chart.setTitle("DUCK DEALER'S SALE REPORT");
             chart.setLegendSide(Side.RIGHT);
+            loadSalesData();
+            loadSalesDataToTable();
+            loadPieSalesData();
 
-            allSales = mainCtrl.getSalesService().getAll();
-//        System.out.println(groupA.getSelectedToggle().getClass());
-            loadData();
-            loadDataToTable();
-            loadPieData();
 
             displayChartTab.setContent(chart);
         }
