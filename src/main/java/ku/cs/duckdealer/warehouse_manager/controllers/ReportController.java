@@ -74,15 +74,14 @@ public class ReportController {
             setDateSelectingVisible(newValue);
         });
 
-
         allItemPrice = new HashMap<>();
         allItemQuantity = new HashMap<>();
         idMapping = new HashMap<>();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("worth"));
-        worthColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        worthColumn.setCellValueFactory(new PropertyValueFactory<>("worth"));
 
         gridDateOption.getChildren().clear();
     }
@@ -113,6 +112,8 @@ public class ReportController {
                 if (idMapping.containsKey(item.getID())) {
                     allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
                     allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
+                    System.out.println(item.getName() + " --------- " + allItemPrice.get(item.getID()));
+
 
                 } else {
                     idMapping.put(item.getID(), item.getName());
@@ -165,6 +166,7 @@ public class ReportController {
     }
 
     private void loadPieData() {
+        pieChartData.clear();
         for (String id : allItemPrice.keySet()
                 ) {
             pieChartData.add(new PieChart.Data(idMapping.get(id), allItemPrice.get(id)));
@@ -176,6 +178,7 @@ public class ReportController {
         ArrayList<ReportData> temp2 = new ArrayList<>();
         for (String id : idMapping.keySet()
                 ) {
+            System.out.println(id + " " + idMapping.get(id) + " " + allItemQuantity.get(id) + " " + allItemPrice.get(id));
             temp2.add(new ReportData(id, idMapping.get(id), allItemQuantity.get(id), allItemPrice.get(id)));
         }
         temp.setAll(temp2);
