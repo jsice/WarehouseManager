@@ -27,7 +27,7 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
         HashMap<Integer, Sales> salesMap = new HashMap<>();
         try {
             connect();
-            String sql = "select * from (sales natural join sales_detail left join (select product_id, name from product) as alias1)";
+            String sql = "select * from (sales natural join sales_detail left join (select product_id, name from product) as alias1 using (product_id))";
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(sql);
             while (result.next()) {
@@ -37,7 +37,7 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
                 String product_id = result.getString(3);
                 int qty = result.getInt(4);
                 double price = result.getDouble(5);
-                String product_name = result.getString(7);
+                String product_name = result.getString(6);
                 Product product = new Product(product_id, product_name, price);
                 Sales sales;
                 if (salesMap.containsKey(sales_id)){
