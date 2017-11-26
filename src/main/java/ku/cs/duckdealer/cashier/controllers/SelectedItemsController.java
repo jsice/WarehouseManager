@@ -135,11 +135,10 @@ public class SelectedItemsController {
             return;
         }
         this.register.getCurrentSales().setDate(new GregorianCalendar());
-
-//        mainCtrl.getSalesService().add(this.register.getCurrentSales());
-//        for (SalesItem item: this.register.getCurrentSales().getItems()) {
-//            mainCtrl.getProductService().update(this.register.getStock().getProduct(item.getID()));
-//        }
+        mainCtrl.getSalesService().add(this.register.getCurrentSales());
+        for (SalesItem item: this.register.getCurrentSales().getItems()) {
+            mainCtrl.getProductService().update(this.register.getStock().getProduct(item.getID()));
+        }
         Node receipt = this.createReceipt(money);
         Stage stage = new Stage();
         Scene scene = new Scene((Parent) receipt);
