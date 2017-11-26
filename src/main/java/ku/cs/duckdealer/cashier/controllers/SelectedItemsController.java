@@ -1,5 +1,6 @@
 package ku.cs.duckdealer.cashier.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -78,12 +80,33 @@ public class SelectedItemsController {
             productPrice.setPrefWidth(145);
             productPrice.setPrefHeight(33);
             productPrice.setAlignment(Pos.CENTER_RIGHT);
+            Button btnRemove = new Button("X");
+            btnRemove.setOnMouseClicked(event -> {
+                TextInputDialog dialog = new TextInputDialog("1");
+                dialog.setTitle("Remove Item: " + item.getName());
+                dialog.setHeaderText("Current amount is " + item.getQuantity() + ".");
+                dialog.setContentText("How many items do you want to remove? ");
+                dialog.setResizable(false);
+                dialog.initOwner(this.beforeVatLabel.getScene().getWindow());
+                Optional<String> result = dialog.showAndWait();
+                String value = result.get();
+                int amount = Integer.parseInt(value);
+                if (amount >= item.getQuantity()) {
+                    register.getCurrentSales().removeItem(item.getID(), amount);
+                } else {
+                    register.getCurrentSales().removeItem(item.getID(), amount);
+                }
+                showItems();
+            });
+            btnRemove.setPrefWidth(34);
+            btnRemove.setPrefHeight(33);
             labels.add(productName);
             labels.add(productQuantity);
             labels.add(productPrice);
             itemsList.add(productName, 0, row);
             itemsList.add(productQuantity, 1, row);
             itemsList.add(productPrice, 2, row);
+            itemsList.add(btnRemove, 3, row);
             row++;
         }
 

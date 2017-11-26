@@ -50,13 +50,13 @@ public class Sales {
         return quantity;
     }
 
-    public void removeItem(Product prd, int qty) {
-        if (items.containsKey(prd.getID())) {
-            SalesItem item = items.get(prd.getID());
+    public void removeItem(String productID, int qty) {
+        if (items.containsKey(productID)) {
+            SalesItem item = items.get(productID);
             if (item.getQuantity() > qty) {
                 item.setQuantity(item.getQuantity() - qty);
             } else if (item.getQuantity() == qty) {
-                items.remove(prd.getID());
+                items.remove(productID);
                 itemList.remove(item);
             }
         }

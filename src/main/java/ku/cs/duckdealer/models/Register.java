@@ -49,7 +49,7 @@ public class Register {
     public void removeCurrentSalesItem(SalesItem item, int qty) {
         StockedProduct sprd = this.stock.getProduct(item.getID());
         sprd.setQuantity(sprd.getQuantity() + item.getQuantity());
-        currentSales.removeItem(sprd.getProduct(), qty);
+        currentSales.removeItem(item.getID(), qty);
     }
 
     public void removeCurrentSalesItem(SalesItem item) {
