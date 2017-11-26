@@ -13,7 +13,7 @@ public class SalesItem {
         this.quantity = qty;
     }
 
-    double getSubTotal() {
+    public double getSubTotal() {
         return this.price * this.quantity;
     }
 

@@ -10,7 +10,7 @@ public class Sales {
     private ArrayList<SalesItem> itemList;
 
     public Sales() {
-        this.date = new GregorianCalendar();
+//        this.date = new GregorianCalendar();
         this.items = new HashMap<>();
         this.itemList = new ArrayList<>();
     }
@@ -76,5 +76,9 @@ public class Sales {
 
     public Calendar getDate() {
         return date;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
     }
 }

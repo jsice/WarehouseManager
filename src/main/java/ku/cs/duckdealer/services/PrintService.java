@@ -1,14 +1,17 @@
 package ku.cs.duckdealer.services;
 
-import javafx.print.PrinterJob;
+import com.sun.javafx.print.PrintHelper;
+import com.sun.javafx.print.Units;
+import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.transform.Scale;
 
 public class PrintService {
 
     public void print(Node node, double width, double height) {
+        Printer printer = Printer.getDefaultPrinter();
         PrinterJob job = PrinterJob.createPrinterJob();
-//        job.setPrinter(printer);
+        job.setPrinter(printer);
         double scaleX = width / node.getBoundsInParent().getWidth();
         double scaleY = height / node.getBoundsInParent().getHeight();
         Scale scale = new Scale(scaleX, scaleY);

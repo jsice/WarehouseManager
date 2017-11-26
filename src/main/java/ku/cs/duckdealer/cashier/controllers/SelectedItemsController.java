@@ -1,23 +1,28 @@
 package ku.cs.duckdealer.cashier.controllers;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import ku.cs.duckdealer.models.Product;
 import ku.cs.duckdealer.models.Register;
 import ku.cs.duckdealer.models.SalesItem;
 import ku.cs.duckdealer.models.StockedProduct;
 import ku.cs.duckdealer.services.PrintService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SelectedItemsController {
 
@@ -129,14 +134,113 @@ public class SelectedItemsController {
             alert.showAndWait();
             return;
         }
-//        Node receipt = this.register.getReceiptFromCurrentSales();
-//        mainCtrl.getPrintService().print(receipt, receipt.getBoundsInParent().getWidth(), receipt.getBoundsInParent().getHeight());
-        mainCtrl.getSalesService().add(this.register.getCurrentSales());
-        for (SalesItem item: this.register.getCurrentSales().getItems()) {
-            mainCtrl.getProductService().update(this.register.getStock().getProduct(item.getID()));
-        }
+        this.register.getCurrentSales().setDate(new GregorianCalendar());
+
+//        mainCtrl.getSalesService().add(this.register.getCurrentSales());
+//        for (SalesItem item: this.register.getCurrentSales().getItems()) {
+//            mainCtrl.getProductService().update(this.register.getStock().getProduct(item.getID()));
+//        }
+        Node receipt = this.createReceipt(money);
+        Stage stage = new Stage();
+        Scene scene = new Scene((Parent) receipt);
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initOwner(this.beforeVatLabel.getScene().getWindow());
+        stage.show();
+        stage.hide();
+        double receiptWidth = ((GridPane) receipt).getWidth();
+        double receiptHeight = ((GridPane) receipt).getHeight();
+        double width = 200;
+        double height = receiptHeight/receiptWidth*width;
+        mainCtrl.getPrintService().print(receipt, width, height);
         this.register.endSales();
         this.showItems();
+    }
+
+    private Node createReceipt(double payment) {
+        String separator = "---------------------------------------------------";
+        GridPane receipt = new GridPane();
+        receipt.getColumnConstraints().add(new ColumnConstraints(100));
+        receipt.getColumnConstraints().add(new ColumnConstraints(100));
+        receipt.getColumnConstraints().add(new ColumnConstraints(100));
+        receipt.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        receipt.setAlignment(Pos.CENTER);
+        receipt.setHgap(5);
+        receipt.setVgap(5);
+        receipt.setPadding(new Insets(10, 10, 10, 10));
+        Label storeNameLabel = new Label(this.register.getStoreName());
+        storeNameLabel.setPrefWidth(300);
+        storeNameLabel.setAlignment(Pos.CENTER);
+        receipt.add(storeNameLabel,0, 0, 3, 1);
+        Calendar date = this.register.getCurrentSales().getDate();
+        Label dateLabel = new Label(String.format("Date: %02d/%02d/%d   %02d:%02d", date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH), date.get(Calendar.YEAR), date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE)));
+        receipt.add(dateLabel, 0, 1, 3, 1);
+        Label orderIDLabel = new Label("Order ID: " + this.register.getCurrentSales().getID());
+        receipt.add(orderIDLabel, 0, 2, 3, 1);
+        Label itemsLabel = new Label("Items");
+        itemsLabel.setPrefWidth(200);
+        itemsLabel.setAlignment(Pos.CENTER);
+        receipt.add(itemsLabel, 0, 4, 2, 1);
+        Label priceLabel = new Label("Price");
+        priceLabel.setPrefWidth(100);
+        priceLabel.setAlignment(Pos.CENTER);
+        receipt.add(priceLabel, 2, 4);
+        receipt.add(new Label(separator), 0, 5, 3, 1);
+        int row = 6;
+        int quantity = this.register.getCurrentSales().getQuantity();
+        int padding = String.valueOf(quantity).length();
+        for (SalesItem item: this.register.getCurrentSales().getItems()) {
+            Label itemInfoLabel = new Label(String.format("%" + padding + "d %s", item.getQuantity(), item.getName()));
+            Label itemPriceLabel = new Label(String.format("%.2f", item.getSubTotal()));
+            itemPriceLabel.setAlignment(Pos.CENTER_RIGHT);
+            itemPriceLabel.setPrefWidth(100);
+            receipt.add(itemInfoLabel, 0, row, 2, 1);
+            receipt.add(itemPriceLabel, 2, row);
+            row++;
+        }
+        receipt.add(new Label(separator), 0, row++, 3, 1);
+        receipt.add(new Label(String.format("%"+padding+"d items", quantity)), 0, row++, 3, 1);
+        receipt.add(new Label("Total"), 0, row, 2, 1);
+        Label totalLabel = new Label(String.format("%.2f", this.register.getBeforeVatFromCurrentSales()));
+        totalLabel.setPrefWidth(100);
+        totalLabel.setAlignment(Pos.CENTER_RIGHT);
+        receipt.add(totalLabel, 2, row++);
+        receipt.add(new Label("VAT " + this.register.getVat() + "%"), 0, row, 2, 1);
+        Label vatLabel = new Label(String.format("%.2f", this.register.getVatFromCurrentSales()));
+        vatLabel.setAlignment(Pos.CENTER_RIGHT);
+        vatLabel.setPrefWidth(100);
+        receipt.add(vatLabel, 2, row++);
+        Label grandTotal = new Label("Grand Total");
+        Font oldFont = grandTotal.getFont();
+        Font newFont = Font.font(oldFont.getFamily(), FontWeight.BOLD, oldFont.getSize() + 2);
+        grandTotal.setFont(newFont);
+        receipt.add(grandTotal, 0, row, 2, 1);
+        Label grandTotalLabel = new Label(String.format("%.2f", this.register.getTotalFromCurrentSales()));
+        grandTotalLabel.setPrefWidth(100);
+        grandTotalLabel.setAlignment(Pos.CENTER_RIGHT);
+        grandTotalLabel.setFont(newFont);
+        receipt.add(grandTotalLabel, 2, row++);
+        receipt.add(new Label(separator), 0, row++, 3, 1);
+        receipt.add(new Label("Received"), 0, row, 2, 1);
+        Label receivedLabel = new Label(String.format("%.2f", payment));
+        receivedLabel.setPrefWidth(100);
+        receivedLabel.setAlignment(Pos.CENTER_RIGHT);
+        receipt.add(receivedLabel, 2, row++);
+        receipt.add(new Label("Change"), 0, row, 2, 1);
+        Label changeLabel = new Label(String.format("%.2f", payment - this.register.getTotalFromCurrentSales()));
+        changeLabel.setPrefWidth(100);
+        changeLabel.setAlignment(Pos.CENTER_RIGHT);
+        receipt.add(changeLabel, 2, row++);
+        receipt.add(new Label(separator), 0, row++, 3, 1);
+        Label thankyouLabel = new Label("Thank you.");
+        thankyouLabel.setPrefWidth(300);
+        thankyouLabel.setAlignment(Pos.CENTER);
+        receipt.add(thankyouLabel, 0, row++, 3, 1);
+        Label pleaseLabel = new Label("Please come back again.");
+        pleaseLabel.setPrefWidth(300);
+        pleaseLabel.setAlignment(Pos.CENTER);
+        receipt.add(pleaseLabel, 0, row, 3, 1);
+        return receipt;
     }
 
     public Pane getMainPane() {

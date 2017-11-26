@@ -16,8 +16,8 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
     @Override
     List<String> getCreateTableQueries() {
         List<String> queries = new ArrayList<>();
-        queries.add("CREATE TABLE sales (sales_id integer primary key /*!40101 AUTO_INCREMENT */, date date not null )");
-        queries.add("CREATE TABLE sales_detail ( `sales_id` int NOT NULL, `item` text NOT NULL, `quantity` int ( 11 ) NOT NULL, `price` double NOT NULL )");
+        queries.add("CREATE TABLE sales (sales_id integer primary key /*!40101 AUTO_INCREMENT */, date text not null )");
+        queries.add("CREATE TABLE sales_detail ( `sales_id` int NOT NULL, `product_id` varchar(8) NOT NULL, `quantity` int ( 11 ) NOT NULL, `price` double NOT NULL )");
         return queries;
     }
 
@@ -27,13 +27,13 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
         HashMap<Integer, Sales> salesMap = new HashMap<>();
         try {
             connect();
-            String sql = "select * from (sales natural join sales_detail left join (select product_id, name from product) as alias1 on (item = product_id))";
+            String sql = "select * from (sales natural join sales_detail left join (select product_id, name from product) as alias1)";
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(sql);
             while (result.next()) {
                 int sales_id = result.getInt(1);
                 String[] date_str = result.getString(2).split("-");
-                Calendar date = new GregorianCalendar(Integer.parseInt(date_str[0]), Integer.parseInt(date_str[1]), Integer.parseInt(date_str[2]));
+                Calendar date = new GregorianCalendar(Integer.parseInt(date_str[0]), Integer.parseInt(date_str[1]), Integer.parseInt(date_str[2]), Integer.parseInt(date_str[3]), Integer.parseInt(date_str[4]));
                 String product_id = result.getString(3);
                 int qty = result.getInt(4);
                 double price = result.getDouble(5);
@@ -69,7 +69,7 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
         try {
             connect();
             Calendar date = data.getDate();
-            String query = String.format("insert into sales (date) values ('%s')", String.format("%d-%d-%d", date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH)));
+            String query = String.format("insert into sales (date) values ('%s')", String.format("%d-%d-%d-%d-%d", date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1, date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE)));
             Statement statement = conn.createStatement();
             statement.execute(query);
             query = "SELECT max(sales_id) FROM sales";
