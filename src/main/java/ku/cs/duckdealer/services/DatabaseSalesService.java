@@ -27,17 +27,17 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
         HashMap<Integer, Sales> salesMap = new HashMap<>();
         try {
             connect();
-            String sql = "select * from (sales natural join sales_detail left join (select product_id, name from product) as alias1 on (item = product_id))";
+            String sql = "select * from (sales natural join sales_detail left join (select product_id, name from product) as alias1 using (product_id))";
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(sql);
             while (result.next()) {
-                int sales_id = result.getInt(1);
-                String[] date_str = result.getString(2).split("-");
+                int sales_id = result.getInt(2);
+                String[] date_str = result.getString(3).split("-");
                 Calendar date = new GregorianCalendar(Integer.parseInt(date_str[0]), Integer.parseInt(date_str[1]), Integer.parseInt(date_str[2]));
-                String product_id = result.getString(3);
+                String product_id = result.getString(1);
                 int qty = result.getInt(4);
                 double price = result.getDouble(5);
-                String product_name = result.getString(7);
+                String product_name = result.getString(6);
                 Product product = new Product(product_id, product_name, price);
                 Sales sales;
                 if (salesMap.containsKey(sales_id)){

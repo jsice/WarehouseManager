@@ -26,7 +26,7 @@ public class ReportController {
     @FXML
     private Tab displayChartTab;
     @FXML
-    private RadioButton radioDay, radioMonth, radioCustom;
+    private RadioButton radioStock, radioSales, radioDay, radioMonth, radioCustom;
     @FXML
     private Label selectDateLabel, fromLabel, toLabel;
     @FXML
@@ -44,26 +44,36 @@ public class ReportController {
     private HashMap<String, Double> allItemPrice;
     private HashMap<String, Integer> allItemQuantity;
     private HashMap<String, String> idMapping;
+    private ToggleGroup groupA;
+    private ToggleGroup groupB;
 
     @FXML
     public void initialize() {
 
-        ObservableList<String> reportType = FXCollections.observableArrayList("Pie chart",
+        ObservableList<String> chartType = FXCollections.observableArrayList("Pie chart",
                 "Bar chart",
                 "Line chart"
         );
-        reportPicker.setItems(reportType);
+        reportPicker.setItems(chartType);
         reportPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             selectChart(newValue.toString());
         });
 
-        ToggleGroup group = new ToggleGroup();
-        radioDay.setToggleGroup(group);
-        radioMonth.setToggleGroup(group);
-        radioCustom.setToggleGroup(group);
-        group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        groupA = new ToggleGroup();
+        radioStock.setToggleGroup(groupA);
+        radioSales.setToggleGroup(groupA);
+        groupA.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             setDateSelectingVisible(newValue);
         });
+
+        groupB = new ToggleGroup();
+        radioDay.setToggleGroup(groupB);
+        radioMonth.setToggleGroup(groupB);
+        radioCustom.setToggleGroup(groupB);
+        groupB.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            setDateSelectingVisible(newValue);
+        });
+
 
         allItemPrice = new HashMap<>();
         allItemQuantity = new HashMap<>();
@@ -96,6 +106,47 @@ public class ReportController {
     }
 
     private void loadData() {
+        for (Sales sale : allSales
+                ) {
+            for (SalesItem item : sale.getItems()
+                    ) {
+                if (idMapping.containsKey(item.getID())) {
+                    allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
+                    allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
+
+                } else {
+                    idMapping.put(item.getID(), item.getName());
+                    allItemPrice.put(item.getID(), item.getPrice());
+                    allItemQuantity.put(item.getID(), item.getQuantity());
+                }
+            }
+        }
+    }
+
+    private void loadData(String date) {
+        for (Sales sale : allSales
+                ) {
+            System.out.println("SALE DATE " + sale.getDate());
+            System.out.println("SELECTED DATE " + date);
+            if (sale.getDate().equals(date)) {
+
+                for (SalesItem item : sale.getItems()
+                        ) {
+                    if (idMapping.containsKey(item.getID())) {
+                        allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
+                        allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
+
+                    } else {
+                        idMapping.put(item.getID(), item.getName());
+                        allItemPrice.put(item.getID(), item.getPrice());
+                        allItemQuantity.put(item.getID(), item.getQuantity());
+                    }
+                }
+            }
+        }
+    }
+
+    private void loadData(String dateFrom, String dateTo) {
         for (Sales sale : allSales
                 ) {
             for (SalesItem item : sale.getItems()
@@ -163,6 +214,7 @@ public class ReportController {
         chart.setLegendSide(Side.RIGHT);
 
         allSales = mainCtrl.getSalesService().getAll();
+//        System.out.println(groupA.getSelectedToggle().getClass());
         loadData();
         loadDataToTable();
         loadPieData();
@@ -191,8 +243,8 @@ public class ReportController {
         public ReportData(String id, String name, int q, double w) {
             productID = new SimpleStringProperty(id);
             productName = new SimpleStringProperty(name);
-            quantity = new SimpleStringProperty(q+"");
-            worth = new SimpleStringProperty(w+"");
+            quantity = new SimpleStringProperty(q + "");
+            worth = new SimpleStringProperty(w + "");
         }
 
         public String getProductID() {
