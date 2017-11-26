@@ -31,10 +31,10 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(sql);
             while (result.next()) {
-                int sales_id = result.getInt(1);
-                String[] date_str = result.getString(2).split("-");
+                int sales_id = result.getInt(2);
+                String[] date_str = result.getString(3).split("-");
                 Calendar date = new GregorianCalendar(Integer.parseInt(date_str[0]), Integer.parseInt(date_str[1]), Integer.parseInt(date_str[2]), Integer.parseInt(date_str[3]), Integer.parseInt(date_str[4]));
-                String product_id = result.getString(3);
+                String product_id = result.getString(1);
                 int qty = result.getInt(4);
                 double price = result.getDouble(5);
                 String product_name = result.getString(6);
