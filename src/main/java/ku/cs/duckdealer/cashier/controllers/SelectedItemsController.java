@@ -89,14 +89,16 @@ public class SelectedItemsController {
                 dialog.setResizable(false);
                 dialog.initOwner(this.beforeVatLabel.getScene().getWindow());
                 Optional<String> result = dialog.showAndWait();
-                String value = result.get();
-                int amount = Integer.parseInt(value);
-                if (amount >= item.getQuantity()) {
-                    register.getCurrentSales().removeItem(item.getID(), amount);
-                } else {
-                    register.getCurrentSales().removeItem(item.getID(), amount);
+                if (result.isPresent()) {
+                    String value = result.get();
+                    int amount = Integer.parseInt(value);
+                    if (amount >= item.getQuantity()) {
+                        register.getCurrentSales().removeItem(item.getID(), amount);
+                    } else {
+                        register.getCurrentSales().removeItem(item.getID(), amount);
+                    }
+                    showItems();
                 }
-                showItems();
             });
             btnRemove.setPrefWidth(34);
             btnRemove.setPrefHeight(33);
@@ -134,6 +136,7 @@ public class SelectedItemsController {
         dialog.setResizable(false);
         dialog.initOwner(this.beforeVatLabel.getScene().getWindow());
         Optional<String> result = dialog.showAndWait();
+        if (!result.isPresent()) return;
         double netTotal = Double.parseDouble(this.netTotalLabel.getText());
         double money = Double.parseDouble(result.get());
         if (money == netTotal) {

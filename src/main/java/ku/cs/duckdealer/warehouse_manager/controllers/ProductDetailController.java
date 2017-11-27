@@ -22,9 +22,9 @@ public class ProductDetailController {
     @FXML
     private TextField nameField, priceField;
     @FXML
-    private Label remainAmountLabel, idLabel, incSpaceLabel, decSpaceLabel;
+    private Label remainAmountLabel, idLabel, incSpaceLabel, decSpaceLabel, nameLabel, priceLabel;
     @FXML
-    private Button btnIncrease, btnDecrease, btnEdit, btnOk, btnCancel;
+    private Button btnIncrease, btnDecrease, btnEdit, btnCancel, btnSave;
     @FXML
     private FlowPane amountArea;
 
@@ -36,21 +36,24 @@ public class ProductDetailController {
 
     @FXML
     private void initialize() {
-
-        this.nameField.setDisable(true);
-        this.priceField.setDisable(true);
+        this.nameField.setVisible(false);
+        this.priceField.setVisible(false);
+        this.nameLabel.setVisible(true);
+        this.priceLabel.setVisible(true);
 
         this.amountArea.getChildren().remove(this.btnDecrease);
         this.amountArea.getChildren().remove(this.decSpaceLabel);
         this.amountArea.getChildren().remove(this.remainAmountLabel);
         this.amountArea.getChildren().remove(this.incSpaceLabel);
         this.amountArea.getChildren().remove(this.btnIncrease);
-        this.btnOk.setVisible(false);
-        this.btnCancel.setVisible(false);
-        this.btnEdit.setVisible(false);
 
-        this.btnEdit.setText("edit");
-        this.isEditing = false;
+        this.btnSave.setVisible(false);
+        this.btnCancel.setVisible(false);
+        if (this.stockedProduct != null) {
+            this.btnEdit.setVisible(true);
+        } else {
+            this.btnEdit.setVisible(false);
+        }
 
         this.amountArea.getChildren().add(this.remainAmountLabel);
     }
@@ -58,58 +61,15 @@ public class ProductDetailController {
     public void setup(StockedProduct p) {
         this.stockedProduct = p;
         this.idLabel.setText(this.stockedProduct.getProduct().getID());
-        this.nameField.setEditable(false);
-        this.nameField.setText(this.stockedProduct.getProduct().getName());
-        this.priceField.setEditable(false);
-        this.priceField.setText(this.stockedProduct.getProduct().getPrice()+"");
+        this.nameLabel.setText(this.stockedProduct.getProduct().getName());
+        this.priceLabel.setText(this.stockedProduct.getProduct().getPrice()+"");
         this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
-
         initialize();
-        this.btnEdit.setVisible(true);
-        this.nameField.setDisable(false);
-        this.priceField.setDisable(false);
-
     }
 
-
-    public void toggleCreateMode(){
-        this.nameField.setDisable(false);
-        this.priceField.setDisable(false);
-
-        this.nameField.setEditable(true);
-        this.priceField.setEditable(true);
-        this.btnEdit.setVisible(false);
-        this.btnOk.setVisible(true);
-        this.btnCancel.setVisible(true);
-
-        this.nameField.clear();
-        this.priceField.clear();
-        this.idLabel.setText("undefined");
-        this.remainAmountLabel.setText("0");
-
+    public void cancel(){
+        initialize();
     }
-    public void createProduct(){
-        if (AuthenticationService.NOT_LOGGED_IN){
-            mainCtrl.login();
-        }
-        if (!AuthenticationService.NOT_LOGGED_IN){
-            if (!nameField.getText().equals("") && !priceField.getText().equals("")) {
-                stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
-                mainCtrl.getStock().newProduct(stockedProduct);
-                mainCtrl.getProductService().add(stockedProduct);
-                initialize();
-                mainCtrl.showProductDetail(stockedProduct);
-                mainCtrl.showAllProducts();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Failed to create product");
-                alert.setContentText("Please fill all product's detail");
-                alert.show();
-            }
-
-        }
-    }
-    public void cancel(){initialize();}
 
     public void updateAmount(ActionEvent event){
         if(stockedProduct != null){
@@ -191,41 +151,39 @@ public class ProductDetailController {
             }
         }
 
-        if (!isEditing) {
-            isEditing = !isEditing;
-            this.btnEdit.setText("done");
-            this.amountArea.getChildren().remove(this.remainAmountLabel);
-            this.amountArea.getChildren().add(this.btnDecrease);
-            this.amountArea.getChildren().add(this.decSpaceLabel);
-            this.amountArea.getChildren().add(this.remainAmountLabel);
-            this.amountArea.getChildren().add(this.incSpaceLabel);
-            this.amountArea.getChildren().add(this.btnIncrease);
-            if (AuthenticationService.LOGGED_IN_AS_OWNER) {
-                this.nameField.setEditable(true);
-                this.priceField.setEditable(true);
-            }
-
-
-        } else {
-            isEditing = !isEditing;
-            this.btnEdit.setText("edit");
-            this.amountArea.getChildren().remove(this.btnDecrease);
-            this.amountArea.getChildren().remove(this.decSpaceLabel);
-            this.amountArea.getChildren().remove(this.remainAmountLabel);
-            this.amountArea.getChildren().remove(this.incSpaceLabel);
-            this.amountArea.getChildren().remove(this.btnIncrease);
-            this.amountArea.getChildren().add(this.remainAmountLabel);
-            if (AuthenticationService.LOGGED_IN_AS_OWNER) {
-                stockedProduct.getProduct().setName(nameField.getText());
-                stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
-            }
-            this.stockedProduct.setQuantity(Integer.parseInt(this.remainAmountLabel.getText()));
-            this.nameField.setEditable(false);
-            this.priceField.setEditable(false);
-            mainCtrl.showFilteredProducts();
-            mainCtrl.showProductDetail(stockedProduct);
-            mainCtrl.getProductService().update(stockedProduct);
+        this.amountArea.getChildren().remove(this.remainAmountLabel);
+        this.amountArea.getChildren().add(this.btnDecrease);
+        this.amountArea.getChildren().add(this.decSpaceLabel);
+        this.amountArea.getChildren().add(this.remainAmountLabel);
+        this.amountArea.getChildren().add(this.incSpaceLabel);
+        this.amountArea.getChildren().add(this.btnIncrease);
+        this.btnEdit.setVisible(false);
+        this.btnSave.setVisible(true);
+        this.btnCancel.setVisible(true);
+        if (AuthenticationService.LOGGED_IN_AS_OWNER) {
+            this.nameLabel.setVisible(false);
+            this.priceLabel.setVisible(false);
+            this.nameField.setVisible(true);
+            this.priceField.setVisible(true);
         }
+    }
+    @FXML
+    private void save() {
+        if (AuthenticationService.NOT_LOGGED_IN) {
+            this.mainCtrl.login();
+            if (AuthenticationService.NOT_LOGGED_IN) {
+                return;
+            }
+        }
+        if (AuthenticationService.LOGGED_IN_AS_OWNER) {
+            stockedProduct.getProduct().setName(nameField.getText());
+            stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
+        }
+        this.stockedProduct.setQuantity(Integer.parseInt(this.remainAmountLabel.getText()));
+        mainCtrl.showFilteredProducts();
+//        mainCtrl.showProductDetail(stockedProduct);
+        mainCtrl.getProductService().update(stockedProduct);
+        initialize();
     }
 
     public BorderPane getMainPane() {

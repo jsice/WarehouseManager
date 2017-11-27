@@ -18,7 +18,6 @@ public class StockListController {
 
     private Pane mainPane;
     private ArrayList<StockedProduct> stockedProducts;
-    private ArrayList<Label> labels;
     private MainController mainCtrl;
     private String searchText;
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
@@ -26,7 +25,7 @@ public class StockListController {
     private StockedProduct selectedProduct;
     private Comparator<StockedProduct> selectedComparator;
     private Map<Label, Comparator<StockedProduct>[]> comparatorMap;
-    private BackgroundFill selectedBackgroundFill;
+    private BackgroundFill selectedBackgroundFill, unselectedBackgroundFill;
     @FXML
     private Label idLabel, nameLabel, priceLabel, qtyLabel;
     @FXML
@@ -40,9 +39,9 @@ public class StockListController {
     @FXML
     private void initialize() {
         this.stockedProducts = new ArrayList<>();
-        labels = new ArrayList<>();
         searchText = "";
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
+        unselectedBackgroundFill = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
         filterComboBox.getItems().addAll("ID", "Name");
         filterComboBox.getSelectionModel().select(0);
 
@@ -150,10 +149,10 @@ public class StockListController {
 
     private void setSelectedLabel(Label id, Label name, Label price, Label amount) {
         if (selectedID != null) {
-            selectedID.setBackground(null);
-            selectedName.setBackground(null);
-            selectedPrice.setBackground(null);
-            selectedAmount.setBackground(null);
+            selectedID.setBackground(new Background(unselectedBackgroundFill));
+            selectedName.setBackground(new Background(unselectedBackgroundFill));
+            selectedPrice.setBackground(new Background(unselectedBackgroundFill));
+            selectedAmount.setBackground(new Background(unselectedBackgroundFill));
         }
         selectedID = id;
         selectedName = name;
@@ -205,10 +204,11 @@ public class StockListController {
             price.setOnMouseClicked(productLabelEventHandler);
             amount.setOnMouseClicked(productLabelEventHandler);
 
-            this.labels.add(id);
-            this.labels.add(name);
-            this.labels.add(price);
-            this.labels.add(amount);
+            id.setBackground(new Background(unselectedBackgroundFill));
+            name.setBackground(new Background(unselectedBackgroundFill));
+            price.setBackground(new Background(unselectedBackgroundFill));
+            amount.setBackground(new Background(unselectedBackgroundFill));
+
             this.innerTableGrid.add(id, 0, row);
             this.innerTableGrid.add(name, 1, row);
             this.innerTableGrid.add(price, 2, row);
