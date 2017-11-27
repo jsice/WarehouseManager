@@ -50,6 +50,7 @@ public class ReportController {
     private Chart chart;
     private ArrayList<Sales> allSales;
     private ArrayList<StockedProduct> allStockedProducts;
+    private ArrayList<ProductMovement> allProductMovement;
     private HashMap<String, Double> allItemPrice;
     private HashMap<String, Integer> allItemQuantity;
     private HashMap<String, String> idMapping;

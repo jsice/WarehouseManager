@@ -171,11 +171,16 @@
                       </TitledPane>
                     </panes>
                   </Accordion>
-                  <Button mnemonicParsing="false" onAction="#showData" prefHeight="92.0" prefWidth="138.0" text="Submit" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Button>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                     <children>
+                        <Button layoutX="42.0" layoutY="54.0" mnemonicParsing="false" onAction="#showData" prefHeight="92.0" prefWidth="138.0" text="Submit" textAlignment="CENTER">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="printButton" layoutX="180.0" layoutY="86.0" mnemonicParsing="false" onAction="#print" prefHeight="60.0" prefWidth="60.0" />
+                     </children>
+                  </AnchorPane>
                </children>
             </GridPane>
          </children>
