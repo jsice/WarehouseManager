@@ -43,7 +43,8 @@ public class StockListController {
 
     @FXML
     private void initialize() {
-
+        Image refreshImage = new Image(getClass().getResourceAsStream("/assets/refresh.png"));
+        refreshButton.setGraphic(new ImageView(refreshImage));
         this.stockedProducts = new ArrayList<>();
         searchText = "";
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
