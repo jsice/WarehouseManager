@@ -17,6 +17,8 @@ import ku.cs.duckdealer.models.SalesItem;
 import ku.cs.duckdealer.models.StockedProduct;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class ReportController {
@@ -65,9 +67,6 @@ public class ReportController {
         groupA = new ToggleGroup();
         radioStock.setToggleGroup(groupA);
         radioSales.setToggleGroup(groupA);
-        groupA.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            setDateSelectingVisible(newValue);
-        });
 
         groupB = new ToggleGroup();
         radioDay.setToggleGroup(groupB);
@@ -109,62 +108,42 @@ public class ReportController {
         }
     }
 
-    private void loadSalesData() {
+    private void loadSalesData(Calendar date, String condition) {
         for (Sales sale : allSales
                 ) {
-            for (SalesItem item : sale.getItems()
-                    ) {
-                if (idMapping.containsKey(item.getID())) {
-                    allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
-                    allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
-                    System.out.println(item.getName() + " --------- " + allItemPrice.get(item.getID()));
 
-                } else {
-                    idMapping.put(item.getID(), item.getName());
-                    allItemPrice.put(item.getID(), item.getPrice());
-                    allItemQuantity.put(item.getID(), item.getQuantity());
+            if (date.get(0) == sale.getDate().get(0) && date.get(1) == sale.getDate().get(1)) {
+                if (condition.equals("day") && date.get(2) == sale.getDate().get(2)) {
+                    loadSalesDataHelper(sale);
+                    return;
                 }
+                loadSalesDataHelper(sale);
+            }
+
+        }
+    }
+
+
+    private void loadSalesData(Calendar dateFrom, Calendar dateTo) {
+        for (Sales sale : allSales
+                ) {
+            if (dateFrom.before(sale.getDate()) && dateTo.after(sale.getDate())) {
+                loadSalesDataHelper(sale);
             }
         }
     }
 
-    private void loadData(String date) {
-        for (Sales sale : allSales
+    private void loadSalesDataHelper(Sales sale) {
+        for (SalesItem item : sale.getItems()
                 ) {
-            System.out.println("SALE DATE " + sale.getDate());
-            System.out.println("SELECTED DATE " + date);
-            if (sale.getDate().equals(date)) {
+            if (idMapping.containsKey(item.getID())) {
+                allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
+                allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
 
-                for (SalesItem item : sale.getItems()
-                        ) {
-                    if (idMapping.containsKey(item.getID())) {
-                        allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
-                        allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
-
-                    } else {
-                        idMapping.put(item.getID(), item.getName());
-                        allItemPrice.put(item.getID(), item.getPrice());
-                        allItemQuantity.put(item.getID(), item.getQuantity());
-                    }
-                }
-            }
-        }
-    }
-
-    private void loadSalesData(String dateFrom, String dateTo) {
-        for (Sales sale : allSales
-                ) {
-            for (SalesItem item : sale.getItems()
-                    ) {
-                if (idMapping.containsKey(item.getID())) {
-                    allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
-                    allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
-
-                } else {
-                    idMapping.put(item.getID(), item.getName());
-                    allItemPrice.put(item.getID(), item.getPrice());
-                    allItemQuantity.put(item.getID(), item.getQuantity());
-                }
+            } else {
+                idMapping.put(item.getID(), item.getName());
+                allItemPrice.put(item.getID(), item.getPrice());
+                allItemQuantity.put(item.getID(), item.getQuantity());
             }
         }
     }
@@ -182,7 +161,6 @@ public class ReportController {
         ArrayList<ReportData> temp2 = new ArrayList<>();
         for (String id : idMapping.keySet()
                 ) {
-            System.out.println(id + " " + idMapping.get(id) + " " + allItemQuantity.get(id) + " " + allItemPrice.get(id));
             temp2.add(new ReportData(id, idMapping.get(id), allItemQuantity.get(id), allItemPrice.get(id)));
         }
         temp.setAll(temp2);
@@ -256,10 +234,29 @@ public class ReportController {
             allSales = mainCtrl.getSalesService().getAll();
             chart.setTitle("DUCK DEALER'S SALE REPORT");
             chart.setLegendSide(Side.RIGHT);
-            loadSalesData();
+            if (radioCustom.isSelected()) {
+                Calendar temp1 = new GregorianCalendar();
+                Calendar temp2 = new GregorianCalendar();
+                String[] temp3 = fromPicker.getValue().toString().split("-");
+                temp1.set(Integer.valueOf(temp3[0]), Integer.valueOf(temp3[1]) - 1, Integer.valueOf(temp3[2]));
+                temp3 = toPicker.getValue().toString().split("-");
+                temp2.set(Integer.valueOf(temp3[0]), Integer.valueOf(temp3[1]) - 1, Integer.valueOf(temp3[2]));
+
+                loadSalesData(temp1, temp2);
+            } else {
+                Calendar temp1 = new GregorianCalendar();
+                String[] temp3 = fromPicker.getValue().toString().split("-");
+                temp1.set(Integer.valueOf(temp3[0]), Integer.valueOf(temp3[1]) - 1, Integer.valueOf(temp3[2]));
+                String condition = "";
+                if (radioDay.isSelected()) {
+                    condition = "day";
+                } else {
+                    condition = "month";
+                }
+                loadSalesData(temp1, condition);
+            }
             loadSalesDataToTable();
             loadPieSalesData();
-
 
             displayChartTab.setContent(chart);
         }
