@@ -32,6 +32,7 @@ public class MainController {
     private AuthenticationService authenticationService;
     private StockListController stockListCtrl;
     private ProductDetailController productDetailCtrl;
+    private NewProductController newProductCtrl;
     private ReportController reportCtrl;
     private Stock stock;
 
@@ -42,10 +43,10 @@ public class MainController {
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.stage = stage;
-        this.productService = new DatabaseProductService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
-        this.salesService = new DatabaseSalesService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
-//        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
-//        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
+//        this.productService = new DatabaseProductService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+//        this.salesService = new DatabaseSalesService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
+        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
         this.stock = new Stock();
         this.authenticationService = new AuthenticationService();
 
@@ -91,6 +92,12 @@ public class MainController {
         this.productDetailCtrl = productDetailPaneLoader.getController();
         this.productDetailCtrl.setMainPane(productDetailPane);
         this.productDetailCtrl.setMainCtrl(this);
+
+        FXMLLoader newProductPaneLoader = new FXMLLoader(getClass().getResource("/fxml/warehouse/newProduct.fxml"));
+        BorderPane newProductPane = newProductPaneLoader.load();
+        this.newProductCtrl = newProductPaneLoader.getController();
+        this.newProductCtrl.setMainPane(newProductPane);
+        this.newProductCtrl.setMainCtrl(this);
 
         FXMLLoader reportPaneLoader = new FXMLLoader(getClass().getResource("/fxml/warehouse/reportInWarehouse.fxml"));
         this.reportPane = reportPaneLoader.load();
@@ -139,6 +146,9 @@ public class MainController {
     }
 
     public void showProductDetail(StockedProduct stockedProduct) {
+        this.mainPaneCtrl.getRightPane().getChildren().remove(this.newProductCtrl.getMainPane());
+        this.mainPaneCtrl.getRightPane().getChildren().remove(this.productDetailCtrl.getMainPane());
+        this.mainPaneCtrl.getRightPane().getChildren().add(this.productDetailCtrl.getMainPane());
         this.stockListCtrl.setSelectedProduct(stockedProduct);
         this.productDetailCtrl.setup(stockedProduct);
     }
@@ -152,7 +162,9 @@ public class MainController {
     }
 
     public void createProduct() {
-        productDetailCtrl.toggleCreateMode();
+        this.mainPaneCtrl.getRightPane().getChildren().remove(this.newProductCtrl.getMainPane());
+        this.mainPaneCtrl.getRightPane().getChildren().remove(this.productDetailCtrl.getMainPane());
+        this.mainPaneCtrl.getRightPane().getChildren().add(this.newProductCtrl.getMainPane());
     }
 
     public Stock getStock() {
