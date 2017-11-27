@@ -15,10 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import ku.cs.duckdealer.models.Product;
-import ku.cs.duckdealer.models.Sales;
-import ku.cs.duckdealer.models.SalesItem;
-import ku.cs.duckdealer.models.StockedProduct;
+import ku.cs.duckdealer.models.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +48,7 @@ public class ReportController {
     private Chart chart;
     private ArrayList<Sales> allSales;
     private ArrayList<StockedProduct> allStockedProducts;
+    private ArrayList<ProductMovement> allProductMovement;
     private HashMap<String, Double> allItemPrice;
     private HashMap<String, Integer> allItemQuantity;
     private HashMap<String, String> idMapping;
