@@ -3,19 +3,24 @@ package ku.cs.duckdealer.warehouse_manager.controllers;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import ku.cs.duckdealer.models.Product;
 import ku.cs.duckdealer.models.Sales;
 import ku.cs.duckdealer.models.SalesItem;
 import ku.cs.duckdealer.models.StockedProduct;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -120,7 +125,6 @@ public class ReportController {
         }
     }
 
-
     private void loadSalesData(Calendar dateFrom, Calendar dateTo) {
         for (Sales sale : allSales
                 ) {
@@ -134,7 +138,7 @@ public class ReportController {
         for (SalesItem item : sale.getItems()
                 ) {
             if (idMapping.containsKey(item.getID())) {
-                allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice());
+                allItemPrice.put(item.getID(), allItemPrice.get(item.getID()) + item.getPrice()*item.getQuantity());
                 allItemQuantity.put(item.getID(), allItemQuantity.get(item.getID()) + item.getQuantity());
 
             } else {
@@ -147,8 +151,9 @@ public class ReportController {
 
     private void loadPieSalesData() {
         pieChartData.clear();
-        chart.setTitle("DUCK DEALER'S SALE REPORT");
+        chart.setTitle("NUMBER OF SALES ITEM");
         chart.setLegendSide(Side.RIGHT);
+
         for (String id : allItemPrice.keySet()
                 ) {
             pieChartData.add(new PieChart.Data(idMapping.get(id), allItemPrice.get(id)));
@@ -226,6 +231,7 @@ public class ReportController {
 
             chart.setTitle("DUCK DEALER'S STOCK REPORT");
             chart.setLegendSide(Side.RIGHT);
+
             allStockedProducts = mainCtrl.getProductService().getAll();
             loadStockData();
             loadStockDataToTable();
@@ -233,6 +239,7 @@ public class ReportController {
             displayChartTab.setContent(chart);
 
         } else if (radioSales.isSelected() && !groupB.getSelectedToggle().equals(null)) {
+
             allSales = mainCtrl.getSalesService().getAll();
 
             reportRangeLabel.setVisible(true);
@@ -262,8 +269,7 @@ public class ReportController {
 
                     condition = "day";
                 } else {
-                    reportRange = "sales report on " + temp1.get(Calendar.MONTH) + " in " + temp1.get(Calendar.YEAR);
-
+                    reportRange = "sales report on " + new SimpleDateFormat("MMMM").format(temp1.getTime()) + " in " + temp1.get(Calendar.YEAR);
                     condition = "month";
                 }
                 loadSalesData(temp1, condition);
@@ -272,6 +278,23 @@ public class ReportController {
             }
             loadSalesDataToTable();
             loadPieSalesData();
+
+//            final Label caption = new Label("");
+//            caption.setTextFill(Color.DARKORANGE);
+//            caption.setStyle("-fx-font: 24 arial;");
+//
+//            for (final PieChart.Data data : ((PieChart)chart).getData()) {
+//                data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+//                        new EventHandler<MouseEvent>() {
+//                            @Override public void handle(MouseEvent e) {
+//                                System.out.println(e.getSceneX() + " " + e.getSceneY());
+//                                caption.setTranslateX(e.getSceneX());
+//                                caption.setTranslateY(e.getSceneY());
+//                                caption.setText(String.valueOf(data.getPieValue()) + "%");
+//                                caption.setContentDisplay(ContentDisplay.TOP);
+//                            }
+//                        });
+//            }
 
             displayChartTab.setContent(chart);
         }

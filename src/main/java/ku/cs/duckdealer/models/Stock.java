@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Stock {
 
     private ArrayList<StockedProduct> stockedProductList;
-    private int quantity;
 
     public Stock() {
         this.stockedProductList = new ArrayList<StockedProduct>();
@@ -13,7 +12,7 @@ public class Stock {
 
     public StockedProduct getProduct(String id) {
         StockedProduct StockedProduct = null;
-        for (StockedProduct prd: this.stockedProductList) {
+        for (StockedProduct prd : this.stockedProductList) {
             if (prd.getProduct().getID().equals(id)) {
                 StockedProduct = prd;
                 break;
@@ -30,7 +29,7 @@ public class Stock {
         return stockedProductList;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void clear() {
+        this.stockedProductList.clear();
     }
 }
