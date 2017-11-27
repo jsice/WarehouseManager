@@ -28,6 +28,7 @@ public class MainController {
     private Stock stock;
     private DatabaseProductService productService;
     private DatabaseSalesService salesService;
+    private DatabaseProductMovementService productMovementService;
 
     private MainPaneController mainPaneCtrl;
     private CashierItemListController cashierListCtrl;
@@ -45,6 +46,7 @@ public class MainController {
         this.register = new Register(this.stock, 7, "Duck Dealer");
         this.productService = new DatabaseProductService(dbURL, connector);
         this.salesService = new DatabaseSalesService(dbURL, connector);
+        this.productMovementService = new DatabaseProductMovementService(dbURL, connector);
         this.printService = new PrintService();
         this.loadStock();
 
@@ -157,5 +159,9 @@ public class MainController {
 
     public DatabaseProductService getProductService() {
         return productService;
+    }
+
+    public DatabaseProductMovementService getProductMovementService() {
+        return productMovementService;
     }
 }

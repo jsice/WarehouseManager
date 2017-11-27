@@ -5,7 +5,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import ku.cs.duckdealer.models.ProductMovement;
 import ku.cs.duckdealer.models.StockedProduct;
+
+import java.util.GregorianCalendar;
 
 
 public class NewProductController {
@@ -36,6 +39,8 @@ public class NewProductController {
                 stockedProduct = new StockedProduct(nameField.getText(), Double.parseDouble(priceField.getText()));
                 mainCtrl.getStock().newProduct(stockedProduct);
                 mainCtrl.getProductService().add(stockedProduct);
+                ProductMovement productMovement = new ProductMovement(stockedProduct.getProduct(), new GregorianCalendar(), false, 0, "Create");
+                mainCtrl.getProductMovementService().add(productMovement);
                 initialize();
                 mainCtrl.showProductDetail(stockedProduct);
                 mainCtrl.showAllProducts();

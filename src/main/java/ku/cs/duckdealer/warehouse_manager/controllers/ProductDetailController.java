@@ -13,9 +13,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ku.cs.duckdealer.models.ProductMovement;
 import ku.cs.duckdealer.models.StockedProduct;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class ProductDetailController {
 
@@ -30,9 +34,8 @@ public class ProductDetailController {
 
     private StockedProduct stockedProduct;
     private MainController mainCtrl;
-    private boolean isEditing = false;
     private BorderPane mainPane;
-    private Button source;
+    private List<ProductMovement> productMovementList = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -63,6 +66,8 @@ public class ProductDetailController {
         this.idLabel.setText(this.stockedProduct.getProduct().getID());
         this.nameLabel.setText(this.stockedProduct.getProduct().getName());
         this.priceLabel.setText(this.stockedProduct.getProduct().getPrice()+"");
+        this.nameField.setText(this.stockedProduct.getProduct().getName());
+        this.priceField.setText(this.stockedProduct.getProduct().getPrice()+"");
         this.remainAmountLabel.setText(this.stockedProduct.getQuantity()+"");
         initialize();
     }
@@ -79,19 +84,21 @@ public class ProductDetailController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/warehouse/increaseProductPopUp.fxml"));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 try {
-                    stage.setScene(new Scene((Parent) loader.load()));
+                    stage.setScene(new Scene(loader.load()));
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
                     if(!amountController.cancel){
-                        if (amountController.getAmount() <= 0) {
+                        int amount = amountController.getAmount();
+                        if (amount <= 0) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Increase error");
                             alert.setContentText("quantity of product is below 0");
                             alert.showAndWait();
                             return;
                         }
-                        remainAmountLabel.setText((stockedProduct.getQuantity()+amountController.getAmount())+"");
-
+                        remainAmountLabel.setText((stockedProduct.getQuantity()+amount)+"");
+                        ProductMovement productMovement = new ProductMovement(stockedProduct.getProduct(), new GregorianCalendar(), false, amount, "Add");
+                        this.productMovementList.add(productMovement);
                     }
 
 
@@ -110,28 +117,33 @@ public class ProductDetailController {
                     AmountController amountController = loader.getController();
                     stage.showAndWait();
                     if(!amountController.cancel) {
-                        if (amountController.getAmount() <= 0) {
+                        int amount = amountController.getAmount();
+                        String by = amountController.getBy();
+                        int currentAmount = Integer.parseInt(remainAmountLabel.getText());
+                        if (amount <= 0) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Decrease error");
                             alert.setContentText("quantity of product is below 0");
                             alert.showAndWait();
                             return;
                         }
-                        if (stockedProduct.getQuantity() - amountController.getAmount() < 0) {
+                        if (currentAmount - amount < 0) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Decrease error");
                             alert.setContentText("quantity of product is below 0");
                             alert.showAndWait();
                             return;
                         }
-                        if (amountController.getBy() == null) {
+                        if (by == null) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Decrease error");
                             alert.setContentText("Please choose 'Sold', 'Damaged', 'Expired' or 'User error'");
                             alert.showAndWait();
                             return;
                         }
-                        remainAmountLabel.setText((stockedProduct.getQuantity() - amountController.getAmount())+"");
+                        remainAmountLabel.setText((currentAmount - amount)+"");
+                        ProductMovement productMovement = new ProductMovement(stockedProduct.getProduct(), new GregorianCalendar(), true, amount, by);
+                        this.productMovementList.add(productMovement);
                     }
 
                 } catch (IOException e) {
@@ -175,13 +187,16 @@ public class ProductDetailController {
                 return;
             }
         }
+        for (ProductMovement productMovement: this.productMovementList) {
+            this.mainCtrl.getProductMovementService().add(productMovement);
+        }
+        this.productMovementList.clear();
         if (AuthenticationService.LOGGED_IN_AS_OWNER) {
             stockedProduct.getProduct().setName(nameField.getText());
             stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
         }
         this.stockedProduct.setQuantity(Integer.parseInt(this.remainAmountLabel.getText()));
         mainCtrl.showFilteredProducts();
-//        mainCtrl.showProductDetail(stockedProduct);
         mainCtrl.getProductService().update(stockedProduct);
         initialize();
     }

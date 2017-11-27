@@ -12,10 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ku.cs.duckdealer.models.Stock;
 import ku.cs.duckdealer.models.StockedProduct;
-import ku.cs.duckdealer.services.DatabaseProductService;
-import ku.cs.duckdealer.services.DatabaseSalesService;
-import ku.cs.duckdealer.services.MySQLConnector;
-import ku.cs.duckdealer.services.SQLiteConnector;
+import ku.cs.duckdealer.services.*;
 
 
 import java.io.IOException;
@@ -40,13 +37,16 @@ public class MainController {
 
     private DatabaseProductService productService;
     private DatabaseSalesService salesService;
+    private DatabaseProductMovementService productMovementService;
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.stage = stage;
-        this.productService = new DatabaseProductService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
-        this.salesService = new DatabaseSalesService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
-//        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
-//        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
+//        this.productService = new DatabaseProductService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+//        this.salesService = new DatabaseSalesService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+//        this.productMovementService = new DatabaseProductMovementService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
+        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
+        this.productMovementService = new DatabaseProductMovementService("test_db.db", new SQLiteConnector());
         this.stock = new Stock();
         this.authenticationService = new AuthenticationService();
 
@@ -185,5 +185,9 @@ public class MainController {
 
     public DatabaseSalesService getSalesService() {
         return salesService;
+    }
+
+    public DatabaseProductMovementService getProductMovementService() {
+        return productMovementService;
     }
 }

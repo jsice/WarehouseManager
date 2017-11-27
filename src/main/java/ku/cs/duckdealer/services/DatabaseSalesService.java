@@ -32,13 +32,13 @@ public class DatabaseSalesService extends DatabaseDataService<Sales> {
             ResultSet result = statement.executeQuery(sql);
             while (result.next()) {
                 int sales_id = result.getInt(1);
-                String[] date_str = result.getString(2).split("-");
-                Calendar date = new GregorianCalendar(Integer.parseInt(date_str[0]), Integer.parseInt(date_str[1]) - 1, Integer.parseInt(date_str[2]), Integer.parseInt(date_str[3]), Integer.parseInt(date_str[4]));
-                String product_id = result.getString(3);
+                String[] dateStr = result.getString(2).split("-");
+                Calendar date = new GregorianCalendar(Integer.parseInt(dateStr[0]), Integer.parseInt(dateStr[1]) - 1, Integer.parseInt(dateStr[2]), Integer.parseInt(dateStr[3]), Integer.parseInt(dateStr[4]));
+                String productID = result.getString(3);
                 int qty = result.getInt(4);
                 double price = result.getDouble(5);
-                String product_name = result.getString(6);
-                Product product = new Product(product_id, product_name, price);
+                String productName = result.getString(6);
+                Product product = new Product(productID, productName, price);
                 Sales sales;
                 if (salesMap.containsKey(sales_id)){
                     sales = salesMap.get(sales_id);

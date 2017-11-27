@@ -18,10 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ku.cs.duckdealer.models.Product;
-import ku.cs.duckdealer.models.Register;
-import ku.cs.duckdealer.models.SalesItem;
-import ku.cs.duckdealer.models.StockedProduct;
+import ku.cs.duckdealer.models.*;
 import ku.cs.duckdealer.services.PrintService;
 
 import java.util.*;
@@ -160,10 +157,14 @@ public class SelectedItemsController {
             alert.showAndWait();
             return;
         }
-        this.register.getCurrentSales().setDate(new GregorianCalendar());
+        Calendar now = new GregorianCalendar();
+        this.register.getCurrentSales().setDate(now);
         mainCtrl.getSalesService().add(this.register.getCurrentSales());
         for (SalesItem item: this.register.getCurrentSales().getItems()) {
-            mainCtrl.getProductService().update(this.register.getStock().getProduct(item.getID()));
+            StockedProduct stockedProduct = this.register.getStock().getProduct(item.getID());
+            ProductMovement productMovement = new ProductMovement(stockedProduct.getProduct(), now, true, item.getQuantity(), "Sold");
+            mainCtrl.getProductService().update(stockedProduct);
+            mainCtrl.getProductMovementService().add(productMovement);
         }
         Node receipt = this.createReceipt(money);
         double receiptWidth = ((GridPane) receipt).getWidth();
