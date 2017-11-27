@@ -218,7 +218,7 @@ public class SelectedItemsController {
             row++;
         }
         receipt.add(new Label(separator), 0, row++, 3, 1);
-        receipt.add(new Label(String.format("%"+padding+"d items", quantity)), 0, row++, 3, 1);
+        receipt.add(new Label(String.format("%"+padding+"d item%s", quantity, quantity > 1 ? "s" : "")), 0, row++, 3, 1);
         receipt.add(new Label("Total"), 0, row, 2, 1);
         Label totalLabel = new Label(String.format("%.2f", this.register.getBeforeVatFromCurrentSales()));
         totalLabel.setPrefWidth(100);
