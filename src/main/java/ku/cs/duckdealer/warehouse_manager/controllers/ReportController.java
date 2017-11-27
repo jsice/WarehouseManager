@@ -15,16 +15,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import ku.cs.duckdealer.models.Product;
-import ku.cs.duckdealer.models.Sales;
-import ku.cs.duckdealer.models.SalesItem;
-import ku.cs.duckdealer.models.StockedProduct;
+import ku.cs.duckdealer.models.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+
+import javafx.scene.chart.XYChart;
 
 public class ReportController {
 
@@ -54,9 +53,13 @@ public class ReportController {
     private HashMap<String, Double> allItemPrice;
     private HashMap<String, Integer> allItemQuantity;
     private HashMap<String, String> idMapping;
+    private ArrayList<ProductMovement> allProductMovement;
+    private HashMap<String, Integer> allMovementCount;
+
     private ToggleGroup groupA;
     private ToggleGroup groupB;
-
+    CategoryAxis xAxis ;
+    NumberAxis yAxis ;
     @FXML
     public void initialize() {
 
@@ -90,6 +93,15 @@ public class ReportController {
         worthColumn.setCellValueFactory(new PropertyValueFactory<>("worth"));
 
         gridDateOption.getChildren().clear();
+        pieChartData = FXCollections.observableArrayList();
+
+       allProductMovement = new ArrayList<>() ;
+       allMovementCount = new HashMap<>();
+
+
+        xAxis = new CategoryAxis();
+        yAxis = new NumberAxis();
+
     }
 
     private void selectChart(String type) {
@@ -124,6 +136,7 @@ public class ReportController {
             }
         }
     }
+
 
     private void loadSalesData(Calendar dateFrom, Calendar dateTo) {
         for (Sales sale : allSales
@@ -195,8 +208,7 @@ public class ReportController {
     }
 
     private void loadStockData() {
-        for (StockedProduct prod : allStockedProducts
-                ) {
+        for (StockedProduct prod : allStockedProducts) {
             Product product = prod.getProduct();
             if (idMapping.containsKey(product.getID())) {
                 allItemPrice.put(product.getID(), allItemPrice.get(product.getID()) + product.getPrice());
@@ -208,17 +220,94 @@ public class ReportController {
                 allItemPrice.put(product.getID(), product.getPrice());
                 allItemQuantity.put(product.getID(), prod.getQuantity());
             }
-
         }
     }
 
     private void loadStockDataToTable() {
-
+        ObservableList<ReportData> temp = FXCollections.observableArrayList();
+        ArrayList<ReportData> temp2 = new ArrayList<>();
+        for (String id : idMapping.keySet()) {
+//            System.out.println(id + " " + idMapping.get(id) + " " + allItemQuantity.get(id) + " " + allItemPrice.get(id));
+            temp2.add(new ReportData(id, idMapping.get(id), allItemQuantity.get(id), allItemPrice.get(id)));
+        }
+        temp.setAll(temp2);
+        reportTable.setEditable(false);
+        reportTable.setItems(temp);
+        reportTable.setVisible(true);
     }
 
     private void loadPieStockData() {
-
+        pieChartData.clear();
+        for (String id : allItemPrice.keySet()) {
+            pieChartData.add(new PieChart.Data(idMapping.get(id), allItemQuantity.get(id)));
+        }
     }
+
+    private Chart loadBarStockData() {
+        pieChartData.clear();
+        chart.setTitle("Bar chart");
+
+        NumberAxis xAxis = new NumberAxis();
+        CategoryAxis yAxis = new CategoryAxis();
+        BarChart barChart = new BarChart<Number,String>(xAxis,yAxis);
+        XYChart.Series series1 = new XYChart.Series();
+        for (String id : allItemPrice.keySet()) {
+            series1.getData().add(new XYChart.Data(allItemPrice.get(id),idMapping.get(id) ));
+        }
+//        series1.setName("");
+        barChart.getData().add(series1);
+        barChart.setTitle("DUCK DEALER'S STOCK BAR CHART REPORT");
+        return barChart ;
+    }
+
+    private void loadMovementData(){
+
+        for (ProductMovement movement : allProductMovement) {
+
+            if (idMapping.containsKey(movement.getReason())) {
+                allMovementCount.put(movement.getReason() , allMovementCount.get(movement.getReason() + 1 ));
+            } else {
+                allMovementCount.put(movement.getReason() , 1);
+                  }
+            System.out.println(movement.getReason()+"-----"+movement.getQuantity());
+
+
+        }
+    }
+
+    private Chart loadBarMovementData(){
+        pieChartData.clear();
+        chart.setTitle("Bar chart");
+
+        NumberAxis xAxis = new NumberAxis();
+        CategoryAxis yAxis = new CategoryAxis();
+        BarChart barChart = new BarChart<Number,String>(xAxis,yAxis);
+        XYChart.Series series1 = new XYChart.Series();
+        for (String key : allItemPrice.keySet()) {
+            series1.getData().add(new XYChart.Data(allMovementCount.get(key),key ));
+        }
+        series1.setName("Reasons");
+        barChart.getData().add(series1);
+        barChart.setTitle("Stock Movement Summary");
+        return barChart ;
+    }
+
+
+    private void loadMovementDataToTable(){
+        ObservableList<ReportData> temp = FXCollections.observableArrayList();
+        ArrayList<ReportData> temp2 = new ArrayList<>();
+        for (String id : idMapping.keySet()) {
+//            System.out.println(id + " " + idMapping.get(id) + " " + allItemQuantity.get(id) + " " + allItemPrice.get(id));
+            temp2.add(new ReportData(id, idMapping.get(id), allItemQuantity.get(id), allItemPrice.get(id)));
+        }
+        temp.setAll(temp2);
+        reportTable.setEditable(false);
+        reportTable.setItems(temp);
+        reportTable.setVisible(true);
+    }
+
+
+
 
     public void showData() {
         reportRangeLabel.setVisible(false);
@@ -233,13 +322,22 @@ public class ReportController {
             chart.setLegendSide(Side.RIGHT);
 
             allStockedProducts = mainCtrl.getProductService().getAll();
-            loadStockData();
-            loadStockDataToTable();
-            loadPieStockData();
-            displayChartTab.setContent(chart);
+            allProductMovement = mainCtrl.getProductMovementService().getAll();
+
+
+            if ("Bar chart".equals(reportPicker.getValue())){
+                loadMovementData();
+//                loadBarStockData();
+//                loadMovementDataToTable();
+                displayChartTab.setContent(loadBarMovementData()) ;}
+            else if ("Pie chart".equals(reportPicker.getValue())){
+                loadStockData();
+                loadPieStockData();
+                loadStockDataToTable();
+                displayChartTab.setContent(chart);}
+
 
         } else if (radioSales.isSelected() && !groupB.getSelectedToggle().equals(null)) {
-
             allSales = mainCtrl.getSalesService().getAll();
 
             reportRangeLabel.setVisible(true);
@@ -278,23 +376,6 @@ public class ReportController {
             }
             loadSalesDataToTable();
             loadPieSalesData();
-
-//            final Label caption = new Label("");
-//            caption.setTextFill(Color.DARKORANGE);
-//            caption.setStyle("-fx-font: 24 arial;");
-//
-//            for (final PieChart.Data data : ((PieChart)chart).getData()) {
-//                data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
-//                        new EventHandler<MouseEvent>() {
-//                            @Override public void handle(MouseEvent e) {
-//                                System.out.println(e.getSceneX() + " " + e.getSceneY());
-//                                caption.setTranslateX(e.getSceneX());
-//                                caption.setTranslateY(e.getSceneY());
-//                                caption.setText(String.valueOf(data.getPieValue()) + "%");
-//                                caption.setContentDisplay(ContentDisplay.TOP);
-//                            }
-//                        });
-//            }
 
             displayChartTab.setContent(chart);
         }

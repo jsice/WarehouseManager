@@ -44,14 +44,13 @@ public class MainController {
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.stage = stage;
-        this.productService = new DatabaseProductService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
-        this.salesService = new DatabaseSalesService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
-//        this.productMovementService = new DatabaseProductMovementService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
-//        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
-//        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
-        this.productMovementService = new DatabaseProductMovementService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+//        this.productService = new DatabaseProductService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+//        this.salesService = new DatabaseSalesService("//127.0.0.1:3306/warehousedb", new MySQLConnector());
+        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
+        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
         this.stock = new Stock();
         this.authenticationService = new AuthenticationService();
+        this.productMovementService = new DatabaseProductMovementService("test_db.db", new SQLiteConnector());
 
         this.loadStock();
 
