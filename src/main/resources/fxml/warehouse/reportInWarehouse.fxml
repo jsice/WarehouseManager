@@ -38,7 +38,7 @@
                         <content>
                           <AnchorPane fx:id="displayTableTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView fx:id="reportTable" layoutX="47.0" layoutY="47.0" prefHeight="277.0" prefWidth="665.0">
+                                    <TableView fx:id="reportTable" layoutX="45.0" layoutY="115.0" prefHeight="277.0" prefWidth="665.0" visible="false">
                                       <columns>
                                         <TableColumn fx:id="idColumn" prefWidth="128.33331298828125" text="Product's ID" />
                                         <TableColumn fx:id="nameColumn" prefWidth="276.66668701171875" text="Product's name" />
@@ -46,6 +46,16 @@
                                           <TableColumn fx:id="worthColumn" prefWidth="151.0" text="Worth" />
                                       </columns>
                                     </TableView>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="167.0" layoutY="21.0" prefHeight="32.0" prefWidth="420.0" text="DUCK DEALER'S REPORT">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="reportRangeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="224.0" layoutY="73.0" prefHeight="20.0" prefWidth="289.0" text="report range" textAlignment="CENTER" visible="false" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="231.0">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                         </content>
