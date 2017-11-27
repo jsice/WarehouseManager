@@ -137,7 +137,7 @@ public class ProductDetailController {
                         if (by == null) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Decrease error");
-                            alert.setContentText("Please choose 'Sold', 'Damaged', 'Expired' or 'User error'");
+                            alert.setContentText("Please choose one of these: 'Tester', 'Damaged', 'Expired' or 'User error'");
                             alert.showAndWait();
                             return;
                         }

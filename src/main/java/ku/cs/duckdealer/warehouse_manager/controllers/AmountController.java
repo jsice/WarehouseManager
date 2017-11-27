@@ -42,8 +42,8 @@ public class AmountController {
 
     public void btnBy(ActionEvent event){
         String text = ((RadioButton)event.getSource()).getText();
-        if(text.equals("Sold")){
-            by = "Sold";
+        if(text.equals("Tester")){
+            by = "Tester";
         }else if (text.equals("Damaged")){
             by = "Damaged";
         }else if (text.equals("Expired")){
