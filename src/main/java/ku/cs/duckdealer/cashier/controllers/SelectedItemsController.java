@@ -166,13 +166,6 @@ public class SelectedItemsController {
             mainCtrl.getProductService().update(this.register.getStock().getProduct(item.getID()));
         }
         Node receipt = this.createReceipt(money);
-        Stage stage = new Stage();
-        Scene scene = new Scene((Parent) receipt);
-        stage.setScene(scene);
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.initOwner(this.beforeVatLabel.getScene().getWindow());
-        stage.show();
-        stage.hide();
         double receiptWidth = ((GridPane) receipt).getWidth();
         double receiptHeight = ((GridPane) receipt).getHeight();
         double width = 200;
@@ -265,6 +258,16 @@ public class SelectedItemsController {
         pleaseLabel.setPrefWidth(300);
         pleaseLabel.setAlignment(Pos.CENTER);
         receipt.add(pleaseLabel, 0, row, 3, 1);
+
+
+        Stage stage = new Stage();
+        Scene scene = new Scene((Parent) receipt);
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initOwner(this.beforeVatLabel.getScene().getWindow());
+        stage.show();
+        stage.hide();
+
         return receipt;
     }
 

@@ -1,7 +1,5 @@
 package ku.cs.duckdealer.services;
 
-import com.sun.javafx.print.PrintHelper;
-import com.sun.javafx.print.Units;
 import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.transform.Scale;
@@ -18,10 +16,8 @@ public class PrintService {
         node.getTransforms().add(scale);
         if (job != null) {
             boolean success = job.printPage(node);
-            System.out.println("printing...");
             if (success) {
                 job.endJob();
-                System.out.println("printing success.");
             }
         } else {
             System.out.println("Can't find printer.");
