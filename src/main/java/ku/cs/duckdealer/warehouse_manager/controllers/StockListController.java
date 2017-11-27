@@ -4,9 +4,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -34,10 +37,13 @@ public class StockListController {
     private ComboBox<String> filterComboBox;
     @FXML
     private TextField searchTextfield;
+    @FXML
+    private Button refreshButton;
 
 
     @FXML
     private void initialize() {
+
         this.stockedProducts = new ArrayList<>();
         searchText = "";
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
@@ -145,6 +151,12 @@ public class StockListController {
                 }
             }
         }
+    }
+
+    public void refresh(){
+        this.stockedProducts.removeAll(this.stockedProducts);
+        stockedProducts.addAll(this.mainCtrl.getStock().getAllProducts());
+        displayFilteredProducts();
     }
 
     private void setSelectedLabel(Label id, Label name, Label price, Label amount) {

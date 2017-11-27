@@ -21,7 +21,7 @@ public class DatabaseProductMovementService extends DatabaseDataService<ProductM
     @Override
     List<String> getCreateTableQueries() {
         List<String> queries = new ArrayList<>();
-        queries.add("CREATE TABLE product_movements (id INTEGER PRIMARY KEY /*!40101 AUTO_INCREMENT */, date text NOT NULL, product_id varchar(8) NOT NULL, exit INTEGER NOT NULL, quantity int(11) NOT NULL, reason text NOT NULL)");
+        queries.add("CREATE TABLE product_movements (id INTEGER PRIMARY KEY /*!40101 AUTO_INCREMENT */, date text NOT NULL, product_id varchar(8) NOT NULL, is_exit INTEGER NOT NULL, quantity int(11) NOT NULL, reason text NOT NULL)");
         return queries;
     }
 
@@ -81,7 +81,7 @@ public class DatabaseProductMovementService extends DatabaseDataService<ProductM
             int isExit = data.isExit() ? 1 : 0;
             int quantity = data.getQuantity();
             String reason = data.getReason();
-            String query = String.format("insert into product_movements (date, product_id, exit, quantity, reason) values (\"%s\", \"%s\", %d, %d, \"%s\")", date, productID, isExit, quantity, reason);
+            String query = String.format("insert into product_movements (date, product_id, is_exit, quantity, reason) values (\"%s\", \"%s\", %d, %d, \"%s\")", date, productID, isExit, quantity, reason);
             Statement statement = conn.createStatement();
             statement.execute(query);
             close();
