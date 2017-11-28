@@ -1,25 +1,27 @@
 package ku.cs.duckdealer.warehouse_manager.controllers;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.print.Paper;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ku.cs.duckdealer.models.*;
@@ -50,6 +52,8 @@ public class ReportController {
     private TableColumn<ReportData, String> idColumn, nameColumn, quantityColumn, worthColumn;
     @FXML
     private Button printButton;
+    @FXML
+    private AnchorPane displayTableTab;
 
     private MainController mainCtrl;
     private Pane mainPane;
@@ -329,10 +333,12 @@ public class ReportController {
         } else if (radioSales.isSelected() && !groupB.getSelectedToggle().equals(null)) {
 
             idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
+            idColumn.setStyle( "-fx-alignment: CENTER;");
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
             quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            quantityColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
             worthColumn.setCellValueFactory(new PropertyValueFactory<>("worth"));
-
+            worthColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
             chart = new PieChart();
             ((PieChart) chart).setStartAngle(90);
 
@@ -402,22 +408,55 @@ public class ReportController {
 
     @FXML
     private void print() {
-        Node node = createReportFrom(this.reportTable);
-        mainCtrl.getPrintService().print(node, Paper.A4);
+        ObservableList<ReportData> list = reportTable.getItems();
+        int start = 0;
+        while (start < list.size()) {
+            ObservableList<ReportData> newList = FXCollections.observableArrayList();
+            if (list.size() - start >= 20) {
+                newList.addAll(list.subList(start, start+20));
+                start = start+20;
+            } else {
+                newList.addAll(list.subList(start, list.size()));
+                start = list.size();
+            }
+            Node node = createReport(newList);
+            mainCtrl.getPrintService().print(node, Paper.A4);
+
+        }
     }
 
-    private Node createReportFrom(TableView tableView) {
-        GridPane report =  new GridPane();
-
-
-
+    private Node createReport(ObservableList<ReportData> data) {
+        GridPane report = new GridPane();
+        report.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        report.setVgap(20);
+        report.setPadding(new Insets(50, 50, 50, 50));
+        report.setAlignment(Pos.CENTER);
+        Label title = new Label("DUCK DEALER's REPORT");
+        title.setPrefWidth(450);
+        title.setAlignment(Pos.CENTER);
+        title.setFont(Font.font(24));
+        report.add(title, 0, 0);
+        Label subtitle = new Label(reportRangeLabel.getText());
+        subtitle.setPrefWidth(450);
+        subtitle.setAlignment(Pos.CENTER);
+        report.add(subtitle, 0, 1);
+        TableView<ReportData> tableView = new TableView<>();
+        tableView.setEditable(false);
+        tableView.setItems(data);
+        tableView.getColumns().addAll(reportTable.getColumns());
+        tableView.setFixedCellSize(30);
+        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(32));
+        report.add(tableView, 0, 2);
 
         Stage stage = new Stage();
         Scene scene = new Scene(report);
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
-        stage.initOwner(this.reportTable.getScene().getWindow());
+        stage.initOwner(this.displayTableTab.getScene().getWindow());
         stage.show();
+
+        title.setPrefWidth(tableView.getWidth());
+        subtitle.setPrefWidth(tableView.getWidth());
         stage.hide();
 
         return report;
