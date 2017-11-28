@@ -17,6 +17,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -34,8 +35,7 @@ import java.util.HashMap;
 
 public class ReportController {
 
-    @FXML
-    private ComboBox reportPicker;
+
     @FXML
     private GridPane reportInnerPane, gridDateOption;
     @FXML
@@ -49,7 +49,7 @@ public class ReportController {
     @FXML
     private TableView<ReportData> reportTable;
     @FXML
-    private TableColumn<ReportData, String> idColumn, nameColumn, quantityColumn, worthColumn;
+    private TableColumn<ReportData, String> idColumn, nameColumn, quantityColumn, worthColumn, dateColumn,reasonColumn;
     @FXML
     private Button printButton;
     @FXML
@@ -64,8 +64,8 @@ public class ReportController {
     private HashMap<String, Double> allItemPrice;
     private HashMap<String, Integer> allItemQuantity;
     private HashMap<String, String> idMapping;
-    private ArrayList<ProductMovement> allProductMovement;
     private HashMap<String, Integer> allMovementCount;
+    private ArrayList<ProductMovement> allProductMovement;
 
     private ToggleGroup groupA;
     private ToggleGroup groupB;
@@ -75,15 +75,18 @@ public class ReportController {
     @FXML
     public void initialize() {
 
+        dateColumn = new TableColumn<ReportData, String>() ;
+        reasonColumn = new TableColumn<ReportData, String>() ;
+
         reportTable.setVisible(false);
         printButton.setVisible(false);
 
+        Image printer = new Image(getClass().getResourceAsStream("/assets/printer.png"));
+        printButton.setGraphic(new ImageView(printer));
+
         ObservableList<String> chartType = FXCollections.observableArrayList("Bar chart"
         );
-        reportPicker.setItems(chartType);
-        reportPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            selectChart(newValue.toString());
-        });
+
 
         groupA = new ToggleGroup();
         radioStock.setToggleGroup(groupA);
@@ -114,16 +117,6 @@ public class ReportController {
 
     }
 
-    private void selectChart(String type) {
-
-        switch (type) {
-            case "Bar chart":
-                CategoryAxis xAxis = new CategoryAxis();
-                NumberAxis yAxis = new NumberAxis();
-                chart = new BarChart<String, Number>(xAxis, yAxis);
-                break;
-        }
-    }
 
     private void loadSalesData(Calendar date, String condition) {
         for (Sales sale : allSales
@@ -180,10 +173,10 @@ public class ReportController {
     }
 
     private void loadSalesDataToTable() {
+
         ObservableList<ReportData> temp = FXCollections.observableArrayList();
         ArrayList<ReportData> temp2 = new ArrayList<>();
-        for (String id : idMapping.keySet()
-                ) {
+        for (String id : idMapping.keySet()) {
             temp2.add(new ReportData(id, idMapping.get(id), allItemQuantity.get(id), allItemPrice.get(id)));
         }
         temp.setAll(temp2);
@@ -219,7 +212,6 @@ public class ReportController {
             if (idMapping.containsKey(product.getID())) {
                 allItemPrice.put(product.getID(), allItemPrice.get(product.getID()) + product.getPrice());
                 allItemQuantity.put(product.getID(), allItemQuantity.get(product.getID()) + prod.getQuantity());
-                System.out.println(product.getName() + " --------- " + allItemPrice.get(product.getID()));
 
             } else {
                 idMapping.put(product.getID(), product.getName());
@@ -260,49 +252,80 @@ public class ReportController {
     }
 
     private void loadMovementData() {
-
         for (ProductMovement movement : allProductMovement) {
-
-            if (idMapping.containsKey(movement.getReason())) {
-                allMovementCount.put(movement.getReason(), allMovementCount.get(movement.getReason() + 1));
+            if (allMovementCount.containsKey(movement.getReason())) {
+                allMovementCount.put(movement.getReason(), allMovementCount.get(movement.getReason()) + 1);
             } else {
                 allMovementCount.put(movement.getReason(), 1);
             }
-            System.out.println(movement.getReason() + "-----" + movement.getQuantity());
+//            System.out.println(movement.getReason() + "-----" + movement.getQuantity() + " **** " + allMovementCount.get(movement.getReason()));
 
 
         }
     }
 
     private Chart loadBarMovementData() {
-        pieChartData.clear();
-        chart.setTitle("Bar chart");
+//        pieChartData.clear();
 
         NumberAxis xAxis = new NumberAxis();
         CategoryAxis yAxis = new CategoryAxis();
         BarChart barChart = new BarChart<Number, String>(xAxis, yAxis);
         XYChart.Series series1 = new XYChart.Series();
-        for (String key : allItemPrice.keySet()) {
+        for (String key : allMovementCount.keySet()) {
             series1.getData().add(new XYChart.Data(allMovementCount.get(key), key));
+
         }
         series1.setName("Reasons");
         barChart.getData().add(series1);
         barChart.setTitle("Stock Movement Summary");
+        barChart.setVisible(true);
         return barChart;
     }
 
 
     private void loadMovementDataToTable() {
+//        private TableColumn<ReportData, String> idColumn, nameColumn, quantityColumn, worthColumn, dateColumn,reasonColumn;
+        dateColumn.setText("Date");
+        reasonColumn.setText("Reason");
+
+//        reportTable.getColumns().add(0,dateColumn);
+//        reportTable.getColumns().remove(4);
+//        reportTable.getColumns().add(4,reasonColumn);
+//        reportTable.getColumns().get(2).setMaxWidth(150);
+//        reasonColumn.setMaxWidth(150);
+//        reasonColumn.setPrefWidth(150);
+
+        TableColumn<ReportData, String> dateColumn = new TableColumn<>(); dateColumn.setText("Date");dateColumn.setPrefWidth(150);
+        TableColumn<ReportData, String> idColumn = new TableColumn<>(); idColumn.setText("ID");idColumn.setPrefWidth(100);
+        TableColumn<ReportData, String> nameColumn = new TableColumn<>(); nameColumn.setText("Name");nameColumn.setPrefWidth(150);
+        TableColumn<ReportData, String> quantityColumn = new TableColumn<>(); quantityColumn.setText("Quantity");quantityColumn.setPrefWidth(100);
+        TableColumn<ReportData, String> reasonColumn = new TableColumn<>(); reasonColumn.setText("Reason");reasonColumn.setPrefWidth(150);
+
+        reportTable.getColumns().addAll(dateColumn, idColumn, nameColumn, quantityColumn, reasonColumn);
+
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        reasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
+
         ObservableList<ReportData> temp = FXCollections.observableArrayList();
         ArrayList<ReportData> temp2 = new ArrayList<>();
-        for (String id : idMapping.keySet()) {
+        for (ProductMovement movement : allProductMovement) {
 //            System.out.println(id + " " + idMapping.get(id) + " " + allItemQuantity.get(id) + " " + allItemPrice.get(id));
-            temp2.add(new ReportData(id, idMapping.get(id), allItemQuantity.get(id), allItemPrice.get(id)));
+            temp2.add(new ReportData(convertCalendatToString(movement.getDate()),movement.getProduct().getID(), movement.getProduct().getName(), movement.getQuantity(), movement.getReason()));
         }
         temp.setAll(temp2);
         reportTable.setEditable(false);
         reportTable.setItems(temp);
         reportTable.setVisible(true);
+    }
+
+    private String convertCalendatToString(Calendar date){
+        String temp = "";
+        temp += date.get(Calendar.DATE)+"/"+ date.get(Calendar.MONTH)+"/"+ date.get(Calendar.YEAR)+" ";
+        temp += date.get(Calendar.HOUR) + ":" +date.get(Calendar.MINUTE);
+        return temp ;
     }
 
 
@@ -315,7 +338,13 @@ public class ReportController {
         allItemQuantity.clear();
         idMapping.clear();
 
+        reportTable.getColumns().clear();
+
         if (radioStock.isSelected()) {
+
+            CategoryAxis xAxis = new CategoryAxis();
+            NumberAxis yAxis = new NumberAxis();
+            chart = new BarChart<String, Number>(xAxis, yAxis);
 
             chart.setTitle("DUCK DEALER'S STOCK REPORT");
             chart.setLegendSide(Side.RIGHT);
@@ -324,13 +353,27 @@ public class ReportController {
             allProductMovement = mainCtrl.getProductMovementService().getAll();
 
 
-            if ("Bar chart".equals(reportPicker.getValue())) {
-                loadMovementData();
-//                loadBarStockData();
-//                loadMovementDataToTable();
-                displayChartTab.setContent(loadBarMovementData());
-            }
+            loadMovementData();
+            loadMovementDataToTable();
+            displayChartTab.setContent(loadBarMovementData());
+
         } else if (radioSales.isSelected() && !groupB.getSelectedToggle().equals(null)) {
+
+            TableColumn<ReportData, String> idColumn = new TableColumn<>();
+            TableColumn<ReportData, String> nameColumn = new TableColumn<>();
+            TableColumn<ReportData, String> quantityColumn = new TableColumn<>();
+            TableColumn<ReportData, String> worthColumn = new TableColumn<>();
+
+            idColumn.setText("Product's ID");
+            idColumn.setPrefWidth(128);
+            nameColumn.setText("Product's Name");
+            nameColumn.setPrefWidth(280);
+            quantityColumn.setText("Quantity");
+            quantityColumn.setPrefWidth(108);
+            worthColumn.setText("Price");
+            worthColumn.setPrefWidth(147);
+
+            reportTable.getColumns().addAll(idColumn, nameColumn, quantityColumn, worthColumn);
 
             idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
             idColumn.setStyle( "-fx-alignment: CENTER;");
@@ -480,11 +523,22 @@ public class ReportController {
         private SimpleStringProperty worth;
         private SimpleStringProperty quantity;
 
+        private SimpleStringProperty reason;
+        private SimpleStringProperty date;
+
         public ReportData(String id, String name, int q, double w) {
             productID = new SimpleStringProperty(id);
             productName = new SimpleStringProperty(name);
             quantity = new SimpleStringProperty(q + "");
             worth = new SimpleStringProperty(w + "");
+        }
+
+        public ReportData(String date,String id, String name, int q, String reas) {
+            this.date = new SimpleStringProperty(date);
+            productID = new SimpleStringProperty(id);
+            productName = new SimpleStringProperty(name);
+            quantity = new SimpleStringProperty(q + "");
+            reason = new SimpleStringProperty(reas);
         }
 
         public String getProductID() {
@@ -506,6 +560,12 @@ public class ReportController {
         public String getWorth() {
             return worth.get();
         }
+
+        public String getReason() {
+            return reason.get();
+        }
+
+        public String getDate() { return date.get(); }
 
         public SimpleStringProperty worthProperty() {
             return worth;
