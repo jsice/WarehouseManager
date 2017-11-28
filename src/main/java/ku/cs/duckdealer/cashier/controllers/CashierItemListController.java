@@ -24,7 +24,7 @@ public class CashierItemListController {
     private MainController mainCtrl;
     private ArrayList<StockedProduct> stockedProducts;
     private Label selectedID, selectedName, selectedPrice, selectedAmount;
-    private BackgroundFill selectedBackgroundFill;
+    private BackgroundFill selectedBackgroundFill, unselectedBackgroundFill;
     private String searchText;
 
     @FXML
@@ -62,6 +62,7 @@ public class CashierItemListController {
         searchText = "";
         btnAddToSelect.setDisable(true);
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
+        unselectedBackgroundFill = new BackgroundFill(Color.web("#f0f8ff"), CornerRadii.EMPTY, Insets.EMPTY);
         filterComboBox.getItems().addAll("ID", "Name");
         filterComboBox.getSelectionModel().select(0);
 
@@ -161,10 +162,10 @@ public class CashierItemListController {
 
     private void setSelectedLabel(Label id, Label name, Label price, Label amount) {
         if (selectedID != null) {
-            selectedID.setBackground(null);
-            selectedName.setBackground(null);
-            selectedPrice.setBackground(null);
-            selectedAmount.setBackground(null);
+            selectedID.setBackground(new Background(unselectedBackgroundFill));
+            selectedName.setBackground(new Background(unselectedBackgroundFill));
+            selectedPrice.setBackground(new Background(unselectedBackgroundFill));
+            selectedAmount.setBackground(new Background(unselectedBackgroundFill));
         }
         selectedID = id;
         selectedName = name;
@@ -216,6 +217,11 @@ public class CashierItemListController {
             name.setOnMouseClicked(productLabelEventHandler);
             price.setOnMouseClicked(productLabelEventHandler);
             amount.setOnMouseClicked(productLabelEventHandler);
+
+            id.setBackground(new Background(unselectedBackgroundFill));
+            name.setBackground(new Background(unselectedBackgroundFill));
+            price.setBackground(new Background(unselectedBackgroundFill));
+            amount.setBackground(new Background(unselectedBackgroundFill));
 
             this.labels.add(id);
             this.labels.add(name);
