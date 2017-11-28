@@ -6,6 +6,10 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
+import javafx.print.Paper;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,6 +19,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import ku.cs.duckdealer.models.*;
 
 import java.text.SimpleDateFormat;
@@ -50,7 +56,6 @@ public class ReportController {
     private Chart chart;
     private ArrayList<Sales> allSales;
     private ArrayList<StockedProduct> allStockedProducts;
-    private ArrayList<ProductMovement> allProductMovement;
     private HashMap<String, Double> allItemPrice;
     private HashMap<String, Integer> allItemQuantity;
     private HashMap<String, String> idMapping;
@@ -380,6 +385,29 @@ public class ReportController {
 
             displayChartTab.setContent(chart);
         }
+    }
+
+    @FXML
+    private void print() {
+        Node node = createReportFrom(this.reportTable);
+        mainCtrl.getPrintService().print(node, Paper.A4);
+    }
+
+    private Node createReportFrom(TableView tableView) {
+        GridPane report =  new GridPane();
+
+
+
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(report);
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initOwner(this.reportTable.getScene().getWindow());
+        stage.show();
+        stage.hide();
+
+        return report;
     }
 
     public Pane getMainPane() {
