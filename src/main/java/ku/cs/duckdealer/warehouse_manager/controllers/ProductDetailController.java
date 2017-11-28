@@ -196,9 +196,11 @@ public class ProductDetailController {
             stockedProduct.getProduct().setPrice(Double.parseDouble(priceField.getText()));
         }
         this.stockedProduct.setQuantity(Integer.parseInt(this.remainAmountLabel.getText()));
-        mainCtrl.showFilteredProducts();
+
         mainCtrl.getProductService().update(stockedProduct);
-        initialize();
+        mainCtrl.showFilteredProducts();
+        mainCtrl.showProductDetail(stockedProduct);
+//        initialize();
     }
 
     public BorderPane getMainPane() {
