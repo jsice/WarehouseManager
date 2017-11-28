@@ -30,7 +30,7 @@ public class DatabaseProductMovementService extends DatabaseDataService<ProductM
         ArrayList<ProductMovement> productMovements = new ArrayList<>();
         try {
             connect();
-            String query = "SELECT * FROM product_movements natural join (select product_id, name, price from product) as product";
+            String query = "SELECT id, date, product_id, is_exit, quantity, reason, name, price FROM product_movements natural join (select product_id, name, price from product) as product";
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(query);
             while (result.next()) {
