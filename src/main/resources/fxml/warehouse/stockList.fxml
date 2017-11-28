@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.duckdealer.warehouse_manager.controllers.StockListController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.duckdealer.warehouse_manager.controllers.StockListController">
    <center>
       <FlowPane alignment="CENTER" prefHeight="500.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,7 +24,7 @@
                 <RowConstraints maxHeight="402.0" minHeight="10.0" prefHeight="402.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <GridPane gridLinesVisible="true" maxHeight="50.0" maxWidth="500.0" minHeight="50.0" minWidth="500.0" prefHeight="50.0" prefWidth="500.0">
+                  <GridPane gridLinesVisible="true" maxHeight="50.0" maxWidth="500.0" minHeight="50.0" minWidth="500.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #a1caf1;">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="125.0" />
@@ -43,7 +43,7 @@
                   </GridPane>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="402.0" prefWidth="500.0" GridPane.rowIndex="1">
                      <content>
-                        <GridPane fx:id="innerTableGrid" gridLinesVisible="true" prefHeight="400.0" prefWidth="498.0" style="-fx-background-color: white;">
+                        <GridPane fx:id="innerTableGrid" gridLinesVisible="true" prefHeight="400.0" prefWidth="498.0" style="-fx-background-color: #f0f8ff;">
                           <columnConstraints>
                             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="99.0" />
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

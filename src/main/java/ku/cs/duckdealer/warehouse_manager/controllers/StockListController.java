@@ -49,7 +49,7 @@ public class StockListController {
         this.stockedProducts = new ArrayList<>();
         searchText = "";
         selectedBackgroundFill = new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY);
-        unselectedBackgroundFill = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+        unselectedBackgroundFill = new BackgroundFill(Color.web("#f0f8ff"), CornerRadii.EMPTY, Insets.EMPTY);
         filterComboBox.getItems().addAll("ID", "Name");
         filterComboBox.getSelectionModel().select(0);
 
