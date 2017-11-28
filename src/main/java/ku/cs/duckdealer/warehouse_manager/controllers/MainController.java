@@ -45,13 +45,13 @@ public class MainController {
 
     public MainController(Stage stage) throws IOException, SQLException {
         this.stage = stage;
-        this.productService = new DatabaseProductService("//10.2.52.180:3306/warehousedb", new MySQLConnector());
-        this.salesService = new DatabaseSalesService("//10.2.52.180:3306/warehousedb", new MySQLConnector());
-        this.productMovementService = new DatabaseProductMovementService("//10.2.52.180/warehousedb", new MySQLConnector());
+//        this.productService = new DatabaseProductService("//10.2.52.180:3306/warehousedb", new MySQLConnector());
+//        this.salesService = new DatabaseSalesService("//10.2.52.180:3306/warehousedb", new MySQLConnector());
+//        this.productMovementService = new DatabaseProductMovementService("//10.2.52.180/warehousedb", new MySQLConnector());
 
-//        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
-//        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
-//        this.productMovementService = new DatabaseProductMovementService("test_db.db", new SQLiteConnector());
+        this.productService = new DatabaseProductService("test_db.db", new SQLiteConnector());
+        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
+        this.productMovementService = new DatabaseProductMovementService("test_db.db", new SQLiteConnector());
 
         this.printService = new PrintService();
 
