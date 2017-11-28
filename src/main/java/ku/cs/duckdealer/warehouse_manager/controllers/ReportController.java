@@ -17,6 +17,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -77,6 +78,9 @@ public class ReportController {
 
         reportTable.setVisible(false);
         printButton.setVisible(false);
+
+        Image printer = new Image(getClass().getResourceAsStream("/assets/printer.png"));
+        printButton.setGraphic(new ImageView(printer));
 
         ObservableList<String> chartType = FXCollections.observableArrayList("Bar chart"
         );
@@ -315,6 +319,8 @@ public class ReportController {
         allItemQuantity.clear();
         idMapping.clear();
 
+        reportTable.getColumns().clear();
+
         if (radioStock.isSelected()) {
 
             chart.setTitle("DUCK DEALER'S STOCK REPORT");
@@ -331,6 +337,22 @@ public class ReportController {
                 displayChartTab.setContent(loadBarMovementData());
             }
         } else if (radioSales.isSelected() && !groupB.getSelectedToggle().equals(null)) {
+
+            TableColumn<ReportData, String> idColumn = new TableColumn<>();
+            TableColumn<ReportData, String> nameColumn = new TableColumn<>();
+            TableColumn<ReportData, String> quantityColumn = new TableColumn<>();
+            TableColumn<ReportData, String> worthColumn = new TableColumn<>();
+
+            idColumn.setText("Product's ID");
+            idColumn.setPrefWidth(128);
+            nameColumn.setText("Product's Name");
+            nameColumn.setPrefWidth(280);
+            quantityColumn.setText("Quantity");
+            quantityColumn.setPrefWidth(108);
+            worthColumn.setText("Price");
+            worthColumn.setPrefWidth(147);
+
+            reportTable.getColumns().addAll(idColumn, nameColumn, quantityColumn, worthColumn);
 
             idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
             idColumn.setStyle( "-fx-alignment: CENTER;");
