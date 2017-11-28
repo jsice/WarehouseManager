@@ -61,16 +61,15 @@ public class MainController {
 
         this.loadStock();
 
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                loadStock();
-            }
-        };
-
-        timer.scheduleAtFixedRate(task, 10000,
-                TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS));
+//        Timer timer = new Timer();
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                loadStock();
+//            }
+//        };
+//
+//        timer.scheduleAtFixedRate(task, 10000, TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS));
 
         this.loadPane();
         this.stockListCtrl.showAllProducts();
