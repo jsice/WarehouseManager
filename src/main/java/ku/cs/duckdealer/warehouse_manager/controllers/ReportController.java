@@ -133,8 +133,7 @@ public class ReportController {
 
 
     private void loadSalesData(Calendar dateFrom, Calendar dateTo) {
-        for (Sales sale : allSales
-                ) {
+        for (Sales sale : allSales) {
             if (dateFrom.before(sale.getDate()) && dateTo.after(sale.getDate())) {
                 loadSalesDataHelper(sale);
             }
@@ -206,63 +205,47 @@ public class ReportController {
         }
     }
 
-    private void loadStockData() {
-        for (StockedProduct prod : allStockedProducts) {
-            Product product = prod.getProduct();
-            if (idMapping.containsKey(product.getID())) {
-                allItemPrice.put(product.getID(), allItemPrice.get(product.getID()) + product.getPrice());
-                allItemQuantity.put(product.getID(), allItemQuantity.get(product.getID()) + prod.getQuantity());
-
-            } else {
-                idMapping.put(product.getID(), product.getName());
-                allItemPrice.put(product.getID(), product.getPrice());
-                allItemQuantity.put(product.getID(), prod.getQuantity());
-            }
-        }
-    }
-
-    private void loadStockDataToTable() {
-        ObservableList<ReportData> temp = FXCollections.observableArrayList();
-        ArrayList<ReportData> temp2 = new ArrayList<>();
-        for (String id : idMapping.keySet()) {
-//            System.out.println(id + " " + idMapping.get(id) + " " + allItemQuantity.get(id) + " " + allItemPrice.get(id));
-            temp2.add(new ReportData(id, idMapping.get(id), allItemQuantity.get(id), allItemPrice.get(id)));
-        }
-        temp.setAll(temp2);
-        reportTable.setEditable(false);
-        reportTable.setItems(temp);
-        reportTable.setVisible(true);
-    }
-
-    private Chart loadBarStockData() {
-        pieChartData.clear();
-        chart.setTitle("Bar chart");
-
-        NumberAxis xAxis = new NumberAxis();
-        CategoryAxis yAxis = new CategoryAxis();
-        BarChart barChart = new BarChart<Number, String>(xAxis, yAxis);
-        XYChart.Series series1 = new XYChart.Series();
-        for (String id : allItemPrice.keySet()) {
-            series1.getData().add(new XYChart.Data(allItemPrice.get(id), idMapping.get(id)));
-        }
-//        series1.setName("");
-        barChart.getData().add(series1);
-        barChart.setTitle("DUCK DEALER'S STOCK BAR CHART REPORT");
-        return barChart;
-    }
-
-    private void loadMovementData() {
+    private void loadMovementCount(){
         for (ProductMovement movement : allProductMovement) {
             if (allMovementCount.containsKey(movement.getReason())) {
                 allMovementCount.put(movement.getReason(), allMovementCount.get(movement.getReason()) + 1);
             } else {
                 allMovementCount.put(movement.getReason(), 1);
             }
-//            System.out.println(movement.getReason() + "-----" + movement.getQuantity() + " **** " + allMovementCount.get(movement.getReason()));
-
-
         }
     }
+
+
+    private void loadMovementData() {
+        loadMovementCount();
+    }
+
+    private void loadMovementData(Calendar fromDate, Calendar toDate){
+        ArrayList<ProductMovement> temp = new ArrayList<>();
+        for (ProductMovement movement : allProductMovement) {
+            if (fromDate.before(movement.getDate()) && toDate.after(movement.getDate())) {
+                temp.add(movement);
+            }
+        }
+        allProductMovement = temp ;
+        loadMovementCount();
+    }
+
+    private void loadMovementData(Calendar date, String condition) {
+        ArrayList<ProductMovement> temp = new ArrayList<>();
+        for (ProductMovement movement : allProductMovement) {
+            if (date.get(Calendar.YEAR) == movement.getDate().get(Calendar.YEAR) && date.get(Calendar.MONTH) == movement.getDate().get(Calendar.MONTH)) {
+                if (condition.equals("month")) {
+                    temp.add(movement);
+                } else if (date.get(Calendar.DATE) == movement.getDate().get(Calendar.DATE)) {
+                    temp.add(movement);
+                }
+            }
+        }
+        allProductMovement = temp ;
+        loadMovementCount();
+    }
+
 
     private Chart loadBarMovementData() {
 //        pieChartData.clear();
@@ -284,16 +267,9 @@ public class ReportController {
 
 
     private void loadMovementDataToTable() {
-//        private TableColumn<ReportData, String> idColumn, nameColumn, quantityColumn, worthColumn, dateColumn,reasonColumn;
+
         dateColumn.setText("Date");
         reasonColumn.setText("Reason");
-
-//        reportTable.getColumns().add(0,dateColumn);
-//        reportTable.getColumns().remove(4);
-//        reportTable.getColumns().add(4,reasonColumn);
-//        reportTable.getColumns().get(2).setMaxWidth(150);
-//        reasonColumn.setMaxWidth(150);
-//        reasonColumn.setPrefWidth(150);
 
         TableColumn<ReportData, String> dateColumn = new TableColumn<>(); dateColumn.setText("Date");dateColumn.setPrefWidth(150);
         TableColumn<ReportData, String> idColumn = new TableColumn<>(); idColumn.setText("ID");idColumn.setPrefWidth(100);
@@ -312,7 +288,6 @@ public class ReportController {
         ObservableList<ReportData> temp = FXCollections.observableArrayList();
         ArrayList<ReportData> temp2 = new ArrayList<>();
         for (ProductMovement movement : allProductMovement) {
-//            System.out.println(id + " " + idMapping.get(id) + " " + allItemQuantity.get(id) + " " + allItemPrice.get(id));
             temp2.add(new ReportData(convertCalendatToString(movement.getDate()),movement.getProduct().getID(), movement.getProduct().getName(), movement.getQuantity(), movement.getReason()));
         }
         temp.setAll(temp2);
@@ -352,8 +327,39 @@ public class ReportController {
             allStockedProducts = mainCtrl.getProductService().getAll();
             allProductMovement = mainCtrl.getProductMovementService().getAll();
 
+            if (radioCustom.isSelected()) {
 
-            loadMovementData();
+                Calendar temp1 = new GregorianCalendar();
+                Calendar temp2 = new GregorianCalendar();
+                String[] temp3 = fromPicker.getValue().toString().split("-");
+                temp1.set(Integer.valueOf(temp3[0]), Integer.valueOf(temp3[1]) - 1, Integer.valueOf(temp3[2]));
+                temp3 = toPicker.getValue().toString().split("-");
+                temp2.set(Integer.valueOf(temp3[0]), Integer.valueOf(temp3[1]) - 1, Integer.valueOf(temp3[2]));
+
+                loadMovementData(temp1, temp2);
+
+                reportRangeLabel.setText("Stock report from " + temp1.get(Calendar.DATE) + "/" + temp1.get(Calendar.MONTH) + "/" + temp1.get(Calendar.YEAR)
+                        + " to " + temp2.get(Calendar.DATE) + "/" + temp2.get(Calendar.MONTH) + "/" + temp2.get(Calendar.YEAR));
+            } else {
+                Calendar temp1 = new GregorianCalendar();
+                String[] temp3 = fromPicker.getValue().toString().split("-");
+                temp1.set(Integer.valueOf(temp3[0]), Integer.valueOf(temp3[1]) - 1, Integer.valueOf(temp3[2]));
+                String condition;
+                String reportRange = "";
+                if (radioDay.isSelected()) {
+                    reportRange = "Stock report on " + temp1.get(Calendar.DATE) + "/" + temp1.get(Calendar.MONTH) + "/" + temp1.get(Calendar.YEAR);
+
+                    condition = "day";
+                } else {
+                    reportRange = "Stock report on " + new SimpleDateFormat("MMMM").format(temp1.getTime()) + " in " + temp1.get(Calendar.YEAR);
+                    condition = "month";
+                }
+                loadMovementData(temp1, condition);
+
+                reportRangeLabel.setText(reportRange);
+            }
+
+//            loadMovementData();
             loadMovementDataToTable();
             displayChartTab.setContent(loadBarMovementData());
 

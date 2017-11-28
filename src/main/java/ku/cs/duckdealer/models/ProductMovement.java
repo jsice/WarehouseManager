@@ -1,5 +1,6 @@
 package ku.cs.duckdealer.models;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class ProductMovement {
@@ -16,6 +17,8 @@ public class ProductMovement {
         this.isExit = isExit;
         this.quantity = quantity;
         this.reason = reason;
+
+
     }
 
     public int getQuantity() {
@@ -37,4 +40,6 @@ public class ProductMovement {
     public Calendar getDate() {
         return date;
     }
+
+
 }
