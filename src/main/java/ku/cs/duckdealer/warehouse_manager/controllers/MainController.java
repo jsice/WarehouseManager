@@ -53,6 +53,8 @@ public class MainController {
 //        this.salesService = new DatabaseSalesService("test_db.db", new SQLiteConnector());
 //        this.productMovementService = new DatabaseProductMovementService("test_db.db", new SQLiteConnector());
 
+        this.printService = new PrintService();
+
         this.stock = new Stock();
         this.authenticationService = new AuthenticationService();
 
